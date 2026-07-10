@@ -1,79 +1,92 @@
 # AutoOne - Automotive Platform
 
-<p align="center">
-A multilingual automotive platform prototype built for the Middle East market.
-</p>
+AutoOne is a multilingual automotive platform designed for the Middle East market.  
+The platform provides car browsing, car import requests, rental services, finance applications, maintenance booking, and automotive service management.
 
-## Overview
+---
 
-AutoOne is a production-style automotive platform where users can explore automotive services without registration.
+# Setup Instructions
 
-Visitors can browse:
-- Car Sales
-- Car Financing
-- Car Rental
-- Car Import Services
-- Workshops & Maintenance
-- Car Wash Services
-- About
-- FAQ
-- Contact
+Follow these steps to run the AutoOne project locally.
 
-
-## Technology Stack
-
-- PHP 8.2+
-- Laravel 12
-- MySQL
-- HTML5
-- CSS3
-- JavaScript
-- Tailwind CSS
-
-
-## Features
-
-### Public Website
-- Responsive homepage
-- Automotive service pages
-- Vehicle browsing
-- Service information
-- FAQ section
-- Contact page
-
-
-### User Features
-- Authentication system
-- Booking requests
-- Finance application
-- Car import request
-- User dashboard
-
-
-### Developer Features
-
-- Clean Laravel structure
-- Reusable Blade components
-- Database migrations
-- Seeders
-- Multi-language ready
-- Arabic RTL-ready layout
-
-
-## Installation
-
-
-### Requirements
+## Requirements
 
 Make sure you have installed:
 
 - PHP >= 8.2
 - Composer
 - MySQL
-- XAMPP Server
+- Laravel Framework
+- XAMPP
 
+---
 
-### Clone Repository
+## Installation
+
+### 1. Clone Repository
 
 ```bash
-git clone YOUR_GITHUB_REPOSITORY_URL
+git clone https://github.com/your-username/autoone.git
+
+cd autoone
+
+###2. Install Dependencies
+##Install Laravel dependencies:
+#composer install
+
+###3. Database Configuration
+##Open .env file and update your database information:
+#DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=autoone
+DB_USERNAME=root
+DB_PASSWORD=
+
+#Create a MySQL database:
+autoone
+
+###4. Run Migration
+##Create database tables:
+#php artisan migrate
+
+###5. Storage Setup
+##Create storage link for uploaded files:
+#php artisan storage:link
+
+###6. Run Application
+php artisan serve
+
+##Open in browser:
+http://127.0.0.1:8000
+
+
+
+##Features
+- Multilingual support (English, Arabic, German)
+- RTL layout support for Arabic language
+- Car listing and browsing
+- Car import request system
+- Car rental service
+- Finance application
+- Maintenance booking
+- Contact inquiry system
+- Admin dashboard
+- Responsive design
+
+##Technology Stack
+-Backend
+-PHP
+-Laravel
+-MySQL
+-Frontend
+-Blade Template Engine
+-Tailwind CSS
+-JavaScript
+
+##Tools
+-Composer
+-NPM
+
+Developed by Guru Raj
+-Git
