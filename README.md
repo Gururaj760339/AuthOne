@@ -70,7 +70,7 @@ Make sure you have installed:
 - PHP >= 8.2
 - Composer
 - MySQL
-- Node.js & NPM
+- XAMPP Server
 
 
 ### Clone Repository
