@@ -216,7 +216,7 @@ Route::get('/rentals-booking-create', [RentalBookingController::class, 'rentalBo
 Route::get('/admin-rentals-booking', [RentalBookingController::class, 'adminRentalBookingShow'])
 ->name('admin.rental.booking')->middleware(['can:isAdmin']);
 
-Route::put('/admin-rentals-update/{id}', [RentalBookingController::class, 'adminRentalBookinStatusUpdate'])
+Route::put('/admin-rentals-booking-update/{id}', [RentalBookingController::class, 'adminRentalBookinStatusUpdate'])
 ->name('admin.rental.booking.update')->middleware(['can:isAdmin']);
 
 Route::delete('/admin-rentals-delete/{id}', [RentalBookingController::class, 'adminRentalBookinDelete'])
