@@ -96,10 +96,6 @@
 
                             </p>
 
-                            <button class="bg-indigo-600 text-white px-5 py-2 rounded-lg">
-                                {{ __('messages.view_details') }}
-                            </button>
-
                         </div>
 
                     </div>
