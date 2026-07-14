@@ -288,3 +288,9 @@ Route::put('/settings-update/${id}', [SettingController::class, 'updateSetting']
 ->name('admin.update.setting')->middleware(['can:isAdmin']);
 
 
+Route::get('/check-cert', function () {
+    $path = base_path('storage/certs/your-tidb-ca.pem');
+    return file_exists($path) ? "ফাইলটি পাওয়া গেছে!" : "ফাইলটি পাওয়া যায়নি!";
+});
+
+
