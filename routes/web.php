@@ -71,7 +71,7 @@ Route::post('/admin-car-brand-add', [BrandController::class, 'addCarBrand'])
 Route::get('/admin-edit-car-brand/{id}', [BrandController::class, 'editCarBrand'])
 ->name('admin.edit.car.brand')->middleware(['can:isAdmin']);
 
-Route::put('/admin-car-update/{id}', [BrandController::class, 'updateCarBrand'])
+Route::put('/admin-car-brand-update/{id}', [BrandController::class, 'updateCarBrand'])
 ->name('admin.car.brand.update')->middleware(['can:isAdmin']);
 
 Route::get('/admin-car-brand', [BrandController::class, 'showCarBrand'])
