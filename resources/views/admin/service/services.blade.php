@@ -113,13 +113,13 @@
                                     class="border rounded px-3 py-2">
 
                                     <option
-                                        value="active"
+                                        value="1"
                                         {{ $service->status=='active' ? 'selected':'' }}>
                                         Active
                                     </option>
 
                                     <option
-                                        value="inactive"
+                                        value="0"
                                         {{ $service->status=='inactive' ? 'selected':'' }}>
                                         Inactive
                                     </option>
