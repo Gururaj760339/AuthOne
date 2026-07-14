@@ -103,7 +103,7 @@
 
                                     <form action="{{ route('admin.service.update', $service->id) }}" method="POST"
                                         class="flex gap-2">
-
+                                        @method('PUT')
                                         @csrf
 
                                         <select name="status" class="border rounded px-3 py-2">
