@@ -27,7 +27,9 @@ class CarController extends Controller
             ->take(4)
             ->get();
 
-        return view('vehicle_details', compact('car', 'relatedCars'));
+        $setting = Setting::first();
+
+        return view('vehicle_details', compact('setting', 'car', 'relatedCars'));
     }
 
     public function carShow()
