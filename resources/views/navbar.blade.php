@@ -5,7 +5,7 @@
             <!-- Logo -->
             <div class="flex-shrink-0">
                 <a href="/" class="text-3xl font-bold text-blue-700">
-                    AutoOne
+                    {{ $setting->website_name }}
                 </a>
             </div>
 
@@ -16,27 +16,27 @@
                     {{ __('messages.home') }}
                 </a>
 
-                <a href="/workshops-and-maintenance" class="hover:text-blue-600 transition whitespace-nowrap">
+                <a href="{{ route('customer.workshops.maintenance.show') }}" class="hover:text-blue-600 transition whitespace-nowrap">
                     {{ __('messages.workshops') }}
                 </a>
 
-                <a href="/car-wash" class="hover:text-blue-600 transition whitespace-nowrap">
+                <a href="{{ route('customer.carwash') }}" class="hover:text-blue-600 transition whitespace-nowrap">
                     {{ __('messages.car_wash') }}
                 </a>
 
-                <a href="/buy-finance-cars" class="hover:text-blue-600 transition whitespace-nowrap">
+                <a href="{{ route('customer.cars') }}" class="hover:text-blue-600 transition whitespace-nowrap">
                     {{ __('messages.buy_cars') }}
                 </a>
 
-                <a href="/car-rental" class="hover:text-blue-600 transition whitespace-nowrap">
+                <a href="{{ route('customer.rental') }}" class="hover:text-blue-600 transition whitespace-nowrap">
                     {{ __('messages.car_rental') }}
                 </a>
 
-                <a href="/car-imports" class="hover:text-blue-600 transition whitespace-nowrap">
+                <a href="{{ route('customer.import.request') }}" class="hover:text-blue-600 transition whitespace-nowrap">
                     {{ __('messages.car_imports') }}
                 </a>
 
-                <a href="/contact" class="hover:text-blue-600 transition whitespace-nowrap">
+                <a href="{{ route('customer.contact') }}" class="hover:text-blue-600 transition whitespace-nowrap">
                     {{ __('messages.contact') }}
                 </a>
 

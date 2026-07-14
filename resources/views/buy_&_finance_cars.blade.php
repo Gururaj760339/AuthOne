@@ -12,7 +12,7 @@
 </head>
 
 <body class="bg-gray-50">
-    @include('navbar')
+    @include('navbar', ['setting' => $setting])
 
     <!-- Hero -->
 
@@ -61,50 +61,6 @@
 
     </section>
 
-    <!-- Search -->
-
-    <section class="bg-white shadow">
-
-        <div class="max-w-7xl mx-auto px-6 py-8">
-
-            <div class="grid md:grid-cols-4 gap-4">
-
-                <input type="text" placeholder="{{ __('messages.search_brand') }}"
-                    class="border rounded-lg px-4 py-3">
-
-
-                <select class="border rounded-lg px-4 py-3">
-                    <option>{{ __('messages.vehicle_type') }}</option>
-                    <option>{{ __('messages.sedan') }}</option>
-                    <option>{{ __('messages.suv') }}</option>
-                    <option>{{ __('messages.pickup') }}</option>
-                </select>
-
-
-                <select class="border rounded-lg px-4 py-3">
-
-                    <option>{{ __('messages.budget') }}</option>
-                    <option>{{ __('messages.budget_10_20') }}</option>
-                    <option>{{ __('messages.budget_20_40') }}</option>
-                    <option>{{ __('messages.budget_40_plus') }}</option>
-
-                </select>
-
-
-                <button class="bg-green-600 text-white rounded-lg hover:bg-green-700">
-
-                    {{ __('messages.search_cars') }}
-
-                </button>
-
-            </div>
-
-        </div>
-
-    </section>
-
-    <!-- Cars -->
-
     <section id="cars" class="py-20">
 
         <div class="max-w-7xl mx-auto px-6">
@@ -127,23 +83,23 @@
             </div>
 
             <div class="grid lg:grid-cols-3 gap-8 mt-14">
-
+                @foreach ($cars as $car)
                 <div class="bg-white rounded-xl shadow-lg overflow-hidden">
 
                     <img
-                        src="https://images.unsplash.com/photo-1553440569-bcc63803a83d?auto=format&fit=crop&w=800&q=80">
+                        src="storage/{{$car->thumbnail}}">
 
                     <div class="p-6">
 
                         <h3 class="text-xl font-bold">
 
-                            {{ __('messages.toyota_camry') }}
+                            {{ $car->title }}
 
                         </h3>
 
                         <p class="text-gray-600 mt-2">
 
-                            {{ __('messages.toyota_details') }}
+                            {{ $car->transmission . ' • ' . $car->fuel_type . ' • ' . $car->mileage }}
 
                         </p>
 
@@ -151,100 +107,22 @@
 
                             <span class="text-2xl font-bold text-green-600">
 
-                                $29,900
+                                ${{ $car->price }}
 
                             </span>
 
-                            <button class="bg-green-600 text-white px-5 py-2 rounded">
+                            <a href="{{ route('vehicle.details', $car->slug)}} " class="bg-green-600 text-white px-5 py-2 rounded">
 
                                 {{ __('messages.view') }}
 
-                            </button>
+                            </a>
 
                         </div>
 
                     </div>
 
                 </div>
-
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-
-                    <img
-                        src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d?auto=format&fit=crop&w=800&q=80">
-
-                    <div class="p-6">
-
-                        <h3 class="text-xl font-bold">
-
-                            {{ __('messages.bmw_x5') }}
-
-                        </h3>
-
-                        <p class="text-gray-600 mt-2">
-
-                            {{ __('messages.bmw_details') }}
-
-                        </p>
-
-                        <div class="flex justify-between items-center mt-6">
-
-                            <span class="text-2xl font-bold text-green-600">
-
-                                $58,500
-
-                            </span>
-
-                            <button class="bg-green-600 text-white px-5 py-2 rounded">
-
-                                {{ __('messages.view') }}
-
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-
-                    <img
-                        src="https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=800&q=80">
-
-                    <div class="p-6">
-
-                        <h3 class="text-xl font-bold">
-
-                            {{ __('messages.mercedes_c') }}
-
-                        </h3>
-
-
-                        <p class="text-gray-600 mt-2">
-
-                            {{ __('messages.mercedes_details') }}
-
-                        </p>
-
-                        <div class="flex justify-between items-center mt-6">
-
-                            <span class="text-2xl font-bold text-green-600">
-
-                                $47,000
-
-                            </span>
-
-                            <button class="bg-green-600 text-white px-5 py-2 rounded">
-
-                                {{ __('messages.view') }}
-
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                </div>
+                @endforeach
 
             </div>
 
@@ -364,8 +242,6 @@
 
     <!-- Process -->
 
-    <!-- Process -->
-
     <section class="py-20">
 
         <div class="max-w-7xl mx-auto px-6">
@@ -461,6 +337,96 @@
 
     </section>
 
+    @if ($finance && $finance->status == 'Approved')
+        <div class="max-w-2xl mx-auto mt-10">
+            <div class="bg-white rounded-2xl shadow-xl border border-gray-200 p-8">
+
+                <div class="text-center">
+
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-blue-600" fill="currentColor"
+                            viewBox="0 0 20 20">
+                            <path
+                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.176 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81H7.03a1 1 0 00.95-.69l1.07-3.292z" />
+                        </svg>
+                    </div>
+
+                    <h2 class="text-3xl font-bold mt-5">
+                        Leave Your Review
+                    </h2>
+
+                    <p class="text-gray-500 mt-2">
+                        We'd love to hear about your experience.
+                    </p>
+
+                </div>
+
+                <form action="{{ route('customer.store.review') }}" method="POST" enctype="multipart/form-data"
+                    class="mt-8 space-y-6">
+                    @csrf
+
+                    <div>
+                        <label class="block mb-2 font-semibold">
+                            Your Name
+                        </label>
+
+                        <input type="text" name="name" value="{{ Auth::user()->name }}"
+                            class="w-full border rounded-lg p-3" required>
+                    </div>
+
+                    <div>
+                        <label class="block mb-2 font-semibold">
+                            Location
+                        </label>
+
+                        <input type="text" name="location" placeholder="Dhaka, Bangladesh"
+                            class="w-full border rounded-lg p-3" required>
+                    </div>
+
+                    <div>
+                        <label class="block mb-2 font-semibold">
+                            Rating
+                        </label>
+
+                        <select name="rating" class="w-full border rounded-lg p-3" required>
+
+                            <option value="">Select Rating</option>
+                            <option value="5">⭐⭐⭐⭐⭐ Excellent</option>
+                            <option value="4">⭐⭐⭐⭐ Very Good</option>
+                            <option value="3">⭐⭐⭐ Good</option>
+                            <option value="2">⭐⭐ Fair</option>
+                            <option value="1">⭐ Poor</option>
+
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block mb-2 font-semibold">
+                            Review
+                        </label>
+
+                        <textarea name="review" rows="5" class="w-full border rounded-lg p-3" placeholder="Write your review..."
+                            required></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block mb-2 font-semibold">
+                            Image
+                        </label>
+
+                        <input type="file" name="image" class="w-full border rounded-lg p-3">
+                    </div>
+
+                    <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700">
+                        Submit Review
+                    </button>
+
+                </form>
+
+            </div>
+        </div>
+    @endif
+
     <!-- CTA -->
 
     <section class="bg-green-600 py-20 text-center text-white">
@@ -481,7 +447,7 @@
             </p>
 
             @if (Auth::check())
-                <a href="/finance-apply-form"
+                <a href="{{ route('customer.finance.apply') }}"
                     class="inline-block mt-8 bg-white text-green-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100">
                     {{ __('messages.apply_for_finance') }}
                 </a>

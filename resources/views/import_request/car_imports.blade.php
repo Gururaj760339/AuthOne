@@ -54,50 +54,6 @@
 
     </section>
 
-    <!-- Search -->
-
-    <section class="bg-white shadow">
-
-        <div class="max-w-7xl mx-auto px-6 py-8">
-
-            <div class="grid md:grid-cols-4 gap-4">
-
-                <select class="border rounded-lg px-4 py-3">
-                    <option>{{ __('messages.select_country') }}</option>
-                    <option>Japan</option>
-                    <option>Germany</option>
-                    <option>South Korea</option>
-                    <option>USA</option>
-                </select>
-
-
-                <select class="border rounded-lg px-4 py-3">
-                    <option>{{ __('messages.select_brand') }}</option>
-                    <option>Toyota</option>
-                    <option>BMW</option>
-                    <option>Mercedes-Benz</option>
-                    <option>Hyundai</option>
-                </select>
-
-
-                <select class="border rounded-lg px-4 py-3">
-                    <option>{{ __('messages.budget') }}</option>
-                    <option>$10k - $20k</option>
-                    <option>$20k - $40k</option>
-                    <option>$40k+</option>
-                </select>
-
-
-                <button class="bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">
-                    {{ __('messages.search_vehicles') }}
-                </button>
-
-            </div>
-
-        </div>
-
-    </section>
-
     <!-- Featured Imports -->
 
     <section id="inventory" class="py-20">
@@ -117,112 +73,26 @@
             </div>
 
             <div class="grid lg:grid-cols-3 gap-8 mt-14">
-
+                @foreach ($requests as $request)
                 <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-
-                    <img
-                        src="https://images.unsplash.com/photo-1553440569-bcc63803a83d?auto=format&fit=crop&w=900&q=80">
-
-                    <div class="p-6">
-
-                        <span class="text-sm bg-green-100 text-green-700 px-3 py-1 rounded-full">
-                            {{ __('messages.imported_from_japan') }}
-                        </span>
-
-
-                        <h3 class="text-2xl font-bold mt-4">
-                            {{ __('messages.toyota_land_cruiser') }}
-                        </h3>
-
-
-                        <p class="text-gray-600 mt-3">
-                            {{ __('messages.land_cruiser_details') }}
-                        </p>
-
-
-
-                        <div class="flex justify-between items-center mt-6">
-
-                            <p class="text-2xl font-bold text-indigo-600">
-
-                                $62,500
-
-                            </p>
-
-                            <button class="bg-indigo-600 text-white px-5 py-2 rounded-lg">
-                                {{ __('messages.view_details') }}
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-
-                    <img
-                        src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d?auto=format&fit=crop&w=900&q=80">
-
-                    <div class="p-6">
-
-                        <span class="text-sm bg-blue-100 text-blue-700 px-3 py-1 rounded-full">
-                            {{ __('messages.imported_from_germany') }}
-                        </span>
-
-
-                        <h3 class="text-2xl font-bold mt-4">
-                            {{ __('messages.bmw_x5') }}
-                        </h3>
-
-
-                        <p class="text-gray-600 mt-3">
-                            {{ __('messages.bmw_details') }}
-                        </p>
-                        <div class="flex justify-between items-center mt-6">
-
-                            <p class="text-2xl font-bold text-indigo-600">
-
-                                $71,900
-
-                            </p>
-
-                            <button class="bg-indigo-600 text-white px-5 py-2 rounded-lg">
-                                {{ __('messages.view_details') }}
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-
                     <img
                         src="https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=900&q=80">
 
                     <div class="p-6">
-
-                        <span class="text-sm bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full">
-                            {{ __('messages.imported_from_korea') }}
+                        <span class="text-sm bg-green-100 text-green-700 px-3 py-1 rounded-full">
+                            {{ 'Imported from ' . $request->country}}
                         </span>
 
 
                         <h3 class="text-2xl font-bold mt-4">
-                            {{ __('messages.hyundai_palisade') }}
+                            {{  $request->car_name }}
                         </h3>
-
-
-                        <p class="text-gray-600 mt-3">
-                            {{ __('messages.palisade_details') }}
-                        </p>
 
                         <div class="flex justify-between items-center mt-6">
 
                             <p class="text-2xl font-bold text-indigo-600">
 
-                                $49,900
+                                ${{ $request->budget }}
 
                             </p>
 
@@ -234,6 +104,9 @@
 
                     </div>
 
+                </div>
+
+                @endforeach
                 </div>
 
             </div>
@@ -422,6 +295,96 @@
 
     </section>
 
+    @if ($import_requests && $import_requests->status == 'Completed')
+        <div class="max-w-2xl mx-auto mt-10">
+            <div class="bg-white rounded-2xl shadow-xl border border-gray-200 p-8">
+
+                <div class="text-center">
+
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-blue-600" fill="currentColor"
+                            viewBox="0 0 20 20">
+                            <path
+                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.176 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81H7.03a1 1 0 00.95-.69l1.07-3.292z" />
+                        </svg>
+                    </div>
+
+                    <h2 class="text-3xl font-bold mt-5">
+                        Leave Your Review
+                    </h2>
+
+                    <p class="text-gray-500 mt-2">
+                        We'd love to hear about your experience.
+                    </p>
+
+                </div>
+
+                <form action="{{ route('customer.store.review') }}" method="POST" enctype="multipart/form-data"
+                    class="mt-8 space-y-6">
+                    @csrf
+
+                    <div>
+                        <label class="block mb-2 font-semibold">
+                            Your Name
+                        </label>
+
+                        <input type="text" name="name" value="{{ Auth::user()->name }}"
+                            class="w-full border rounded-lg p-3" required>
+                    </div>
+
+                    <div>
+                        <label class="block mb-2 font-semibold">
+                            Location
+                        </label>
+
+                        <input type="text" name="location" placeholder="Dhaka, Bangladesh"
+                            class="w-full border rounded-lg p-3" required>
+                    </div>
+
+                    <div>
+                        <label class="block mb-2 font-semibold">
+                            Rating
+                        </label>
+
+                        <select name="rating" class="w-full border rounded-lg p-3" required>
+
+                            <option value="">Select Rating</option>
+                            <option value="5">⭐⭐⭐⭐⭐ Excellent</option>
+                            <option value="4">⭐⭐⭐⭐ Very Good</option>
+                            <option value="3">⭐⭐⭐ Good</option>
+                            <option value="2">⭐⭐ Fair</option>
+                            <option value="1">⭐ Poor</option>
+
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block mb-2 font-semibold">
+                            Review
+                        </label>
+
+                        <textarea name="review" rows="5" class="w-full border rounded-lg p-3" placeholder="Write your review..."
+                            required></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block mb-2 font-semibold">
+                            Image
+                        </label>
+
+                        <input type="file" name="image" class="w-full border rounded-lg p-3">
+                    </div>
+
+                    <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700">
+                        Submit Review
+                    </button>
+
+                </form>
+
+            </div>
+        </div>
+    @endif
+
     <!-- CTA -->
 
     <section class="bg-indigo-600 text-white py-20">
@@ -438,7 +401,7 @@
             </p>
 
             @if (Auth::check())
-                <a href="" class="inline-block mt-8 bg-white text-indigo-600 px-8 py-4 rounded-lg font-semibold">
+                <a href="{{ route('customer.import.request.create') }}" class="inline-block mt-8 bg-white text-indigo-600 px-8 py-4 rounded-lg font-semibold">
                     {{ __('messages.request_import_quote') }}
                 </a>
             @else

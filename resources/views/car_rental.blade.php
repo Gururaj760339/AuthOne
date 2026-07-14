@@ -10,7 +10,7 @@
 </head>
 
 <body class="bg-gray-50">
-    @include('navbar')
+    @include('navbar', ['setting' => $setting])
 
     <!-- ================= HERO ================= -->
 
@@ -43,7 +43,7 @@
                 </a>
 
                 @if (Auth::check())
-                    <a href="/rent-car-booking-form"
+                    <a href="{{ route('customer.rental.booking.create') }}"
                         class="border border-white px-8 py-4 rounded-lg hover:bg-white hover:text-black transition">
                         {{ __('messages.book_now') }}
                     </a>
@@ -53,31 +53,6 @@
                         {{ __('messages.book_now') }}
                     </a>
                 @endif
-            </div>
-
-        </div>
-
-    </section>
-
-    <!-- ================= SEARCH ================= -->
-
-    <section class="bg-white shadow">
-
-        <div class="max-w-7xl mx-auto px-6 py-8">
-
-            <div class="grid md:grid-cols-4 gap-4">
-
-                <input type="text" placeholder="{{ __('messages.pickup_location') }}"
-                    class="border rounded-lg px-4 py-3">
-
-                <input type="date" class="border rounded-lg px-4 py-3">
-
-                <input type="date" class="border rounded-lg px-4 py-3">
-
-                <button class="bg-yellow-500 hover:bg-yellow-400 rounded-lg font-semibold">
-                    {{ __('messages.search_cars') }}
-                </button>
-
             </div>
 
         </div>
@@ -105,20 +80,20 @@
             <div class="grid lg:grid-cols-3 gap-8 mt-14">
 
                 <!-- Card -->
-
+                @foreach ($rentals as $rental)
                 <div class="bg-white rounded-xl shadow-lg overflow-hidden">
 
                     <img
-                        src="https://images.unsplash.com/photo-1553440569-bcc63803a83d?auto=format&fit=crop&w=900&q=80">
+                        src="storage/{{ $rental->car->thumbnail }}">
 
                     <div class="p-6">
 
                         <h3 class="text-2xl font-bold">
-                            {{ __('messages.toyota_corolla') }}
+                            {{ $rental->car->title }}
                         </h3>
 
                         <p class="text-gray-600 mt-3">
-                            {{ __('messages.corolla_details') }}
+                            {{ $rental->car->transmission . ' • ' . $rental->car->fuel_type . ' • ' . $rental->car->mileage  }}
                         </p>
 
                         <div class="flex justify-between items-center mt-6">
@@ -130,13 +105,13 @@
                                 </p>
 
                                 <p class="text-3xl font-bold text-yellow-500">
-                                    $45/day
+                                    ${{ $rental->price_per_day }}/day
                                 </p>
 
                             </div>
 
                             @if (Auth::check())
-                                <a class="bg-yellow-500 hover:bg-yellow-400 px-5 py-2 rounded-lg font-semibold">
+                                <a href="{{ route('customer.single.rental.bookin.create', $rental->id) }}" class="bg-yellow-500 hover:bg-yellow-400 px-5 py-2 rounded-lg font-semibold">
                                     {{ __('messages.rent_now') }}
                                 </a>
                             @else
@@ -152,105 +127,7 @@
                     </div>
 
                 </div>
-
-                <!-- Card -->
-
-                <!-- BMW X5 Card -->
-
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-
-                    <img
-                        src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=900&q=80">
-
-                    <div class="p-6">
-
-                        <h3 class="text-2xl font-bold">
-                            {{ __('messages.bmw_x5') }}
-                        </h3>
-
-                        <p class="text-gray-600 mt-3">
-                            {{ __('messages.bmw_details') }}
-                        </p>
-
-                        <div class="flex justify-between items-center mt-6">
-
-                            <div>
-
-                                <p class="text-gray-500 text-sm">
-                                    {{ __('messages.starting_from') }}
-                                </p>
-
-                                <p class="text-3xl font-bold text-yellow-500">
-                                    $120/Day
-                                </p>
-
-                            </div>
-
-                            @if (Auth::check())
-                                <a class="bg-yellow-500 hover:bg-yellow-400 px-5 py-2 rounded-lg font-semibold">
-                                    {{ __('messages.rent_now') }}
-                                </a>
-                            @else
-                                <a href="/login"
-                                    class="bg-yellow-500 hover:bg-yellow-400 px-5 py-2 rounded-lg font-semibold">
-                                    {{ __('messages.rent_now') }}
-                                </a>
-                            @endif
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <!-- Mercedes C-Class Card -->
-
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-
-                    <img
-                        src="https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=900&q=80">
-
-                    <div class="p-6">
-
-                        <h3 class="text-2xl font-bold">
-                            {{ __('messages.mercedes_c') }}
-                        </h3>
-
-                        <p class="text-gray-600 mt-3">
-                            {{ __('messages.mercedes_details') }}
-                        </p>
-
-                        <div class="flex justify-between items-center mt-6">
-
-                            <div>
-
-                                <p class="text-gray-500 text-sm">
-                                    {{ __('messages.starting_from') }}
-                                </p>
-
-                                <p class="text-3xl font-bold text-yellow-500">
-                                    $150/Day
-                                </p>
-
-                            </div>
-
-                            @if (Auth::check())
-                                <a class="bg-yellow-500 hover:bg-yellow-400 px-5 py-2 rounded-lg font-semibold">
-                                    {{ __('messages.rent_now') }}
-                                </a>
-                            @else
-                                <a href="/login"
-                                    class="bg-yellow-500 hover:bg-yellow-400 px-5 py-2 rounded-lg font-semibold">
-                                    {{ __('messages.rent_now') }}
-                                </a>
-                            @endif
-
-                        </div>
-
-                    </div>
-
-                </div>
+                @endforeach
 
             </div>
 
@@ -425,6 +302,96 @@
 
     </section>
 
+    @if ($rental_booking && $rental_booking->status == 'Completed')
+        <div class="max-w-2xl mx-auto mt-10">
+            <div class="bg-white rounded-2xl shadow-xl border border-gray-200 p-8">
+
+                <div class="text-center">
+
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-blue-600" fill="currentColor"
+                            viewBox="0 0 20 20">
+                            <path
+                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.176 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81H7.03a1 1 0 00.95-.69l1.07-3.292z" />
+                        </svg>
+                    </div>
+
+                    <h2 class="text-3xl font-bold mt-5">
+                        Leave Your Review
+                    </h2>
+
+                    <p class="text-gray-500 mt-2">
+                        We'd love to hear about your experience.
+                    </p>
+
+                </div>
+
+                <form action="{{ route('customer.store.review') }}" method="POST" enctype="multipart/form-data"
+                    class="mt-8 space-y-6">
+                    @csrf
+
+                    <div>
+                        <label class="block mb-2 font-semibold">
+                            Your Name
+                        </label>
+
+                        <input type="text" name="name" value="{{ Auth::user()->name }}"
+                            class="w-full border rounded-lg p-3" required>
+                    </div>
+
+                    <div>
+                        <label class="block mb-2 font-semibold">
+                            Location
+                        </label>
+
+                        <input type="text" name="location" placeholder="Dhaka, Bangladesh"
+                            class="w-full border rounded-lg p-3" required>
+                    </div>
+
+                    <div>
+                        <label class="block mb-2 font-semibold">
+                            Rating
+                        </label>
+
+                        <select name="rating" class="w-full border rounded-lg p-3" required>
+
+                            <option value="">Select Rating</option>
+                            <option value="5">⭐⭐⭐⭐⭐ Excellent</option>
+                            <option value="4">⭐⭐⭐⭐ Very Good</option>
+                            <option value="3">⭐⭐⭐ Good</option>
+                            <option value="2">⭐⭐ Fair</option>
+                            <option value="1">⭐ Poor</option>
+
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block mb-2 font-semibold">
+                            Review
+                        </label>
+
+                        <textarea name="review" rows="5" class="w-full border rounded-lg p-3" placeholder="Write your review..."
+                            required></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block mb-2 font-semibold">
+                            Image
+                        </label>
+
+                        <input type="file" name="image" class="w-full border rounded-lg p-3">
+                    </div>
+
+                    <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700">
+                        Submit Review
+                    </button>
+
+                </form>
+
+            </div>
+        </div>
+    @endif
+
     <!-- ================= FAQ ================= -->
     <section class="bg-white py-20">
 
@@ -437,48 +404,19 @@
 
             <div class="space-y-6 mt-12">
 
-
+                @foreach ($faqs as $faq)
                 <div class="bg-gray-100 rounded-lg p-6">
 
                     <h4 class="font-bold">
-                        {{ __('messages.documents_required') }}
+                        {{ $faq->question }}
                     </h4>
 
                     <p class="text-gray-600 mt-2">
-                        {{ __('messages.documents_answer') }}
+                        {{ $faq->answer }}
                     </p>
 
                 </div>
-
-
-
-                <div class="bg-gray-100 rounded-lg p-6">
-
-                    <h4 class="font-bold">
-                        {{ __('messages.extend_rental') }}
-                    </h4>
-
-                    <p class="text-gray-600 mt-2">
-                        {{ __('messages.extend_answer') }}
-                    </p>
-
-                </div>
-
-
-
-                <div class="bg-gray-100 rounded-lg p-6">
-
-                    <h4 class="font-bold">
-                        {{ __('messages.insurance') }}
-                    </h4>
-
-                    <p class="text-gray-600 mt-2">
-                        {{ __('messages.insurance_answer') }}
-                    </p>
-
-                </div>
-
-
+                @endforeach
             </div>
 
         </div>
@@ -501,7 +439,7 @@
 
 
             @if (Auth::check())
-                <a href="/rent-car-booking-form"
+                <a href="{{ route('customer.rental.booking.create') }}"
                     class="inline-block mt-8 bg-black text-white px-8 py-4 rounded-lg hover:bg-gray-800 transition">
                     {{ __('messages.reserve_car') }}
                 </a>

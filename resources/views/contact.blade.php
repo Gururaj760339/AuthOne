@@ -61,8 +61,7 @@
                         </h3>
 
                         <p class="text-gray-600 mt-2">
-                            Dubai Internet City<br>
-                            Dubai, United Arab Emirates
+                           {{ $setting->address }}
                         </p>
 
                     </div>
@@ -78,7 +77,7 @@
                         </h3>
 
                         <p class="text-gray-600 mt-2">
-                            +971 4 123 4567
+                            {{ $setting->phone }}
                         </p>
 
                     </div>
@@ -94,7 +93,7 @@
                         </h3>
 
                         <p class="text-gray-600 mt-2">
-                            support@autoone.com
+                            {{ $setting->email }}
                         </p>
 
                     </div>
@@ -120,94 +119,68 @@
 
 
 
-                    <form class="mt-8 space-y-6">
+                    @if (session('success'))
+                        <div class="mb-4 bg-green-100 text-green-700 p-4 rounded">
+                            {{ session('success') }}
+                        </div>
+                    @endif
 
+                    @if ($errors->any())
+                        <div class="mb-4 bg-red-100 text-red-700 p-4 rounded">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
+                    <form action="{{ route('customer.contact.store') }}" method="POST" class="mt-8 space-y-6">
+
+                        @csrf
 
                         <div class="grid md:grid-cols-2 gap-6">
 
+                            <input type="text" name="name" value="{{ old('name') }}"
+                                placeholder="{{ __('messages.full_name') }}"
+                                class="border rounded-lg px-4 py-3 w-full">
 
-                            <input type="text" placeholder="{{ __('messages.full_name') }}"
-                                class="border rounded-lg px-4 py-3 w-full focus:ring-2 focus:ring-red-500 outline-none">
-
-
-                            <input type="email" placeholder="{{ __('messages.email_address') }}"
-                                class="border rounded-lg px-4 py-3 w-full focus:ring-2 focus:ring-red-500 outline-none">
-
+                            <input type="email" name="email" value="{{ old('email') }}"
+                                placeholder="{{ __('messages.email_address') }}"
+                                class="border rounded-lg px-4 py-3 w-full">
 
                         </div>
 
-
-
                         <div class="grid md:grid-cols-2 gap-6">
 
+                            <input type="text" name="phone" value="{{ old('phone') }}"
+                                placeholder="{{ __('messages.phone_number') }}"
+                                class="border rounded-lg px-4 py-3 w-full">
 
-                            <input type="tel" placeholder="{{ __('messages.phone_number') }}"
-                                class="border rounded-lg px-4 py-3 w-full focus:ring-2 focus:ring-red-500 outline-none">
+                            <select name="subject" class="border rounded-lg px-4 py-3 w-full">
 
-
-
-                            <select class="border rounded-lg px-4 py-3 w-full">
-
-
-                                <option>
-                                    {{ __('messages.select_inquiry') }}
-                                </option>
-
-
-                                <option>
-                                    {{ __('messages.buy_car') }}
-                                </option>
-
-
-                                <option>
-                                    {{ __('messages.finance') }}
-                                </option>
-
-
-                                <option>
-                                    {{ __('messages.car_rental') }}
-                                </option>
-
-
-                                <option>
-                                    {{ __('messages.workshop') }}
-                                </option>
-
-
-                                <option>
-                                    {{ __('messages.car_wash') }}
-                                </option>
-
-
-                                <option>
-                                    {{ __('messages.car_imports') }}
-                                </option>
-
-
-                                <option>
-                                    {{ __('messages.general_question') }}
-                                </option>
-
+                                <option value="">Select Inquiry</option>
+                                <option value="Buy Car">Buy Car</option>
+                                <option value="Finance">Finance</option>
+                                <option value="Car Rental">Car Rental</option>
+                                <option value="Workshop">Workshop</option>
+                                <option value="Car Wash">Car Wash</option>
+                                <option value="Car Imports">Car Imports</option>
+                                <option value="General Question">General Question</option>
 
                             </select>
 
-
                         </div>
 
+                        <textarea name="message" rows="6" placeholder="{{ __('messages.write_message') }}"
+                            class="border rounded-lg px-4 py-3 w-full">{{ old('message') }}</textarea>
 
-
-                        <textarea rows="6" placeholder="{{ __('messages.write_message') }}"
-                            class="border rounded-lg px-4 py-3 w-full focus:ring-2 focus:ring-red-500 outline-none"></textarea>
-
-
-
-                        <button
-                            class="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg font-semibold transition">
+                        <button type="submit"
+                            class="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg font-semibold">
 
                             {{ __('messages.send') }}
 
                         </button>
-
 
                     </form>
 

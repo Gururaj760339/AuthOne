@@ -8,10 +8,13 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
 
+    <script src="https://kit.fontawesome.com/YOUR_KIT_ID.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
 </head>
 
 <body class="bg-gray-50">
-    @include('navbar')
+    @include('navbar', ['setting' => $setting])
 
     <section class="relative bg-slate-900 text-white">
 
@@ -38,7 +41,8 @@
 
             <div class="mt-10 flex flex-wrap gap-4">
                 @if (Auth::check())
-                    <a href="/booking-form" class="bg-red-600 hover:bg-red-700 px-7 py-4 rounded-lg font-semibold transition">
+                    <a href="{{ route('customer.maintenance.booking.create') }}"
+                        class="bg-red-600 hover:bg-red-700 px-7 py-4 rounded-lg font-semibold transition">
                         {{ __('messages.book_maintenance') }}
                     </a>
                 @else
@@ -78,62 +82,23 @@
             </div>
 
             <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mt-14">
+                @foreach ($services as $service)
+                    <div class="bg-white p-8 rounded-xl shadow hover:shadow-xl transition">
 
-                <div class="bg-white p-8 rounded-xl shadow hover:shadow-xl transition">
+                        <div class="text-5xl mb-5">
+                            <i class="{{ $service->serviceCategory->icon }}"></i>
+                        </div>
 
-                    <div class="text-5xl mb-5">🔧</div>
+                        <h3 class="font-bold text-xl">
+                            {{ $service->title }}
+                        </h3>
 
-                    <h3 class="font-bold text-xl">
-                        {{ __('messages.engine_repair') }}
-                    </h3>
+                        <p class="mt-3 text-gray-600">
+                            {{ $service->description }}
+                        </p>
 
-                    <p class="mt-3 text-gray-600">
-                        {{ __('messages.engine_repair_desc') }}
-                    </p>
-
-                </div>
-
-                <div class="bg-white p-8 rounded-xl shadow hover:shadow-xl transition">
-
-                    <div class="text-5xl mb-5">🛞</div>
-
-                    <h3 class="font-bold text-xl">
-                        {{ __('messages.tire_services') }}
-                    </h3>
-
-                    <p class="mt-3 text-gray-600">
-                        {{ __('messages.tire_services_desc') }}
-                    </p>
-
-                </div>
-
-                <div class="bg-white p-8 rounded-xl shadow hover:shadow-xl transition">
-
-                    <div class="text-5xl mb-5">🛢️</div>
-
-                    <h3 class="font-bold text-xl">
-                        {{ __('messages.oil_change') }}
-                    </h3>
-
-                    <p class="mt-3 text-gray-600">
-                        {{ __('messages.oil_change_desc') }}
-                    </p>
-
-                </div>
-
-                <div class="bg-white p-8 rounded-xl shadow hover:shadow-xl transition">
-
-                    <div class="text-5xl mb-5">🚗</div>
-
-                    <h3 class="font-bold text-xl">
-                        {{ __('messages.brake_inspection') }}
-                    </h3>
-
-                    <p class="mt-3 text-gray-600">
-                        {{ __('messages.brake_inspection_desc') }}
-                    </p>
-                </div>
-
+                    </div>
+                @endforeach
             </div>
 
         </div>
@@ -304,6 +269,96 @@
 
     </section>
 
+    @if ($booking && $booking->status == 'Completed')
+        <div class="max-w-2xl mx-auto mt-10">
+            <div class="bg-white rounded-2xl shadow-xl border border-gray-200 p-8">
+
+                <div class="text-center">
+
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-blue-600" fill="currentColor"
+                            viewBox="0 0 20 20">
+                            <path
+                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.176 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81H7.03a1 1 0 00.95-.69l1.07-3.292z" />
+                        </svg>
+                    </div>
+
+                    <h2 class="text-3xl font-bold mt-5">
+                        Leave Your Review
+                    </h2>
+
+                    <p class="text-gray-500 mt-2">
+                        We'd love to hear about your experience.
+                    </p>
+
+                </div>
+
+                <form action="{{ route('customer.store.review') }}" method="POST" enctype="multipart/form-data"
+                    class="mt-8 space-y-6">
+                    @csrf
+
+                    <div>
+                        <label class="block mb-2 font-semibold">
+                            Your Name
+                        </label>
+
+                        <input type="text" name="name" value="{{ Auth::user()->name }}"
+                            class="w-full border rounded-lg p-3" required>
+                    </div>
+
+                    <div>
+                        <label class="block mb-2 font-semibold">
+                            Location
+                        </label>
+
+                        <input type="text" name="location" placeholder="Dhaka, Bangladesh"
+                            class="w-full border rounded-lg p-3" required>
+                    </div>
+
+                    <div>
+                        <label class="block mb-2 font-semibold">
+                            Rating
+                        </label>
+
+                        <select name="rating" class="w-full border rounded-lg p-3" required>
+
+                            <option value="">Select Rating</option>
+                            <option value="5">⭐⭐⭐⭐⭐ Excellent</option>
+                            <option value="4">⭐⭐⭐⭐ Very Good</option>
+                            <option value="3">⭐⭐⭐ Good</option>
+                            <option value="2">⭐⭐ Fair</option>
+                            <option value="1">⭐ Poor</option>
+
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block mb-2 font-semibold">
+                            Review
+                        </label>
+
+                        <textarea name="review" rows="5" class="w-full border rounded-lg p-3" placeholder="Write your review..."
+                            required></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block mb-2 font-semibold">
+                            Image
+                        </label>
+
+                        <input type="file" name="image" class="w-full border rounded-lg p-3">
+                    </div>
+
+                    <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700">
+                        Submit Review
+                    </button>
+
+                </form>
+
+            </div>
+        </div>
+    @endif
+
     <!-- Reviews -->
 
     <section class="bg-white py-20">
@@ -316,60 +371,42 @@
 
             <div class="grid md:grid-cols-3 gap-8 mt-14">
 
-                <div class="bg-gray-100 rounded-xl p-8">
+    @foreach($testimonials as $testimonial)
 
-                    ⭐⭐⭐⭐⭐
+    <div class="bg-gray-100 rounded-xl p-8 rounded-lg shadow">
 
-                    <p class="mt-4 text-gray-600">
+        @if($testimonial->image)
+            <img src="{{ asset('storage/'.$testimonial->image) }}"
+                class="w-20 h-20 rounded-full object-cover mx-auto mb-4">
+        @endif
 
-                        {{ __('messages.review1') }}
-                    </p>
+        <div class="text-yellow-500 text-xl mb-3">
+            @for($i = 1; $i <= 5; $i++)
+                @if($i <= $testimonial->rating)
+                    ⭐
+                @else
+                    ☆
+                @endif
+            @endfor
+        </div>
 
-                    <h5 class="mt-6 font-bold">
+        <p class="text-gray-600">
+            {{ $testimonial->review }}
+        </p>
 
-                        Ahmed Al Mansoori
+        <h5 class="mt-5 font-bold text-lg">
+            {{ $testimonial->name }}
+        </h5>
 
-                    </h5>
+        <p class="text-gray-500 text-sm">
+            {{ $testimonial->location }}
+        </p>
 
-                </div>
+    </div>
 
-                <div class="bg-gray-100 rounded-xl p-8">
+    @endforeach
 
-                    ⭐⭐⭐⭐⭐
-
-                    <p class="mt-4 text-gray-600">
-
-                        {{ __('messages.review2') }}
-
-                    </p>
-
-                    <h5 class="mt-6 font-bold">
-
-                        Sarah Johnson
-
-                    </h5>
-
-                </div>
-
-                <div class="bg-gray-100 rounded-xl p-8">
-
-                    ⭐⭐⭐⭐⭐
-
-                    <p class="mt-4 text-gray-600">
-
-                        {{ __('messages.review3') }}
-
-                    </p>
-
-                    <h5 class="mt-6 font-bold">
-
-                        Mohammed Khalid
-
-                    </h5>
-
-                </div>
-
-            </div>
+</div>
 
         </div>
 
@@ -386,41 +423,19 @@
             </h2>
 
             <div class="space-y-6 mt-12">
-
+                @foreach ($faqs as $faq)
                 <div class="bg-white rounded-lg shadow p-6">
 
                     <h4 class="font-bold">
-                        {{ __('messages.faq1') }}
+                        {{ $faq->question }}
                     </h4>
 
                     <p class="text-gray-600 mt-2">
-                        {{ __('messages.faq1_ans') }}
+                        {{ $faq->answer }}
                     </p>
 
                 </div>
-
-                <div class="bg-white rounded-lg shadow p-6">
-
-                    <h4 class="font-bold">
-                        {{ __('messages.faq2') }}
-                    </h4>
-
-                    <p class="text-gray-600 mt-2">
-                        {{ __('messages.faq2_ans') }}
-                    </p>
-
-                </div>
-
-                <div class="bg-white rounded-lg shadow p-6">
-                    <h4 class="font-bold">
-                        {{ __('messages.faq3') }}
-                    </h4>
-
-                    <p class="text-gray-600 mt-2">
-                        {{ __('messages.faq3_ans') }}
-                    </p>
-
-                </div>
+                @endforeach
 
             </div>
 
@@ -443,7 +458,7 @@
             </p>
 
             @if (Auth::check())
-                <a href="/booking-form"
+                <a href="{{ route('customer.maintenance.booking.create') }}"
                     class="inline-block mt-8 bg-white text-red-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-200 transition">
                     {{ __('messages.book_appointment') }}
                 </a>

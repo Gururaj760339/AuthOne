@@ -10,8 +10,7 @@
 
 <body class="bg-gray-50 {{ app()->getLocale() == 'ar' ? 'font-arabic' : 'font-sans' }}">
     <!-- ================= NAVBAR ================= -->
-    @include('navbar')
-    
+    @include('navbar', ['setting' => $setting])
 
     <!-- ================= HERO ================= -->
     <section class="bg-gradient-to-r from-blue-900 to-blue-600 text-white">
@@ -83,32 +82,6 @@
                     🌍
                     <h3 class="font-bold mt-4">{{ __('messages.import_cars') }}</h3>
                     <p class="text-sm text-gray-500">Japan • Germany • USA</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ================= FEATURED CARS ================= -->
-    <section class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="flex justify-between mb-10">
-                <h2 class="text-4xl font-bold">{{ __('messages.featured_cars') }}</h2>
-                <a href="#" class="text-blue-600">{{ __('messages.view_all') }} →</a>
-            </div>
-
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Example Card -->
-                <div id="cars" class="bg-gray-100 rounded-xl overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=900">
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold">Toyota Camry 2024</h3>
-                        <p class="text-gray-500 mt-2">Automatic • Petrol • 18,000 km</p>
-                        <div class="flex justify-between mt-5">
-                            <span class="text-blue-700 font-bold">AED 105,000</span>
-                            <button
-                                class="bg-blue-600 text-white px-4 py-2 rounded">{{ __('messages.details') }}</button>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

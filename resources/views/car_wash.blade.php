@@ -10,7 +10,7 @@
 </head>
 
 <body class="bg-gray-50">
-    @include('navbar')
+    @include('navbar', ['setting' => $setting])
 
     <!-- Hero Section -->
     <section class="relative bg-slate-900 text-white">
@@ -38,7 +38,7 @@
 
             <div class="flex flex-wrap gap-4 mt-10">
                 @if (Auth::check())
-                    <a href="/booking-form"
+                    <a href="{{ route('customer.carwash.booking.create') }}"
                         class="bg-blue-600 hover:bg-blue-700 px-8 py-4 rounded-lg font-semibold transition">
                         {{ __('messages.book_now') }}
                     </a>
@@ -66,7 +66,6 @@
         <div class="max-w-7xl mx-auto px-6">
 
             <div class="text-center">
-
                 <h2 class="text-4xl font-bold">
                     {{ __('messages.car_wash_packages') }}
                 </h2>
@@ -74,85 +73,32 @@
                 <p class="text-gray-600 mt-4">
                     {{ __('messages.choose_package_text') }}
                 </p>
-
             </div>
 
-            <div class="grid lg:grid-cols-3 gap-8 mt-14">
+            <div class="grid lg:grid-cols-3 md:grid-cols-2 gap-8 mt-14 items-start">
 
-                <div class="bg-white rounded-xl shadow-lg p-8">
+                @foreach ($services as $service)
+                    <div class="bg-white rounded-xl shadow-lg p-8 hover:shadow-2xl transition duration-300">
 
+                        <h3 class="text-2xl font-bold">
+                            {{ $service->title }}
+                        </h3>
 
-                    <h3 class="text-2xl font-bold">
-                        {{ __('messages.basic_wash') }}
-                    </h3>
+                        <p class="text-5xl font-bold text-blue-600 mt-6">
+                            ${{ number_format($service->price) }}
+                        </p>
 
-                    <p class="text-5xl font-bold text-blue-600 mt-6">
-                        $15
-                    </p>
+                        <p class="text-gray-600 mt-6 leading-7">
+                            {{ $service->description }}
+                        </p>
 
-                    <ul class="mt-8 space-y-3 text-gray-600">
-                        <li>✔ {{ __('messages.basic_feature_1') }}</li>
-                        <li>✔ {{ __('messages.basic_feature_2') }}</li>
-                        <li>✔ {{ __('messages.basic_feature_3') }}</li>
-                        <li>✔ {{ __('messages.basic_feature_4') }}</li>
-                    </ul>
+                        <a href="{{ route('customer.single.carwash', $service->slug) }}"
+                            class="mt-8 block w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition text-center">
+                            {{ __('messages.package_choose') }}
+                        </a>
 
-                    <button class="mt-8 w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700">
-                        {{ __('messages.package_choose') }}
-                    </button>
-
-                </div>
-
-                <div class="bg-blue-600 rounded-xl shadow-lg p-8 text-white scale-105">
-
-                    <div class="bg-white text-blue-600 inline-block px-3 py-1 rounded-full text-sm">
-                        {{ __('messages.most_popular') }}
                     </div>
-
-                    <h3 class="text-2xl font-bold mt-4">
-                        {{ __('messages.premium_wash') }}
-                    </h3>
-
-                    <p class="text-5xl font-bold mt-6">
-                        $35
-                    </p>
-
-                    <ul class="mt-8 space-y-3">
-                        <li>✔ {{ __('messages.premium_feature_1') }}</li>
-                        <li>✔ {{ __('messages.premium_feature_2') }}</li>
-                        <li>✔ {{ __('messages.premium_feature_3') }}</li>
-                        <li>✔ {{ __('messages.premium_feature_4') }}</li>
-                        <li>✔ {{ __('messages.premium_feature_5') }}</li>
-                    </ul>
-
-                    <button class="mt-8 w-full bg-white text-blue-600 py-3 rounded-lg font-semibold">
-                        {{ __('messages.package_choose') }}
-                    </button>
-
-                </div>
-
-                <div class="bg-white rounded-xl shadow-lg p-8">
-
-                    <h3 class="text-2xl font-bold">
-                        {{ __('messages.luxury_detail') }}
-                    </h3>
-
-                    <p class="text-5xl font-bold text-blue-600 mt-6">
-                        $75
-                    </p>
-
-                    <ul class="mt-8 space-y-3 text-gray-600">
-                        <li>✔ {{ __('messages.luxury_feature_1') }}</li>
-                        <li>✔ {{ __('messages.luxury_feature_2') }}</li>
-                        <li>✔ {{ __('messages.luxury_feature_3') }}</li>
-                        <li>✔ {{ __('messages.luxury_feature_4') }}</li>
-                        <li>✔ {{ __('messages.luxury_feature_5') }}</li>
-                    </ul>
-
-                    <button class="mt-8 w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700">
-                        {{ __('messages.package_choose') }}
-                    </button>
-                </div>
+                @endforeach
 
             </div>
 
@@ -307,6 +253,96 @@
 
     </section>
 
+    @if ($booking && $booking->status == 'Completed')
+        <div class="max-w-2xl mx-auto mt-10">
+            <div class="bg-white rounded-2xl shadow-xl border border-gray-200 p-8">
+
+                <div class="text-center">
+
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-blue-600" fill="currentColor"
+                            viewBox="0 0 20 20">
+                            <path
+                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.176 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81H7.03a1 1 0 00.95-.69l1.07-3.292z" />
+                        </svg>
+                    </div>
+
+                    <h2 class="text-3xl font-bold mt-5">
+                        Leave Your Review
+                    </h2>
+
+                    <p class="text-gray-500 mt-2">
+                        We'd love to hear about your experience.
+                    </p>
+
+                </div>
+
+                <form action="{{ route('customer.store.review') }}" method="POST" enctype="multipart/form-data"
+                    class="mt-8 space-y-6">
+                    @csrf
+
+                    <div>
+                        <label class="block mb-2 font-semibold">
+                            Your Name
+                        </label>
+
+                        <input type="text" name="name" value="{{ Auth::user()->name }}"
+                            class="w-full border rounded-lg p-3" required>
+                    </div>
+
+                    <div>
+                        <label class="block mb-2 font-semibold">
+                            Location
+                        </label>
+
+                        <input type="text" name="location" placeholder="Dhaka, Bangladesh"
+                            class="w-full border rounded-lg p-3" required>
+                    </div>
+
+                    <div>
+                        <label class="block mb-2 font-semibold">
+                            Rating
+                        </label>
+
+                        <select name="rating" class="w-full border rounded-lg p-3" required>
+
+                            <option value="">Select Rating</option>
+                            <option value="5">⭐⭐⭐⭐⭐ Excellent</option>
+                            <option value="4">⭐⭐⭐⭐ Very Good</option>
+                            <option value="3">⭐⭐⭐ Good</option>
+                            <option value="2">⭐⭐ Fair</option>
+                            <option value="1">⭐ Poor</option>
+
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block mb-2 font-semibold">
+                            Review
+                        </label>
+
+                        <textarea name="review" rows="5" class="w-full border rounded-lg p-3" placeholder="Write your review..."
+                            required></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block mb-2 font-semibold">
+                            Image
+                        </label>
+
+                        <input type="file" name="image" class="w-full border rounded-lg p-3">
+                    </div>
+
+                    <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700">
+                        Submit Review
+                    </button>
+
+                </form>
+
+            </div>
+        </div>
+    @endif
+
     <!-- Reviews -->
 
     <section class="bg-white py-20">
@@ -317,56 +353,40 @@
                 {{ __('messages.customer_reviews') }}
             </h2>
 
-
             <div class="grid md:grid-cols-3 gap-8 mt-14">
 
-                <div class="bg-gray-100 rounded-xl p-8">
+                @foreach ($testimonials as $testimonial)
+                    <div class="bg-gray-100 rounded-xl p-8 rounded-lg shadow">
 
-                    ⭐⭐⭐⭐⭐
+                        @if ($testimonial->image)
+                            <img src="{{ asset('storage/' . $testimonial->image) }}"
+                                class="w-20 h-20 rounded-full object-cover mx-auto mb-4">
+                        @endif
 
-                    <<p class="mt-4 text-gray-600">
-                        {{ __('messages.review_1') }}
+                        <div class="text-yellow-500 text-xl mb-3">
+                            @for ($i = 1; $i <= 5; $i++)
+                                @if ($i <= $testimonial->rating)
+                                    ⭐
+                                @else
+                                    ☆
+                                @endif
+                            @endfor
+                        </div>
+
+                        <p class="text-gray-600">
+                            {{ $testimonial->review }}
                         </p>
 
-                        <h4 class="mt-6 font-bold">
+                        <h5 class="mt-5 font-bold text-lg">
+                            {{ $testimonial->name }}
+                        </h5>
 
-                            Ali Hassan
+                        <p class="text-gray-500 text-sm">
+                            {{ $testimonial->location }}
+                        </p>
 
-                        </h4>
-
-                </div>
-
-                <div class="bg-gray-100 rounded-xl p-8">
-
-                    ⭐⭐⭐⭐⭐
-
-                    <p class="mt-4 text-gray-600">
-                        {{ __('messages.review_2') }}
-                    </p>
-
-                    <h4 class="mt-6 font-bold">
-
-                        Emma Wilson
-
-                    </h4>
-
-                </div>
-
-                <div class="bg-gray-100 rounded-xl p-8">
-
-                    ⭐⭐⭐⭐⭐
-
-                    <p class="mt-4 text-gray-600">
-                        {{ __('messages.review_3') }}
-                    </p>
-
-                    <h4 class="mt-6 font-bold">
-
-                        Mohammed Saleh
-
-                    </h4>
-
-                </div>
+                    </div>
+                @endforeach
 
             </div>
 
@@ -385,42 +405,19 @@
             </h2>
 
             <div class="space-y-6 mt-12">
-
+                @foreach ($faqs as $faq)
                 <div class="bg-white shadow rounded-lg p-6">
 
                     <h4 class="font-bold">
-                        {{ __('messages.faq_q1') }}
+                        {{ $faq->question }}
                     </h4>
 
                     <p class="text-gray-600 mt-2">
-                        {{ __('messages.faq_a1') }}
+                        {{ $faq->answer }}
                     </p>
 
                 </div>
-
-                <div class="bg-white shadow rounded-lg p-6">
-
-                    <h4 class="font-bold">
-                        {{ __('messages.faq_q2') }}
-                    </h4>
-
-                    <p class="text-gray-600 mt-2">
-                        {{ __('messages.faq_a2') }}
-                    </p>
-
-                </div>
-
-                <div class="bg-white shadow rounded-lg p-6">
-
-                    <h4 class="font-bold">
-                        {{ __('messages.faq_q3') }}
-                    </h4>
-
-                    <p class="text-gray-600 mt-2">
-                        {{ __('messages.faq_a3') }}
-                    </p>
-
-                </div>
+                @endforeach
 
             </div>
 
@@ -444,7 +441,7 @@
             </p>
 
             @if (Auth::check())
-                <a href="/booking-form"
+                <a href="{{ route('customer.carwash.booking.create') }}"
                     class="inline-block mt-8 bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition">
                     {{ __('messages.book_car_wash') }}
                 </a>

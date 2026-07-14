@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,7 +25,7 @@
                 {{ __('messages.book_maintenance_desc') }}
             </p>
 
-            <form action="#" method="POST" class="space-y-6">
+            <form action="{{ route('customer.booking.store') }}" method="POST" class="space-y-6">
                 @csrf
 
                 <!-- Service -->
@@ -33,15 +34,17 @@
                         {{ __('messages.select_service') }}
                     </label>
 
-                    <select
-                        name="service_id"
+                    <select name="service_id"
                         class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         required>
 
-                        <option value="">
-                            {{ __('messages.choose_service') }}
-                        </option>
+                        @foreach ($services as $service)
+                            <option value="{{ $service->id }}">
+                                {{ $service->title }}
+                            </option>
+                        @endforeach
 
+{{-- 
                         <option value="1">{{ __('messages.oil_change') }}</option>
                         <option value="2">{{ __('messages.brake_service') }}</option>
                         <option value="3">{{ __('messages.engine_diagnostics') }}</option>
@@ -49,7 +52,7 @@
                         <option value="5">{{ __('messages.battery_replacement') }}</option>
                         <option value="6">{{ __('messages.tire_replacement') }}</option>
                         <option value="7">{{ __('messages.wheel_alignment') }}</option>
-                        <option value="8">{{ __('messages.engine_repair') }}</option>
+                        <option value="8">{{ __('messages.engine_repair') }}</option> --}}
 
                     </select>
                 </div>
@@ -60,9 +63,7 @@
                         {{ __('messages.booking_date') }}
                     </label>
 
-                    <input
-                        type="date"
-                        name="booking_date"
+                    <input type="date" name="booking_date"
                         class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         required>
                 </div>
@@ -73,9 +74,7 @@
                         {{ __('messages.preferred_time') }}
                     </label>
 
-                    <input
-                        type="time"
-                        name="booking_time"
+                    <input type="time" name="booking_time"
                         class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         required>
                 </div>
@@ -86,16 +85,12 @@
                         {{ __('messages.additional_notes') }}
                     </label>
 
-                    <textarea
-                        name="notes"
-                        rows="5"
-                        placeholder="{{ __('messages.notes_placeholder') }}"
+                    <textarea name="notes" rows="5" placeholder="{{ __('messages.notes_placeholder') }}"
                         class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
                 </div>
 
                 <!-- Button -->
-                <button
-                    type="submit"
+                <button type="submit"
                     class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition duration-300">
                     {{ __('messages.confirm_booking') }}
                 </button>
@@ -107,4 +102,5 @@
     </div>
 
 </body>
+
 </html>

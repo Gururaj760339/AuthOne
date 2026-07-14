@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -55,6 +56,18 @@ class UserController extends Controller
                 ->with('success', 'Login successful.');
         }
 
+        if (Auth::attempt([
+            'email' => $credentials['email'],
+            'password' => $credentials['password'],
+            'role' => 'admin',
+        ], $request->boolean('remember'))) {
+
+            $request->session()->regenerate();
+
+            return redirect()->route('admin.dashboard')
+                ->with('success', 'Login successful.');
+        }
+
         return back()
             ->withErrors([
                 'email' => 'Invalid email or password.',
@@ -72,5 +85,10 @@ class UserController extends Controller
 
         return redirect('/')
             ->with('success', 'Logged out successfully.');
+    }
+
+    public function userPanel(){
+        $setting = Setting::first();
+        return view('home', compact('setting'));
     }
 }

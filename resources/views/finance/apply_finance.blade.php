@@ -25,7 +25,7 @@
         </p>
 
 
-        <form action="#" method="POST" class="space-y-6">
+        <form action="{{ route('customer.finance.request') }}" method="POST" class="space-y-6">
 
             @csrf
 
@@ -45,26 +45,11 @@
                         {{ __('messages.choose_car') }}
                     </option>
 
-                    <option value="1">
-                        Toyota Corolla 2022
+                    @foreach ($cars as $car)
+                    <option value="{{ $car->id }}">
+                        {{ $car->title }}
                     </option>
-
-                    <option value="2">
-                        Honda Civic 2021
-                    </option>
-
-                    <option value="3">
-                        BMW X5 2023
-                    </option>
-
-                    <option value="4">
-                        Mercedes C-Class 2022
-                    </option>
-
-                    <option value="5">
-                        Hyundai Tucson 2024
-                    </option>
-
+                    @endforeach
                 </select>
             </div>
 

@@ -28,11 +28,8 @@
         </p>
 
 
-        <form action="#" method="POST" class="space-y-6">
-
+        <form action="{{ route('customer.rental.booking.store') }}" method="POST" class="space-y-6">
             @csrf
-
-
             <!-- Select Rental Car -->
             <div>
 
@@ -46,35 +43,11 @@
                     class="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500"
                     required>
 
-
-                    <option value="">
-                        {{ __('messages.choose_rental_car') }}
+                    @foreach ($rentals as $rental)                    
+                    <option value="{{ $rental->id }}">
+                        {{ $rental->car->title }} - ${{ $rental->price_per_day }}/day
                     </option>
-
-
-                    <option value="1">
-                        Toyota Corolla - $50/day
-                    </option>
-
-
-                    <option value="2">
-                        Honda Civic - $60/day
-                    </option>
-
-
-                    <option value="3">
-                        BMW X5 - $150/day
-                    </option>
-
-
-                    <option value="4">
-                        Mercedes C-Class - $120/day
-                    </option>
-
-
-                    <option value="5">
-                        Hyundai Tucson - $80/day
-                    </option>
+                    @endforeach
 
 
                 </select>
@@ -120,32 +93,12 @@
             </div>
 
 
-
-            <!-- Terms -->
-            <div class="flex items-center gap-2">
-
-                <input 
-                    type="checkbox"
-                    required>
-
-
-                <span class="text-sm text-gray-600">
-                    {{ __('messages.rental_terms') }}
-                </span>
-
-            </div>
-
-
-
-
             <!-- Button -->
             <button
                 type="submit"
                 class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition">
 
-
                 {{ __('messages.confirm_rental_booking') }}
-
 
             </button>
 
