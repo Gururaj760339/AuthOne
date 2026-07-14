@@ -20,9 +20,7 @@ class FinanceRequestsController extends Controller
     {
         $cars = Car::where('slug', $slug)->get();
 
-        $setting = Setting::first();
-
-        return view('finance.apply_finance', compact('setting', 'cars'));
+        return view('finance.apply_finance', compact('cars'));
     }
 
     public function financeStore(Request $request)
