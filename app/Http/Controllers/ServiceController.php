@@ -112,7 +112,7 @@ class ServiceController extends Controller
     public function updateStatus(Request $request, $id)
     {
         $request->validate([
-            'status' => 'required|in:active,inactive'
+            'status' => 'required'
         ]);
 
         $service = Service::findOrFail($id);
