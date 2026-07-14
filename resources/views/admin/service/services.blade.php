@@ -140,15 +140,6 @@
                         <td class="p-3">
 
                             <div class="flex gap-2">
-
-                                <a
-                                    href="#"
-                                    class="bg-blue-600 text-white px-4 py-2 rounded">
-
-                                    Edit
-
-                                </a>
-
                                 <form
                                     action="{{ route('admin.service.delete',$service->id) }}"
                                     method="POST">
