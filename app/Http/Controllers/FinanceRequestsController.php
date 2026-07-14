@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Car;
 use App\Models\FinanceRequests;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 
 class FinanceRequestsController extends Controller
@@ -19,7 +20,9 @@ class FinanceRequestsController extends Controller
     {
         $cars = Car::where('slug', $slug)->get();
 
-        return view('finance.apply_finance', compact('cars'));
+        $setting = Setting::first();
+
+        return view('finance.apply_finance', compact('setting', 'cars'));
     }
 
     public function financeStore(Request $request)
