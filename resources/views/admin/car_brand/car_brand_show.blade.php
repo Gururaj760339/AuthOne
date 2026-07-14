@@ -91,7 +91,6 @@
                                     </a>
 
                                     <form action="{{ route('admin.car.brand.delete', $brand->id) }}" method="POST">
-
                                         @csrf
                                         @method('DELETE')
 

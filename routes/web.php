@@ -77,9 +77,8 @@ Route::put('/admin-car-update/{id}', [BrandController::class, 'updateCarBrand'])
 Route::get('/admin-car-brand', [BrandController::class, 'showCarBrand'])
 ->name('admin.car.brand.show')->middleware(['can:isAdmin']);
 
-Route::delete('/admin-car-delete/{id}', [BrandController::class, 'deleteCarBrand'])
+Route::delete('/admin-car-brand-delete/{id}', [BrandController::class, 'deleteCarBrand'])
 ->name('admin.car.brand.delete')->middleware(['can:isAdmin']);
-
 
 
 Route::get('/admin-cars', [CarController::class, 'carShow'])
