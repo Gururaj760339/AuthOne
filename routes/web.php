@@ -147,7 +147,7 @@ Route::get('/admin-services-create', [ServiceController::class, 'serviceCreate']
 Route::post('/admin-services-store', [ServiceController::class, 'serviceStore'])
 ->name('admin.service.store')->middleware(['can:isAdmin']);
 
-Route::post('/admin-services-update/{id}', [ServiceController::class, 'updateStatus'])
+Route::put('/admin-services-update/{id}', [ServiceController::class, 'updateStatus'])
 ->name('admin.service.update')->middleware(['can:isAdmin']);
 
 Route::delete('/admin-services-delete/{id}', [ServiceController::class, 'deleteCategory'])
