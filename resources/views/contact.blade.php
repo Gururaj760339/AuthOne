@@ -360,7 +360,7 @@
                         {{ __('messages.faq_desc') }}
                     </p>
 
-                    <a action="{{ route('customer.contact.faq') }}" class="text-red-600 font-semibold mt-6 inline-block">
+                    <a href="{{ route('customer.contact.faq') }}" class="text-red-600 font-semibold mt-6 inline-block">
                         {{ __('messages.view_faq') }} →
                     </a>
 
@@ -376,7 +376,7 @@
                         {{ __('messages.service_desc') }}
                     </p>
 
-                    <a action="{{ route('customer.workshops.maintenance.show') }}" class="text-red-600 font-semibold mt-6 inline-block">
+                    <a href="{{ route('customer.workshops.maintenance.show') }}" class="text-red-600 font-semibold mt-6 inline-block">
                         {{ __('messages.book_now') }} →
                     </a>
 
@@ -394,7 +394,7 @@
                         {{ __('messages.support_desc') }}
                     </p>
 
-                    <a action="{{ route('customer.contact') }}" class="text-red-600 font-semibold mt-6 inline-block">
+                    <a href="{{ route('customer.contact') }}" class="text-red-600 font-semibold mt-6 inline-block">
                         {{ __('messages.get_support') }} →
                     </a>
 
@@ -423,7 +423,7 @@
             </p>
 
 
-            <a action="{{ route('customer.contact') }}" class="inline-block mt-8 bg-white text-red-600 px-8 py-4 rounded-lg font-semibold">
+            <a href="{{ route('customer.contact') }}" class="inline-block mt-8 bg-white text-red-600 px-8 py-4 rounded-lg font-semibold">
                 {{ __('messages.contact_team') }}
             </a>
 

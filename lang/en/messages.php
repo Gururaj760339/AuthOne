@@ -631,8 +631,16 @@ return [
     'budget_placeholder' => '50000',
 
     'additional_notes' => 'Additional Notes',
+
     'notes_placeholder' => 'Write your requirements...',
 
     'submit_import_request' => 'Submit Import Request',
 
+    'dubai_uae' => 'Dubai, United Arab Emirates',
+
+    'riyadh_saudi' => 'Riyadh, Saudi Arabia',
+
+    'doha_qatar' => 'Doha, Qatar',
+    
+    'kuwait_city' => 'Kuwait City, Kuwait',
 ];

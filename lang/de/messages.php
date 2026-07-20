@@ -618,4 +618,9 @@ return [
 
     'submit_import_request' => 'Importanfrage senden',
 
+    'dubai_uae' => 'Dubai Office, Sheikh Zayed Road, Dubai, UAE',
+    'riyadh_saudi' => 'Riyadh Office, King Fahd Road, Riyadh, Saudi Arabia',
+    'doha_qatar' => 'Doha Office, West Bay, Doha, Qatar',
+    'kuwait_city' => 'Kuwait City Office, Al Hamra Tower, Kuwait',
+
 ];

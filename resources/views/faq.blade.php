@@ -106,7 +106,7 @@
 
             <div class="flex justify-center gap-4 flex-wrap mt-10">
 
-                <a action="{{ route('customer.contact') }}"
+                <a href="{{ route('customer.contact') }}"
                     class="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition">
 
                     Contact Support
