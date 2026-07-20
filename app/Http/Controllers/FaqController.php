@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Faq;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 
 class FaqController extends Controller
@@ -17,7 +18,9 @@ class FaqController extends Controller
     public function showFaqContactSection(){
         $faqs = Faq::get();
 
-        return view('faq', compact($faqs));
+        $setting = Setting::first();
+
+        return view('faq', compact('faqs', 'setting'));
     }
 
     public function FaqCreate()

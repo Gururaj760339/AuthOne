@@ -10,7 +10,7 @@
 </head>
 
 <body class="bg-gray-50">
-    @include('navbar')
+    @include('navbar', ['setting' => $setting])
 
     <!-- ================= HERO ================= -->
 
