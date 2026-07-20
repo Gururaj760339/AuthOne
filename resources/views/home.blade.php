@@ -27,12 +27,10 @@
                     </p>
 
                     <div class="mt-8 flex gap-4">
-                        <a href="#services"
-                            class="bg-white text-blue-700 px-6 py-3 rounded-lg font-semibold">
+                        <a href="#services" class="bg-white text-blue-700 px-6 py-3 rounded-lg font-semibold">
                             {{ __('messages.browse_services') }}</a>
 
-                        <a href="#cars"
-                            class="border border-white px-6 py-3 rounded-lg">
+                        <a href="#cars" class="border border-white px-6 py-3 rounded-lg">
                             {{ __('messages.browse_cars') }}</a>
                     </div>
                 </div>
@@ -127,12 +125,12 @@
             <h2 class="text-4xl font-bold">{{ __('messages.ready_title') }}</h2>
             <p class="mt-5">{{ __('messages.ready_description') }}</p>
             <div class="mt-8">
-                @if(Auth::check())
+                @if (Auth::check())
                     <a href="/buy-finance-cars"
-                    class="bg-white text-blue-700 px-8 py-3 rounded-lg font-bold">{{ __('messages.get_started') }}</a>
-                @else 
+                        class="bg-white text-blue-700 px-8 py-3 rounded-lg font-bold">{{ __('messages.get_started') }}</a>
+                @else
                     <a href="/login"
-                    class="bg-white text-blue-700 px-8 py-3 rounded-lg font-bold">{{ __('messages.get_started') }}</a>
+                        class="bg-white text-blue-700 px-8 py-3 rounded-lg font-bold">{{ __('messages.get_started') }}</a>
                 @endif
             </div>
         </div>
@@ -176,4 +174,11 @@
 </html>
 
 
-<script></script>
+<script>
+    const menuBtn = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    menuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
+</script>
