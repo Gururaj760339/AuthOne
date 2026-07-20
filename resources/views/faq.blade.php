@@ -61,58 +61,23 @@
             </h2>
 
             <div class="space-y-6 mt-14">
-
+                @foreach ($faqs as $faq)  
                 <div class="bg-white rounded-xl shadow p-6">
 
                     <h3 class="text-xl font-semibold">
 
-                        What is AutoOne?
+                        {{ $faq->question }}
 
                     </h3>
 
                     <p class="text-gray-600 mt-3">
 
-                        AutoOne is a multilingual automotive platform offering vehicle sales,
-                        car financing, rentals, imports, workshops, maintenance, and car wash services.
+                        {{ $faq->answer }}
 
                     </p>
 
                 </div>
-            </div>
-
-        </div>
-
-    </section>
-
-    <!-- ================= CONTACT CTA ================= -->
-
-    <section class="bg-blue-600 text-white py-20">
-        @foreach ($faqs as $faq)
-            
-        @endforeach
-        <div class="max-w-4xl mx-auto text-center px-6">
-
-            <h2 class="text-4xl font-bold">
-
-                {{ $faq->question }}
-
-            </h2>
-
-            <p class="mt-6 text-blue-100 text-lg">
-
-                {{ $faq->answer }}
-
-            </p>
-
-            <div class="flex justify-center gap-4 flex-wrap mt-10">
-
-                <a href="{{ route('customer.contact') }}"
-                    class="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition">
-
-                    Contact Support
-
-                </a>
-
+                @endforeach
             </div>
 
         </div>
