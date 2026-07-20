@@ -148,8 +148,8 @@
                     <h3 class="text-white font-bold mb-4">{{ __('messages.services') }}</h3>
                     <a href="{{ route('customer.workshops.maintenance.show') }}">{{ __('messages.workshop') }}</a>
                     <a href="{{ route('customer.carwash') }}">{{ __('messages.car_wash') }}</a>
-                    <a href="{{ route('customer.rental') }}">{{__('messages.rental')}}</a>
-                    <a href="{{ route('customer.cars'>{{ __('messages.finance') }}</a>
+                    <a href="{{ route('customer.rental') }}">{{__('messages.rental') }}</a>
+                    <a href="{{ route('customer.cars') }}">{{ __('messages.finance') }}</a>
                 </div>
                 <div>
                     <h3 class="text-white font-bold mb-4">{{ __('messages.company') }}</h3>
