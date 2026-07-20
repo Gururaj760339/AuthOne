@@ -159,9 +159,9 @@
                 </div>
                 <div>
                     <h3 class="text-white font-bold mb-4">{{ __('messages.contact') }}</h3>
-                    <p>Dubai, UAE</p>
-                    <p>info@autoone.com</p>
-                    <p>+971 55 123 4567</p>
+                    <p>{{ $setting->address }}</p>
+                    <p>{{ $setting->email }}</p>
+                    <p>{{ $setting->phone }}</p>
                 </div>
             </div>
             <div class="border-t border-gray-700 mt-10 pt-6 text-center">
