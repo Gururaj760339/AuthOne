@@ -18,7 +18,7 @@ class FaqController extends Controller
      public function showCustomerFaq()
     {
         $faqs = Faq::orderBy('sort_order', 'asc')->get();
-        $setting = Setting::get();
+        $setting = Setting::first();
 
         return view('faq', compact('setting', 'faqs'));
     }
