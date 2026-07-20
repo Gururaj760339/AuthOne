@@ -127,8 +127,13 @@
             <h2 class="text-4xl font-bold">{{ __('messages.ready_title') }}</h2>
             <p class="mt-5">{{ __('messages.ready_description') }}</p>
             <div class="mt-8">
-                <a href="/buy-finance-cars"
+                @if(Auth::check())
+                    <a href="/buy-finance-cars"
                     class="bg-white text-blue-700 px-8 py-3 rounded-lg font-bold">{{ __('messages.get_started') }}</a>
+                @else 
+                    <a href="/login"
+                    class="bg-white text-blue-700 px-8 py-3 rounded-lg font-bold">{{ __('messages.get_started') }}</a>
+                @endif
             </div>
         </div>
     </section>
