@@ -91,4 +91,9 @@ class UserController extends Controller
         $setting = Setting::first();
         return view('home', compact('setting'));
     }
+
+    public function aboutPage(){
+        $setting = Setting::first();
+        return view('about', compact('setting'));
+    }
 }

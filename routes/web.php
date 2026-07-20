@@ -22,14 +22,8 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 
 Route::get('/', [UserController::class, 'userPanel'])->name('home'); 
-
-Route::get('/about', function () {
-    return view('about');
-})->name('customer.about');
-
-Route::get('/faq', function () {
-    return view('faq');
-})->name('customer.faq');
+Route::get('/about', [UserController::class, 'aboutPage'])->name('customer.about'); 
+Route::get('/faq', [FaqController::class, 'showCustomerFaq'])->name('customer.faq'); 
 
 Route::get('/login', function () {
     return view('login');

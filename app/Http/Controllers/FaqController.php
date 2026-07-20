@@ -15,6 +15,14 @@ class FaqController extends Controller
         return view('admin.faq.admin_faq_show', compact('faqs'));
     }
 
+     public function showCustomerFaq()
+    {
+        $faqs = Faq::orderBy('sort_order', 'asc')->get();
+        $setting = Setting::get();
+
+        return view('faq', compact('setting', 'faqs'));
+    }
+
     public function showFaqContactSection(){
         $faqs = Faq::get();
 
