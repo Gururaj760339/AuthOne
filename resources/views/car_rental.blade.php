@@ -335,7 +335,7 @@
                             Your Name
                         </label>
 
-                        <input type="text" name="name" value="{{ Auth::user()->name }}"
+                        <input type="text" name="name" value=""
                             class="w-full border rounded-lg p-3" required>
                     </div>
 
