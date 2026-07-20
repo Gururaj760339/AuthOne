@@ -25,11 +25,11 @@ Route::get('/', [UserController::class, 'userPanel'])->name('home');
 
 Route::get('/about', function () {
     return view('about');
-});
+})->name('customer.about');
 
 Route::get('/faq', function () {
     return view('faq');
-});
+})->name('customer.faq');
 
 Route::get('/login', function () {
     return view('login');

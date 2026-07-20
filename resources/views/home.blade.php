@@ -146,16 +146,16 @@
                 </div>
                 <div>
                     <h3 class="text-white font-bold mb-4">{{ __('messages.services') }}</h3>
-                    <p>{{ __('messages.workshop') }}</p>
-                    <p>{{ __('messages.car_wash') }}</p>
-                    <p>Rental</p>
-                    <p>{{ __('messages.finance') }}</p>
+                    <a href="{{ route('customer.workshops.maintenance.show') }}">{{ __('messages.workshop') }}</a>
+                    <a href="{{ route('customer.carwash') }}">{{ __('messages.car_wash') }}</a>
+                    <a href="{{ route('customer.rental') }}">{{__('messages.rental')}}</a>
+                    <a href="{{ route('customer.cars'>{{ __('messages.finance') }}</a>
                 </div>
                 <div>
                     <h3 class="text-white font-bold mb-4">{{ __('messages.company') }}</h3>
-                    <p>{{ __('messages.about') }}</p>
-                    <p>{{ __('messages.faq') }}</p>
-                    <p>{{ __('messages.contact') }}</p>
+                    <a href="{{ route('customer.about') }}">{{ __('messages.about') }}</a>
+                    <a href="{{ route('customer.faq') }}">{{ __('messages.faq') }}</a>
+                    <a href="{{ route('customer.contact') }}">{{ __('messages.contact') }}</a>
                 </div>
                 <div>
                     <h3 class="text-white font-bold mb-4">{{ __('messages.contact') }}</h3>

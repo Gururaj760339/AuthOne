@@ -643,4 +643,6 @@ return [
     'doha_qatar' => 'Doha, Qatar',
     
     'kuwait_city' => 'Kuwait City, Kuwait',
+
+    'rental' => 'Rental',
 ];

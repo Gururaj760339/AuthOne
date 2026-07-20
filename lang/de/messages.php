@@ -622,5 +622,6 @@ return [
     'riyadh_saudi' => 'Riyadh Office, King Fahd Road, Riyadh, Saudi Arabia',
     'doha_qatar' => 'Doha Office, West Bay, Doha, Qatar',
     'kuwait_city' => 'Kuwait City Office, Al Hamra Tower, Kuwait',
+    'rental' => 'Autovermietung',
 
 ];
