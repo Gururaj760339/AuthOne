@@ -54,6 +54,9 @@ Route::get('/import-car-form', function () {
 Route::get('/admin-dashboard', [AdminController::class, 'adminDashboard'])
 ->name('admin.dashboard')->middleware(['can:isAdmin']);
 
+Route::get('/all-users', [UserController::class, 'showAdminPanelUser'])
+->name('admin.users')->middleware(['can:isAdmin']);
+
 Route::get('/admin-add-car-brand', function () {
     return view('admin.car_brand.car_brand_add');
 })->name('admin.add.car.brand')->middleware(['can:isAdmin']);

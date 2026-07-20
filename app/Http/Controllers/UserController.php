@@ -87,6 +87,11 @@ class UserController extends Controller
             ->with('success', 'Logged out successfully.');
     }
 
+    public function showAdminPanelUser(){
+        $users = User::get();
+        return view('admin.users.all_users_show', compact('users'));
+    }
+
     public function userPanel(){
         $setting = Setting::first();
         return view('home', compact('setting'));

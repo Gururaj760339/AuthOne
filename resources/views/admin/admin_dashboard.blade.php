@@ -54,6 +54,11 @@
 
                     </a>
 
+                    <a href="{{ route('admin.users') }}"
+                        class="block px-4 py-2 rounded hover:bg-red-600 hover:text-white">
+                        Users
+                    </a>
+
                     <a href="{{ route('admin.cars') }}"
                         class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition">
 
