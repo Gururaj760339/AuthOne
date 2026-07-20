@@ -291,7 +291,7 @@
 
     </section>
 
-    @if ($import_requests && $import_requests->status == 'Completed')
+    @if (Auth::check() && $import_requests && $import_requests->status == 'Completed')
         <div class="max-w-2xl mx-auto mt-10">
             <div class="bg-white rounded-2xl shadow-xl border border-gray-200 p-8">
 

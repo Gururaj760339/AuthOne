@@ -337,7 +337,7 @@
 
     </section>
 
-    @if ($finance && $finance->status == 'Approved')
+    @if (Auth::check() && $finance && $finance->status == 'Approved')
         <div class="max-w-2xl mx-auto mt-10">
             <div class="bg-white rounded-2xl shadow-xl border border-gray-200 p-8">
 
