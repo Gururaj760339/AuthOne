@@ -14,6 +14,12 @@ class FaqController extends Controller
         return view('admin.faq.admin_faq_show', compact('faqs'));
     }
 
+    public function showFaqContactSection(){
+        $faqs = Faq::get();
+
+        return view('faq', compact($faqs));
+    }
+
     public function FaqCreate()
     {
         return view('admin.faq.admin_faq_create');

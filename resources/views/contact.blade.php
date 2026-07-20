@@ -307,11 +307,6 @@
 
         <div class="max-w-7xl mx-auto px-6">
 
-            <h2 class="text-4xl font-bold text-center">
-                {{ __('messages.find_office') }}
-            </h2>
-
-
             <!-- ================= MAP ================= -->
 
             <section class="py-20 bg-gray-50">
@@ -365,7 +360,7 @@
                         {{ __('messages.faq_desc') }}
                     </p>
 
-                    <a href="#" class="text-red-600 font-semibold mt-6 inline-block">
+                    <a action="{{ route('customer.contact.faq') }}" class="text-red-600 font-semibold mt-6 inline-block">
                         {{ __('messages.view_faq') }} →
                     </a>
 
