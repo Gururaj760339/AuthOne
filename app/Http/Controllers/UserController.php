@@ -88,8 +88,10 @@ class UserController extends Controller
     }
 
     public function showAdminPanelUser(){
-        $users = User::get();
-        return view('admin.users.all_users_show', compact('users'));
+        $users = User::simplePaginate(10);
+        $total_user = User::count();
+
+        return view('admin.users.all_users_show', compact('total_user', 'users'));
     }
 
     public function userPanel(){

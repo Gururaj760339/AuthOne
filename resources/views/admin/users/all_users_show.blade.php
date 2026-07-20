@@ -25,7 +25,7 @@
             <div>
                 <h2 class="text-3xl font-bold text-gray-800">Users</h2>
                 <p class="text-gray-500">
-                    Total Users: {{ $users->total() }}
+                    Total Users: {{ $total_user }}
                 </p>
             </div>
         </div>
