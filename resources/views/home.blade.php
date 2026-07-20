@@ -139,32 +139,80 @@
     <!-- ================= FOOTER ================= -->
     <footer class="bg-gray-900 text-gray-300">
         <div class="max-w-7xl mx-auto px-6 py-14">
-            <div class="grid md:grid-cols-4 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+
+                <!-- About -->
                 <div>
                     <h2 class="text-2xl font-bold text-white">AutoOne</h2>
-                    <p class="mt-4">{{ __('messages.footer_description') }}</p>
+                    <p class="mt-4 text-gray-400">
+                        {{ __('messages.footer_description') }}
+                    </p>
                 </div>
+
+                <!-- Services -->
                 <div>
-                    <h3 class="text-white font-bold mb-4">{{ __('messages.services') }}</h3>
-                    <a href="{{ route('customer.workshops.maintenance.show') }}">{{ __('messages.workshop') }}</a>
-                    <a href="{{ route('customer.carwash') }}">{{ __('messages.car_wash') }}</a>
-                    <a href="{{ route('customer.rental') }}">{{__('messages.rental') }}</a>
-                    <a href="{{ route('customer.cars') }}">{{ __('messages.finance') }}</a>
+                    <h3 class="text-white font-bold mb-4">
+                        {{ __('messages.services') }}
+                    </h3>
+
+                    <div class="flex flex-col space-y-2">
+                        <a href="{{ route('customer.workshops.maintenance.show') }}"
+                            class="hover:text-red-500 transition">
+                            {{ __('messages.workshop') }}
+                        </a>
+
+                        <a href="{{ route('customer.carwash') }}" class="hover:text-red-500 transition">
+                            {{ __('messages.car_wash') }}
+                        </a>
+
+                        <a href="{{ route('customer.rental') }}" class="hover:text-red-500 transition">
+                            {{ __('messages.rental') }}
+                        </a>
+
+                        <a href="{{ route('customer.cars') }}" class="hover:text-red-500 transition">
+                            {{ __('messages.finance') }}
+                        </a>
+                    </div>
                 </div>
+
+                <!-- Company -->
                 <div>
-                    <h3 class="text-white font-bold mb-4">{{ __('messages.company') }}</h3>
-                    <a href="{{ route('customer.about') }}">{{ __('messages.about') }}</a>
-                    <a href="{{ route('customer.faq') }}">{{ __('messages.faq') }}</a>
-                    <a href="{{ route('customer.contact') }}">{{ __('messages.contact') }}</a>
+                    <h3 class="text-white font-bold mb-4">
+                        {{ __('messages.company') }}
+                    </h3>
+
+                    <div class="flex flex-col space-y-2">
+                        <a href="{{ route('customer.about') }}" class="hover:text-red-500 transition">
+                            {{ __('messages.about') }}
+                        </a>
+
+                        <a href="{{ route('customer.faq') }}" class="hover:text-red-500 transition">
+                            {{ __('messages.faq') }}
+                        </a>
+
+                        <a href="{{ route('customer.contact') }}" class="hover:text-red-500 transition">
+                            {{ __('messages.contact') }}
+                        </a>
+                    </div>
                 </div>
+
+                <!-- Contact -->
                 <div>
-                    <h3 class="text-white font-bold mb-4">{{ __('messages.contact') }}</h3>
-                    <p>{{ $setting->address }}</p>
-                    <p>{{ $setting->email }}</p>
-                    <p>{{ $setting->phone }}</p>
+                    <h3 class="text-white font-bold mb-4">
+                        {{ __('messages.contact') }}
+                    </h3>
+
+                    <div class="space-y-2 text-gray-400">
+                        <p>{{ $setting->address }}</p>
+                        <p>{{ $setting->email }}</p>
+                        <p>{{ $setting->phone }}</p>
+                    </div>
                 </div>
+
             </div>
-            <div class="border-t border-gray-700 mt-10 pt-6 text-center">
+
+            <!-- Bottom -->
+            <div class="border-t border-gray-700 mt-10 pt-6 text-center text-gray-400">
                 {{ __('messages.copyright') }}
             </div>
         </div>
