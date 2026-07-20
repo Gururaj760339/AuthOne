@@ -61,7 +61,7 @@
                         </h3>
 
                         <p class="text-gray-600 mt-2">
-                           {{ $setting->address }}
+                            {{ $setting->address }}
                         </p>
 
                     </div>
@@ -312,9 +312,30 @@
             </h2>
 
 
-            <div>
-                {{ __('messages.google_map') }}
-            </div>
+            <!-- ================= MAP ================= -->
+
+            <section class="py-20 bg-gray-50">
+
+                <div class="max-w-7xl mx-auto px-6">
+
+                    <h2 class="text-4xl font-bold text-center">
+                        {{ __('messages.find_office') }}
+                    </h2>
+
+                    <p class="text-center text-gray-600 mt-3">
+                        {{ $setting->address }}
+                    </p>
+
+                    <div class="mt-10 rounded-2xl overflow-hidden shadow-lg border">
+                        <iframe src="https://www.google.com/maps?q={{ urlencode($setting->address) }}&output=embed"
+                            width="100%" height="500" style="border:0;" allowfullscreen="" loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+
+                </div>
+
+            </section>
 
         </div>
 
