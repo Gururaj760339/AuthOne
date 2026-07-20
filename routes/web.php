@@ -268,7 +268,7 @@ Route::delete('/admin-faq-destroy/{id}', [FaqController::class, 'FaqDestroy'])
 
 
 Route::get('/contact', [ContactController::class, 'contractShow'])->name('customer.contact');
-Route::get('/contact-faq', [ContactController::class, 'showFaqContactSection'])->name('customer.contact.faq');
+Route::get('/contact-faq', [FaqController::class, 'showFaqContactSection'])->name('customer.contact.faq');
 Route::post('/contact-store', [ContactController::class, 'contractStore'])->name('customer.contact.store');
 
 Route::get('/admin-contact', [ContactController::class, 'adminContactShow'])

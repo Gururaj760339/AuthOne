@@ -366,8 +366,6 @@
 
                 </div>
 
-
-
                 <div class="bg-gray-50 rounded-xl p-8 text-center">
 
                     <h3 class="font-bold text-xl">
@@ -378,7 +376,7 @@
                         {{ __('messages.service_desc') }}
                     </p>
 
-                    <a href="#" class="text-red-600 font-semibold mt-6 inline-block">
+                    <a action="{{ route('customer.workshops.maintenance.show') }}" class="text-red-600 font-semibold mt-6 inline-block">
                         {{ __('messages.book_now') }} →
                     </a>
 
@@ -396,7 +394,7 @@
                         {{ __('messages.support_desc') }}
                     </p>
 
-                    <a href="#" class="text-red-600 font-semibold mt-6 inline-block">
+                    <a action="{{ route('customer.contact') }}" class="text-red-600 font-semibold mt-6 inline-block">
                         {{ __('messages.get_support') }} →
                     </a>
 
@@ -425,7 +423,7 @@
             </p>
 
 
-            <a href="#" class="inline-block mt-8 bg-white text-red-600 px-8 py-4 rounded-lg font-semibold">
+            <a action="{{ route('customer.contact') }}" class="inline-block mt-8 bg-white text-red-600 px-8 py-4 rounded-lg font-semibold">
                 {{ __('messages.contact_team') }}
             </a>
 
