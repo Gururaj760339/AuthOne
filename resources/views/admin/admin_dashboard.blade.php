@@ -56,7 +56,7 @@
 
                     <a href="{{ route('admin.users') }}"
                         class="block px-4 py-2 rounded hover:bg-red-600 hover:text-white">
-                        Users
+                        👥 Users
                     </a>
 
                     <a href="{{ route('admin.cars') }}"
