@@ -577,8 +577,8 @@ return [
     'business_owner' => 'Geschäftsinhaber',
     'government_employee' => 'Regierungsangestellter',
 
-    'down_payment' => 'Anzahlung (AED)',
-    'down_payment_placeholder' => '20000',
+    'down_payment' => 'Anzahlung',
+    'down_payment_placeholder' => '$20000',
 
     'submit_finance' => 'Finanzierung beantragen',
 

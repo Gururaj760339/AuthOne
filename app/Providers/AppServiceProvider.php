@@ -25,6 +25,14 @@ class AppServiceProvider extends ServiceProvider
             return $user->role === 'admin';
         });
 
+        Gate::define('isVendor', function ($user){
+            return $user->role === 'vendor';
+        });
+
+        Gate::define('isAdminOrisVendor', function ($user){
+            return $user->role === 'vendor' || $user->role === 'admin';
+        });
+
         if ($this->app->environment('production')) {
             \Illuminate\Support\Facades\URL::forceScheme('https');
         }

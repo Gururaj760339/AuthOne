@@ -15,7 +15,7 @@
         Edit Car
     </h2>
 
-    <form action="{{ route('admin.cars.update', $car->id) }}"
+    <form action="{{ route('admin.vendor.cars.update', $car->id) }}"
           method="POST"
           enctype="multipart/form-data">
 
@@ -140,15 +140,6 @@
                 </select>
             </div>
 
-            <!-- Status -->
-            <div>
-                <label class="font-semibold">Status</label>
-
-                <select name="status" class="w-full border rounded-lg p-3 mt-2">
-                    <option value="1" {{ $car->status==1?'selected':'' }}>Active</option>
-                    <option value="0" {{ $car->status==0?'selected':'' }}>Inactive</option>
-                </select>
-            </div>
 
             <!-- Thumbnail -->
             <div class="col-span-2">
@@ -184,7 +175,7 @@
                 Update Car
             </button>
 
-            <a href="{{ route('admin.cars') }}"
+            <a href="{{ route('vendor.cars') }}"
                class="bg-gray-500 hover:bg-gray-600 text-white px-8 py-3 rounded-lg">
                 Cancel
             </a>

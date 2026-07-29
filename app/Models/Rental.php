@@ -17,4 +17,9 @@ class Rental extends Model
     {
         return $this->hasMany(RentalBooking::class);
     }
+
+    public function vendor()
+    {
+        return $this->belongsTo(Vendor::class);
+    }
 }

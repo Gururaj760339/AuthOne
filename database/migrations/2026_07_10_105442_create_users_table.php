@@ -17,8 +17,10 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('phone')->nullable();
             $table->string('avatar')->nullable();
-            $table->enum('role', ['admin', 'customer'])->default('customer');
+            $table->enum('role', ['admin', 'customer', 'vendor', 'finance_partner'])->default('customer');
             $table->string('password');
+            $table->string('google_id')->nullable()->unique();
+            $table->string('apple_id')->nullable()->unique();
             $table->rememberToken();
             $table->timestamps();
         });

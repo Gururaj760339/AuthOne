@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Booking;
 use App\Models\Service;
+use App\Notifications\ServiceBookingConfirmedNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -54,7 +55,9 @@ class BookingController extends Controller
             'notes'        => 'nullable|string|max:500',
         ]);
 
-        Booking::create([
+        $user = Auth::user();
+
+        $booking = Booking::create([
             'user_id'       => Auth::id(),
             'service_id'    => $request->service_id,
             'booking_date'  => $request->booking_date,
@@ -63,7 +66,13 @@ class BookingController extends Controller
             'notes'         => $request->notes,
         ]);
 
-        return redirect()->route('home')->with('success', 'Booking created successfully.');
+        //dd(config('services.twilio'));
+
+        $booking->load('service');
+
+        $user->notify(new ServiceBookingConfirmedNotification($booking));
+
+        return redirect()->route('payment.choose.service', $request->service_id);
     }
 
 

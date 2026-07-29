@@ -26,7 +26,7 @@
             Add New Car
         </h2>
 
-        <form action="{{ route('admin.cars.add') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('vendor.cars.add') }}" method="POST" enctype="multipart/form-data">
 
             @csrf
 
@@ -156,21 +156,6 @@
 
                         <option>New</option>
                         <option>Used</option>
-
-                    </select>
-
-                </div>
-
-                <!-- Status -->
-
-                <div>
-
-                    <label>Status</label>
-
-                    <select name="status" class="w-full border rounded-lg p-3 mt-2">
-
-                        <option value="1">Active</option>
-                        <option value="0">Inactive</option>
 
                     </select>
 

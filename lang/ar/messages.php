@@ -578,7 +578,7 @@ return [
     'business_owner' => 'صاحب عمل',
     'government_employee' => 'موظف حكومي',
 
-    'down_payment' => 'الدفعة المقدمة (درهم)',
+    'down_payment' => 'الدفعة المقدمة (دولار أمريكي)',
     'down_payment_placeholder' => '20000',
 
     'submit_finance' => 'التقدم بطلب التمويل',

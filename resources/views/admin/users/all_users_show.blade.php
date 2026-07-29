@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
+
 <body class="bg-gray-100">
 
     <!-- Header -->
@@ -28,6 +30,15 @@
                     Total Users: {{ $total_user }}
                 </p>
             </div>
+
+            <!-- Add User Button -->
+
+            <a href="{{ route('admin.users.create') }}"
+                class="bg-red-600 text-white px-5 py-2 rounded-lg shadow hover:bg-red-700 transition">
+
+                + Add User
+
+            </a>
         </div>
 
         <div class="bg-white rounded-lg shadow overflow-hidden">
@@ -69,4 +80,5 @@
     </main>
 
 </body>
+
 </html>

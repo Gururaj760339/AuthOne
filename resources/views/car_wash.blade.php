@@ -424,7 +424,8 @@
         </div>
 
     </section>
-    <!-- CTA -->
+    
+    @include('ai_layer.chatbot')
 
     <!-- CTA -->
 

@@ -57,7 +57,13 @@
                 @include('language_drop_down')
                 <h2 class="text-3xl font-bold">{{ __('messages.create_account') }}</h2>
                 <p class="text-gray-500 mt-2 mb-8">{{ __('messages.join_under_minute') }}</p>
-
+                @if ($errors->any())
+                    <div class="bg-red-100 text-red-700 p-3 rounded">
+                        @foreach ($errors->all() as $error)
+                            <p>{{ $error }}</p>
+                        @endforeach
+                    </div>
+                @endif
                 <!-- Register.blade.php -->
                 <form action="{{ route('user.register') }}" method="POST" enctype="multipart/form-data">
                     @csrf
@@ -104,12 +110,105 @@
                                 required>
                         </div>
 
+                        <!-- Role -->
+                        <div>
+                            <label class="block font-medium text-gray-700">
+                                Account Type
+                            </label>
+
+                            <select id="role" name="role"
+                                class="w-full border rounded-lg px-4 py-3 mt-1 focus:ring-2 focus:ring-red-500 outline-none"
+                                required>
+                                <option value="customer">Customer</option>
+                                <option value="vendor">Vendor</option>
+                            </select>
+                        </div>
+
+                        <!-- Vendor Information -->
+                        <div id="vendorFields" class="hidden space-y-5 mt-5">
+
+                            <div>
+                                <label class="block font-medium text-gray-700">Vendor Type</label>
+                                <select name="vendor_type" class="w-full border rounded-lg px-4 py-3 mt-1">
+                                    <option value="">Select Vendor Type</option>
+                                    <option value="service">Service(Workshop & Car Wash)</option>
+                                    <option value="dealer">Car Dealer</option>
+                                    <option value="rental">Car Rental</option>
+                                    <option value="car_importer">Car Importer</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block font-medium text-gray-700">Business Name</label>
+                                <input type="text" name="business_name"
+                                    class="w-full border rounded-lg px-4 py-3 mt-1">
+                            </div>
+
+                            <div>
+                                <label class="block font-medium text-gray-700">Trade License</label>
+                                <input type="text" name="trade_license"
+                                    class="w-full border rounded-lg px-4 py-3 mt-1">
+                            </div>
+
+                            <div>
+                                <label class="block font-medium text-gray-700">Business Address</label>
+                                <textarea name="address" class="w-full border rounded-lg px-4 py-3 mt-1"></textarea>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-4">
+
+                                <div>
+                                    <label class="block font-medium text-gray-700">City</label>
+                                    <input type="text" name="city"
+                                        class="w-full border rounded-lg px-4 py-3 mt-1">
+                                </div>
+
+                                <div>
+                                    <label class="block font-medium text-gray-700">Country</label>
+                                    <input type="text" name="country" value="Bangladesh"
+                                        class="w-full border rounded-lg px-4 py-3 mt-1">
+                                </div>
+
+                            </div>
+
+                            <div>
+                                <label class="block font-medium text-gray-700">Business Logo</label>
+                                <input type="file" name="logo" class="w-full border rounded-lg px-4 py-2 mt-1"
+                                    accept="image/*">
+                            </div>
+
+                        </div>
+
                         <button type="submit"
                             class="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg font-semibold transition">
                             {{ __('messages.create_account') }}
                         </button>
                     </div>
                 </form>
+
+                <div class="mt-6">
+
+                    <div class="flex items-center gap-3">
+                        <hr class="flex-1">
+                        <span class="text-gray-400">
+                            OR
+                        </span>
+                        <hr class="flex-1">
+                    </div>
+
+
+                    <a href="{{ route('google.login') }}"
+                        class="mt-4 block text-center bg-white text-gray-700 border border-gray-300 py-3 rounded-lg hover:bg-gray-100 transition">
+                        Continue with Google
+                    </a>
+
+
+                    {{-- <a href="{{ route('apple.login') }}"
+                        class="mt-3 block text-center bg-gray-900 text-white py-3 rounded-lg hover:bg-black transition">
+                        Continue with Apple
+                    </a> --}}
+
+                </div>
 
                 <!-- Footer Login -->
                 <p class="text-center mt-8 text-gray-600">
@@ -129,3 +228,18 @@
 </body>
 
 </html>
+
+<script>
+    const role = document.getElementById('role');
+    const vendorFields = document.getElementById('vendorFields');
+
+    role.addEventListener('change', function() {
+
+        if (this.value === 'vendor') {
+            vendorFields.classList.remove('hidden');
+        } else {
+            vendorFields.classList.add('hidden');
+        }
+
+    });
+</script>

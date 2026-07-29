@@ -19,7 +19,7 @@
         </div>
 
         <form
-            action="{{ route('admin.service.store') }}"
+            action="{{ route('vendor.service.store') }}"
             method="POST"
             enctype="multipart/form-data"
             class="p-6 space-y-6">
@@ -181,7 +181,7 @@
                 </button>
 
                 <a
-                    href="{{ route('admin.service') }}"
+                    href="{{ route('vendor.service') }}"
                     class="bg-gray-600 hover:bg-gray-700 text-white px-8 py-3 rounded-lg">
 
                     Cancel

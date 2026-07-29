@@ -18,7 +18,7 @@
             @include('language_drop_down')
 
             <h1 class="text-3xl font-bold text-center text-slate-800 mb-2">
-                {{ __('messages.book_maintenance') }}
+                Book Maintenance & Car Wash
             </h1>
 
             <p class="text-center text-gray-500 mb-8">

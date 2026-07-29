@@ -5,7 +5,7 @@
             <!-- Logo -->
             <div class="flex-shrink-0">
                 <a href="/" class="text-3xl font-bold text-blue-700">
-                    {{ $setting->website_name }}
+                    {{ optional($setting)->website_name ?? 'AutoOne' }}
                 </a>
             </div>
 

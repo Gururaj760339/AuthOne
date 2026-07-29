@@ -17,4 +17,9 @@ class FinanceRequests extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function financePartner()
+    {
+        return $this->belongsTo(FinancePartner::class);
+    }
 }

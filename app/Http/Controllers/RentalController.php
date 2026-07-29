@@ -12,9 +12,18 @@ use Illuminate\Support\Facades\Auth;
 
 class RentalController extends Controller
 {
-    public function rentalShow()
+    public function showAdminRental()
     {
         $rentals = Rental::with('car')->latest()->get();
+
+        return view('admin.rentals.admin_rental_show', compact('rentals'));
+    }
+
+    public function showVendorRental()
+    {
+        $rentals = Rental::with('car')
+        ->where('vendor_id', Auth::user()->vendor->id)
+        ->latest()->get();
 
         return view('admin.rentals.admin_rental_show', compact('rentals'));
     }
@@ -53,10 +62,11 @@ class RentalController extends Controller
             'price_per_week' => $request->price_per_week,
             'price_per_month' => $request->price_per_month,
             'available' => $request->available,
+            'vendor_id' => Auth::user()->vendor->id
         ]);
 
         return redirect()
-            ->route('admin.rental')
+            ->route('vendor.rental')
             ->with('success', 'Rental added successfully.');
     }
 

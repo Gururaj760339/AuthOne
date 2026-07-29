@@ -21,33 +21,24 @@
             <div>
 
                 @php
-                    $mainImage = $car->thumbnail
-                        ? asset('storage/' . $car->thumbnail)
-                        : asset('images/no-image.png');
+                    $mainImage = $car->thumbnail ? asset('storage/' . $car->thumbnail) : asset('images/no-image.png');
                 @endphp
 
-                <img id="mainImage"
-                    src="{{ $mainImage }}"
+                <img id="mainImage" src="{{ $mainImage }}"
                     class="w-full h-[500px] object-cover rounded-xl shadow-lg transition-all duration-300">
 
                 <div class="grid grid-cols-4 gap-3 mt-4">
 
                     {{-- Thumbnail --}}
-                    @if($car->thumbnail)
-                        <img
-                            src="{{ asset('storage/' . $car->thumbnail) }}"
-                            onclick="changeImage(this)"
+                    @if ($car->thumbnail)
+                        <img src="{{ asset('storage/' . $car->thumbnail) }}" onclick="changeImage(this)"
                             class="cursor-pointer h-24 w-full object-cover rounded-lg border-2 border-blue-600 hover:scale-105 transition">
                     @endif
 
                     {{-- Gallery Images --}}
                     @foreach ($car->carImages as $image)
-
-                        <img
-                            src="{{ asset('storage/' . $image->image) }}"
-                            onclick="changeImage(this)"
+                        <img src="{{ asset('storage/' . $image->image) }}" onclick="changeImage(this)"
                             class="cursor-pointer h-24 w-full object-cover rounded-lg border hover:border-blue-600 hover:scale-105 transition">
-
                     @endforeach
 
                 </div>
@@ -66,7 +57,7 @@
                 </p>
 
                 <h2 class="text-4xl font-bold text-blue-600 mt-6">
-                    ${{ number_format($car->price,2) }}
+                    ${{ number_format($car->price, 2) }}
                 </h2>
 
                 <div class="grid grid-cols-2 gap-4 mt-8">
@@ -127,10 +118,17 @@
 
                 <div class="mt-8">
 
-                    <a href="{{ route('customer.single.finance.request', $car->slug) }}"
-                        class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg transition">
-                        Book Test Drive
-                    </a>
+                    @if (Auth::check())
+                        <a href="{{ route('customer.single.finance.request', $car->slug) }}"
+                            class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg transition">
+                            Book Car
+                        </a>
+                    @else
+                        <a href="/login"
+                            class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg transition">
+                            Book Car
+                        </a>
+                    @endif
 
                 </div>
 
@@ -139,7 +137,7 @@
         </div>
 
         {{-- Related Cars --}}
-        @if($relatedCars->count())
+        @if ($relatedCars->count())
 
             <div class="mt-20">
 
@@ -149,13 +147,10 @@
 
                 <div class="grid lg:grid-cols-4 md:grid-cols-2 gap-6">
 
-                    @foreach($relatedCars as $item)
-
+                    @foreach ($relatedCars as $item)
                         <div class="bg-white rounded-xl shadow hover:shadow-xl transition overflow-hidden">
 
-                            <img
-                                src="{{ asset('storage/'.$item->thumbnail) }}"
-                                class="w-full h-56 object-cover">
+                            <img src="{{ asset('storage/' . $item->thumbnail) }}" class="w-full h-56 object-cover">
 
                             <div class="p-5">
 
@@ -168,10 +163,10 @@
                                 </p>
 
                                 <p class="text-blue-600 text-2xl font-bold mt-2">
-                                    ${{ number_format($item->price,2) }}
+                                    ${{ number_format($item->price, 2) }}
                                 </p>
 
-                                <a href="{{ route('vehicle.details',$item->slug) }}"
+                                <a href="{{ route('vehicle.details', $item->slug) }}"
                                     class="inline-block mt-4 bg-black hover:bg-gray-800 text-white px-5 py-2 rounded-lg transition">
                                     View Details
                                 </a>
@@ -179,7 +174,6 @@
                             </div>
 
                         </div>
-
                     @endforeach
 
                 </div>

@@ -8,13 +8,30 @@ use App\Models\Service;
 use App\Models\ServiceCategory;
 use App\Models\Setting;
 use App\Models\Testimonial;
+use App\Notifications\WorkshopBookingConfirmedNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class ServiceController extends Controller
 {
-    public function showService()
+    public function showVendorService()
+    {
+        $vendor = auth()->user()->vendor;
+
+        if (!$vendor) {
+            abort(403, 'Vendor not found.');
+        }
+
+        $services = Service::with('serviceCategory')
+            ->where('vendor_id', $vendor->id)
+            ->latest()
+            ->get();
+
+        return view('admin.service.services', compact('services'));
+    }
+
+    public function showAdminService()
     {
         $services = Service::with('serviceCategory')
             ->latest()
@@ -29,13 +46,14 @@ class ServiceController extends Controller
             ->whereHas('serviceCategory', function ($query) {
                 $query->where('slug', 'workshops-maintenance');
             })
+            ->where('status', 1)
             ->latest()
             ->get();
 
-        $booking = Booking::whereHas('service.serviceCategory', function($query){  
+        $booking = Booking::whereHas('service.serviceCategory', function ($query) {
             $query->where('slug', 'workshops-maintenance');
         })
-        ->where('user_id', Auth::id())->first();
+            ->where('user_id', Auth::id())->first();
 
         $testimonials = Testimonial::get();
 
@@ -52,10 +70,11 @@ class ServiceController extends Controller
             ->whereHas('serviceCategory', function ($query) {
                 $query->where('slug', 'car-wash-services');
             })
+            ->where('status', 1)
             ->latest()
             ->get();
 
-        $booking = Booking::whereHas('service.serviceCategory', function($query){  
+        $booking = Booking::whereHas('service.serviceCategory', function ($query) {
             $query->where('slug', 'car-wash-services');
         })->first();
 
@@ -93,7 +112,9 @@ class ServiceController extends Controller
             $image = $request->file('image')->store('services', 'public');
         }
 
-        Service::create([
+        $vendorId = Auth::user()->vendor->id;
+
+        $booking = Service::create([
             'service_category_id' => $request->service_category_id,
             'title'               => $request->title,
             'slug'                => Str::slug($request->title),
@@ -102,10 +123,12 @@ class ServiceController extends Controller
             'description'         => $request->description,
             'image'               => $image,
             'status'              => $request->status,
+            'vendor_id'           => $vendorId
         ]);
 
+
         return redirect()
-            ->route('admin.service')
+            ->route('vendor.service')
             ->with('success', 'Service Added Successfully.');
     }
 

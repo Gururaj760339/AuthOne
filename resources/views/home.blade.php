@@ -119,6 +119,8 @@
         </div>
     </section>
 
+    @include('ai_layer.chatbot')
+
     <!-- ================= CTA ================= -->
     <section class="py-20 bg-white">
         <div class="max-w-6xl mx-auto bg-blue-600 rounded-2xl text-white p-14 text-center">
@@ -203,9 +205,9 @@
                     </h3>
 
                     <div class="space-y-2 text-gray-400">
-                        <p>{{ $setting->address }}</p>
-                        <p>{{ $setting->email }}</p>
-                        <p>{{ $setting->phone }}</p>
+                        <p>{{ optional($setting)->address ?? 'Address not available' }}</p>
+                        <p>{{ optional($setting)->email ?? 'Email not available' }}</p>
+                        <p>{{ optional($setting)->phone ?? 'Phone not available' }}</p>
                     </div>
                 </div>
 

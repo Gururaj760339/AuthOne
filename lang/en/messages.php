@@ -594,8 +594,8 @@ return [
     'business_owner' => 'Business Owner',
     'government_employee' => 'Government Employee',
 
-    'down_payment' => 'Down Payment (AED)',
-    'down_payment_placeholder' => '20000',
+    'down_payment' => 'Down Payment',
+    'down_payment_placeholder' => '$20000',
 
     'submit_finance' => 'Apply for Finance',
 

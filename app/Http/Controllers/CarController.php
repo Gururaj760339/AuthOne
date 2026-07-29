@@ -32,20 +32,92 @@ class CarController extends Controller
         return view('vehicle_details', compact('setting', 'car', 'relatedCars'));
     }
 
-    public function carShow()
+    public function showAdminCar()
     {
         $cars = Car::with('CarBrand')->latest()->get();
 
         return view('admin.car.car_show', compact('cars'));
     }
 
+    public function showVendorCar()
+    {
+        $cars = Car::with('CarBrand')
+            ->where('vendor_id', Auth::user()->vendor->id)
+            ->latest()->get();
+
+        return view('admin.car.car_show', compact('cars'));
+    }
+
+
     public function carCustomerShow()
     {
-        $cars = Car::with('CarBrand')->latest()->get();
+        $brands = CarBrand::orderBy('name')->get();
+
+        $cars = Car::with('CarBrand')
+            ->latest()
+            ->paginate(9);
+
         $finance = FinanceRequests::where('status', 'Approved')->first();
+
         $setting = Setting::first();
 
-        return view('buy_&_finance_cars', compact('setting', 'finance', 'cars'));
+        $featuredCars = Car::latest()->take(6)->get();
+
+        return view('buy_&_finance_cars', compact(
+            'setting',
+            'finance',
+            'cars',
+            'brands',
+            'featuredCars'
+        ));
+    }
+
+    public function customerCarFilter(Request $request)
+    {
+        $query = Car::with('CarBrand')
+            ->where('status', 1);
+
+        // Brand Filter
+        if ($request->filled('brand')) {
+            $query->where('brand_id', $request->brand);
+        }
+
+        // Fuel Filter
+        if ($request->filled('fuel_type')) {
+            $query->where('fuel_type', $request->fuel_type);
+        }
+
+        // Condition Filter
+        if ($request->filled('condition')) {
+            $query->where('condition', $request->condition);
+        }
+
+        // Minimum Price
+        if ($request->filled('min_price')) {
+            $query->where('price', '>=', $request->min_price);
+        }
+
+        // Maximum Price
+        if ($request->filled('max_price')) {
+            $query->where('price', '<=', $request->max_price);
+        }
+
+        // Year
+        if ($request->filled('year')) {
+            $query->where('year', $request->year);
+        }
+
+        $cars = $query->latest()->paginate(12);
+
+        $brands = CarBrand::orderBy('name')->get();
+
+        $finance = FinanceRequests::where('status', 'Approved')->first();
+
+        $setting = Setting::first();
+
+        $featuredCars = Car::latest()->take(6)->get();
+
+        return view('buy_&_finance_cars', compact('finance', 'setting', 'cars', 'brands', 'featuredCars'));
     }
 
     public function carAddForm()
@@ -71,7 +143,6 @@ class CarController extends Controller
             'condition'     => 'required',
             'description'   => 'required',
             'thumbnail'     => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'status'        => 'required'
         ]);
 
         $image = null;
@@ -96,11 +167,11 @@ class CarController extends Controller
             'condition'     => $request->condition,
             'description'   => $request->description,
             'thumbnail'     => $image,
-            'status'        => $request->status,
+            'vendor_id'     => Auth::user()->vendor->id
         ]);
 
         return redirect()
-            ->route('admin.cars')
+            ->route('vendor.cars')
             ->with('success', 'Car Added Successfully.');
     }
 
@@ -131,7 +202,6 @@ class CarController extends Controller
             'condition'     => 'required',
             'description'   => 'required',
             'thumbnail'     => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'status'        => 'required'
         ]);
 
         $image = $car->thumbnail;
@@ -160,12 +230,25 @@ class CarController extends Controller
             'condition'     => $request->condition,
             'description'   => $request->description,
             'thumbnail'     => $image,
-            'status'        => $request->status,
         ]);
 
         return redirect()
-            ->route('admin.cars')
+            ->route('vendor.cars')
             ->with('success', 'Car Updated Successfully.');
+    }
+
+    public function carUpdateStatus(Request $request, $id)
+    {
+        $request->validate([
+            'status' => 'required'
+        ]);
+
+        $car = Car::findOrFail($id);
+
+        $car->status = $request->status;
+        $car->save();
+
+        return back()->with('success', 'Status Updated Successfully');
     }
 
     public function deleteCar($id)

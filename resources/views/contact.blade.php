@@ -194,6 +194,7 @@
 
     </section>
 
+    @include('ai_layer.chatbot')
     <!-- ================= BUSINESS HOURS ================= -->
 
     <section class="bg-white py-20">

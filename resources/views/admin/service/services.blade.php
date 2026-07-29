@@ -25,11 +25,12 @@
                 <h2 class="text-2xl font-bold">
                     Manage Services
                 </h2>
-
-                <a href="{{ route('admin.service.create') }}"
-                    class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded">
-                    Add Service
-                </a>
+                @if (Auth::check() && Auth::user()->vendor)
+                    <a href="{{ route('vendor.service.create') }}"
+                        class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded">
+                        Add Service
+                    </a>
+                @endif
 
             </div>
 
@@ -54,9 +55,9 @@
                             <th class="p-3">Price</th>
 
                             <th class="p-3">Duration</th>
-
-                            <th class="p-3">Status</th>
-
+                            @if (Auth::check() && Auth::user()->role === 'admin')
+                                <th class="p-3">Status</th>
+                            @endif
                             <th class="p-3">Action</th>
 
                         </tr>
@@ -80,7 +81,7 @@
                                 </td>
 
                                 <td class="p-3">
-                                    {{ $service->category->name ?? '-' }}
+                                    {{ $service->serviceCategory->name ?? '-' }}
                                 </td>
 
                                 <td class="p-3">
@@ -99,37 +100,40 @@
                                     {{ $service->duration }}
                                 </td>
 
-                                <td class="p-3">
+                                @if (Auth::check() && Auth::user()->role === 'admin')
+                                    <td class="p-3">
 
-                                    <form action="{{ route('admin.service.update', $service->id) }}" method="POST"
-                                        class="flex gap-2">
-                                        @method('PUT')
-                                        @csrf
+                                        <form action="{{ route('admin.vendor.service.update', $service->id) }}"
+                                            method="POST" class="flex gap-2">
+                                            @method('PUT')
+                                            @csrf
 
-                                        <select name="status" class="border rounded px-3 py-2">
-                                            <option value="1" {{ $service->status == 1 ? 'selected' : '' }}>
-                                                Active
-                                            </option>
+                                            <select name="status" class="border rounded px-3 py-2">
+                                                <option value="1" {{ $service->status == 1 ? 'selected' : '' }}>
+                                                    Active
+                                                </option>
 
-                                            <option value="0" {{ $service->status == 0 ? 'selected' : '' }}>
-                                                Inactive
-                                            </option>
-                                        </select>
+                                                <option value="0" {{ $service->status == 0 ? 'selected' : '' }}>
+                                                    Inactive
+                                                </option>
+                                            </select>
 
-                                        <button class="bg-green-600 hover:bg-green-700 text-white px-3 rounded">
+                                            <button class="bg-green-600 hover:bg-green-700 text-white px-3 rounded">
 
-                                            Update
+                                                Update
 
-                                        </button>
+                                            </button>
 
-                                    </form>
+                                        </form>
 
-                                </td>
+                                    </td>
+                                @endif
 
                                 <td class="p-3">
 
                                     <div class="flex gap-2">
-                                        <form action="{{ route('admin.service.delete', $service->id) }}" method="POST">
+                                        <form action="{{ route('admin.vendor.service.delete', $service->id) }}"
+                                            method="POST">
 
                                             @csrf
                                             @method('DELETE')

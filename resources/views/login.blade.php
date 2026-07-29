@@ -92,15 +92,15 @@
 
                 </div>
 
-                 @if ($errors->any())
-            <div class="bg-red-100 text-red-700 p-4 rounded mb-4">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+                @if ($errors->any())
+                    <div class="bg-red-100 text-red-700 p-4 rounded mb-4">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
 
                 <form action="{{ route('user.login') }}" method="POST" class="mt-10 space-y-6">
                     @csrf
@@ -146,6 +146,30 @@
                     </button>
 
                 </form>
+
+                <div class="mt-6">
+
+                    <div class="flex items-center gap-3">
+                        <hr class="flex-1">
+                        <span class="text-gray-400">
+                            OR
+                        </span>
+                        <hr class="flex-1">
+                    </div>
+
+
+                    <a href="{{ route('google.login') }}"
+                        class="mt-4 block text-center bg-red-600 text-white py-3 rounded-lg">
+                        Continue with Google
+                    </a>
+
+
+                    {{-- <a href="{{ route('apple.login') }}"
+                        class="mt-3 block text-center bg-black text-white py-3 rounded-lg">
+                        Continue with Apple
+                    </a> --}}
+
+                </div>
 
                 <!-- Divider -->
 

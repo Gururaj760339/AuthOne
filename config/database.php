@@ -61,10 +61,14 @@ return [
             'strict' => true,
             'engine' => null,
 
-            'options' => [
-                PDO::MYSQL_ATTR_SSL_CA => base_path('storage/certs/your-tidb-ca.pem'),
-                PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
-            ],
+            'options' => extension_loaded('pdo_mysql') ? array_filter([
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+            ]) : [],
+
+            // 'options' => [
+            //     PDO::MYSQL_ATTR_SSL_CA => base_path('storage/certs/your-tidb-ca.pem'),
+            //     PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
+            // ],
         ],
 
         'mariadb' => [

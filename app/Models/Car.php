@@ -8,19 +8,28 @@ class Car extends Model
 {
     protected $guarded = [];
 
-    public function carBrand(){
+    public function carBrand()
+    {
         return $this->belongsTo(CarBrand::class, 'brand_id');
     }
 
-    public function CarImages(){
+    public function CarImages()
+    {
         return $this->hasMany(CarImage::class);
     }
 
-    function financeRequests(){
+    function financeRequests()
+    {
         return $this->hasMany(FinanceRequests::class);
     }
 
-    function rental(){
+    function rental()
+    {
         return $this->hasOne(Rental::class);
+    }
+
+    public function vendor()
+    {
+        return $this->belongsTo(Vendor::class);
     }
 }

@@ -35,10 +35,12 @@
                 Manage Rentals
             </h2>
 
-            <a href="{{ route('admin.rental.create') }}"
+            @if(Auth::check() && Auth::user()->vendor)
+            <a href="{{ route('vendor.rental.create') }}"
                class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg">
                 + Add Rental
             </a>
+            @endif
 
         </div>
 
@@ -110,12 +112,12 @@
 
                             <div class="flex justify-center gap-2">
 
-                                <a href="{{ route('admin.rental.edit',$rental->id) }}"
+                                <a href="{{ route('admin.vendor.rental.edit',$rental->id) }}"
                                    class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">
                                     Update
                                 </a>
 
-                                <form action="{{ route('admin.rental.destroy',$rental->id) }}"
+                                <form action="{{ route('admin.vendor.rental.destroy',$rental->id) }}"
                                       method="POST"
                                       onsubmit="return confirm('Delete this rental?')">
 

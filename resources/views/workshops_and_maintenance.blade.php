@@ -269,6 +269,8 @@
 
     </section>
 
+    @include('ai_layer.chatbot')
+
     @if ($booking && $booking->status == 'Completed')
         <div class="max-w-2xl mx-auto mt-10">
             <div class="bg-white rounded-2xl shadow-xl border border-gray-200 p-8">
@@ -358,6 +360,8 @@
             </div>
         </div>
     @endif
+
+    
 
     <!-- Reviews -->
 

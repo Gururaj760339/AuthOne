@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Rental;
 use App\Models\RentalBooking;
+use App\Notifications\RentalBookingConfirmedNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RentalBookingController extends Controller
 {
@@ -32,7 +34,7 @@ class RentalBookingController extends Controller
             'return_date' => 'required|date|after:pickup_date',
         ]);
 
-        RentalBooking::create([
+        $rentalBooking = RentalBooking::create([
             'user_id' => auth()->id(),
             'rental_id' => $request->rental_id,
             'pickup_date' => $request->pickup_date,
@@ -40,7 +42,11 @@ class RentalBookingController extends Controller
             'status' => 'Pending',
         ]);
 
-        return back()->with('success', 'Rental booking submitted successfully.');
+        $user = Auth::user();
+
+        $user->notify(new RentalBookingConfirmedNotification($rentalBooking));
+
+        return redirect()->route('payment.choose.car.rental', ['rentalId' => $request->rental_id, 'rentalBookingId' => $rentalBooking->id]);
     }
 
     public function adminRentalBookingShow()

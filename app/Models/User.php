@@ -42,6 +42,11 @@ class User extends Authenticatable
         ];
     }
 
+    public function routeNotificationForTwilio()
+    {
+        return $this->phone;
+    }
+
     function bookings()
     {
         return $this->hasMany(Booking::class);
@@ -57,8 +62,23 @@ class User extends Authenticatable
         return $this->hasMany(RentalBooking::class);
     }
 
-    public function importeRequest(){
+    public function importeRequest()
+    {
         return $this->hasMany(ImportRequest::class);
     }
 
+    public function vendor()
+    {
+        return $this->hasOne(Vendor::class);
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
+
+    public function financePartner()
+    {
+        return $this->hasOne(FinancePartner::class, 'user_id');
+    }
 }

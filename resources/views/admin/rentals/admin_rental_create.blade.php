@@ -28,13 +28,13 @@
                 Add Rental
             </h2>
 
-            <a href="{{ route('admin.rental') }}"
+            <a href="{{ route('vendor.rental') }}"
                class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg">
                 Back
             </a>
         </div>
 
-        <form action="{{ route('admin.rental.store') }}" method="POST" class="p-6 space-y-6">
+        <form action="{{ route('vendor.rental.store') }}" method="POST" class="p-6 space-y-6">
             @csrf
 
             <!-- Car -->

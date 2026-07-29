@@ -61,6 +61,200 @@
 
     </section>
 
+    {{-- Filter Section --}}
+
+    <div class="container mx-auto py-10">
+
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+
+            <!-- Filter -->
+            <div class="bg-white shadow rounded-lg p-5 h-fit">
+
+                <h2 class="text-xl font-bold mb-5">
+                    Filter Cars
+                </h2>
+
+                <form action="{{ route('cars.filter') }}" method="GET">
+
+                    <!-- Brand -->
+                    <div class="mb-4">
+                        <label class="font-semibold">
+                            Brand
+                        </label>
+
+                        <select name="brand" class="w-full mt-2 border rounded-lg p-2">
+
+                            <option value="">All Brands</option>
+
+                            @foreach ($brands as $brand)
+                                <option value="{{ $brand->id }}" @selected(request('brand') == $brand->id)>
+                                    {{ $brand->name }}
+                                </option>
+                            @endforeach
+
+                        </select>
+                    </div>
+
+                    <!-- Fuel -->
+
+                    <div class="mb-4">
+
+                        <label class="font-semibold">
+                            Fuel Type
+                        </label>
+
+                        <select name="fuel_type" class="w-full mt-2 border rounded-lg p-2">
+
+                            <option value="">All</option>
+
+                            <option value="Petrol">Petrol</option>
+
+                            <option value="Diesel">Diesel</option>
+
+                            <option value="Hybrid">Hybrid</option>
+
+                            <option value="Electric">Electric</option>
+
+                        </select>
+
+                    </div>
+
+                    <!-- Condition -->
+
+                    <div class="mb-4">
+
+                        <label class="font-semibold">
+                            Condition
+                        </label>
+
+                        <select name="condition" class="w-full mt-2 border rounded-lg p-2">
+
+                            <option value="">All</option>
+
+                            <option value="New">New</option>
+
+                            <option value="Used">Used</option>
+
+                        </select>
+
+                    </div>
+
+                    <!-- Price -->
+
+                    <div class="mb-4">
+
+                        <label class="font-semibold">
+                            Min Price
+                        </label>
+
+                        <input type="number" name="min_price" value="{{ request('min_price') }}"
+                            class="w-full border rounded-lg p-2">
+
+                    </div>
+
+                    <div class="mb-4">
+
+                        <label class="font-semibold">
+                            Max Price
+                        </label>
+
+                        <input type="number" name="max_price" value="{{ request('max_price') }}"
+                            class="w-full border rounded-lg p-2">
+
+                    </div>
+
+                    <!-- Year -->
+
+                    <div class="mb-5">
+
+                        <label class="font-semibold">
+                            Year
+                        </label>
+
+                        <input type="number" name="year" value="{{ request('year') }}"
+                            class="w-full border rounded-lg p-2">
+
+                    </div>
+
+                    <button class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg">
+
+                        Search
+
+                    </button>
+
+                </form>
+
+            </div>
+
+            <!-- Cars -->
+
+            <div class="lg:col-span-3">
+
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+
+                    @forelse($cars as $car)
+                        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+
+                            <img src="storage/{{ $car->thumbnail }}">
+
+                            <div class="p-6">
+
+                                <h3 class="text-xl font-bold">
+
+                                    {{ $car->title }}
+
+                                </h3>
+
+                                <p class="text-gray-600 mt-2">
+
+                                    {{ $car->transmission . ' • ' . $car->fuel_type . ' • ' . $car->mileage }}
+
+                                </p>
+
+                                <div class="flex justify-between items-center mt-6">
+
+                                    <span class="text-2xl font-bold text-green-600">
+
+                                        ${{ $car->price }}
+
+                                    </span>
+
+                                    <a href="{{ route('vehicle.details', $car->slug) }} "
+                                        class="bg-green-600 text-white px-5 py-2 rounded">
+
+                                        {{ __('messages.view') }}
+
+                                    </a>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    @empty
+
+                        <div class="col-span-3 text-center py-10">
+
+                            No Cars Found
+
+                        </div>
+                    @endforelse
+
+                </div>
+
+                <div class="mt-8">
+
+                    {{ $cars->withQueryString()->links() }}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
     <section id="cars" class="py-20">
 
         <div class="max-w-7xl mx-auto px-6">
@@ -83,45 +277,45 @@
             </div>
 
             <div class="grid lg:grid-cols-3 gap-8 mt-14">
-                @foreach ($cars as $car)
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                @foreach ($featuredCars as $car)
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden">
 
-                    <img
-                        src="storage/{{$car->thumbnail}}">
+                        <img src="storage/{{ $car->thumbnail }}">
 
-                    <div class="p-6">
+                        <div class="p-6">
 
-                        <h3 class="text-xl font-bold">
+                            <h3 class="text-xl font-bold">
 
-                            {{ $car->title }}
+                                {{ $car->title }}
 
-                        </h3>
+                            </h3>
 
-                        <p class="text-gray-600 mt-2">
+                            <p class="text-gray-600 mt-2">
 
-                            {{ $car->transmission . ' • ' . $car->fuel_type . ' • ' . $car->mileage }}
+                                {{ $car->transmission . ' • ' . $car->fuel_type . ' • ' . $car->mileage }}
 
-                        </p>
+                            </p>
 
-                        <div class="flex justify-between items-center mt-6">
+                            <div class="flex justify-between items-center mt-6">
 
-                            <span class="text-2xl font-bold text-green-600">
+                                <span class="text-2xl font-bold text-green-600">
 
-                                ${{ $car->price }}
+                                    ${{ $car->price }}
 
-                            </span>
+                                </span>
 
-                            <a href="{{ route('vehicle.details', $car->slug)}} " class="bg-green-600 text-white px-5 py-2 rounded">
+                                <a href="{{ route('vehicle.details', $car->slug) }} "
+                                    class="bg-green-600 text-white px-5 py-2 rounded">
 
-                                {{ __('messages.view') }}
+                                    {{ __('messages.view') }}
 
-                            </a>
+                                </a>
+
+                            </div>
 
                         </div>
 
                     </div>
-
-                </div>
                 @endforeach
 
             </div>
@@ -336,6 +530,10 @@
         </div>
 
     </section>
+
+    @include('finance.finance-chat')
+
+    @include('ai_layer.chatbot')
 
     @if (Auth::check() && $finance && $finance->status == 'Approved')
         <div class="max-w-2xl mx-auto mt-10">

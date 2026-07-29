@@ -302,6 +302,8 @@
 
     </section>
 
+    @include('ai_layer.chatbot')
+
     @if (Auth::check() && $rental_booking && $rental_booking->status == 'Completed')
         <div class="max-w-2xl mx-auto mt-10">
             <div class="bg-white rounded-2xl shadow-xl border border-gray-200 p-8">
@@ -325,6 +327,7 @@
                     </p>
 
                 </div>
+
 
                 <form action="{{ route('customer.store.review') }}" method="POST" enctype="multipart/form-data"
                     class="mt-8 space-y-6">

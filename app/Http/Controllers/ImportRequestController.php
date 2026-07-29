@@ -6,6 +6,7 @@ use App\Models\ImporteRequest;
 use App\Models\ImportRequest;
 use App\Models\Setting;
 use App\Models\User;
+use App\Notifications\ImportRequestNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -28,7 +29,7 @@ class ImportRequestController extends Controller
             'notes' => 'nullable|string',
         ]);
 
-        ImportRequest::create([
+        $importRequest = ImportRequest::create([
             'user_id' => Auth::id(),
             'country' => $request->country,
             'car_name' => $request->car_name,
@@ -37,7 +38,11 @@ class ImportRequestController extends Controller
             'status' => 'Pending',
         ]);
 
-        return redirect()->back()->with('success', 'Import request submitted successfully.');
+        $user = Auth::user();
+        $user->notify(new ImportRequestNotification($importRequest));
+
+        return redirect()->route('payment.choose.car.import', $importRequest);
+
     }
 
     public function customerShowImporte()
