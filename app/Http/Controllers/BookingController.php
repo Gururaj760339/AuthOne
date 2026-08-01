@@ -23,7 +23,7 @@ class BookingController extends Controller
 
     public function MaintenanceBookingCreate()
     {
-        $services = Service::whereHas('serviceCategory', function($query){
+        $services = Service::whereHas('serviceCategory', function ($query) {
             $query->where('slug', 'workshops-maintenance');
         })->get();
 
@@ -32,7 +32,7 @@ class BookingController extends Controller
 
     public function CarWashBookingCreate()
     {
-        $services = Service::whereHas('serviceCategory', function($query){
+        $services = Service::whereHas('serviceCategory', function ($query) {
             $query->where('slug', 'car-wash-services');
         })->get();
 
@@ -72,7 +72,20 @@ class BookingController extends Controller
 
         $user->notify(new ServiceBookingConfirmedNotification($booking));
 
-        return redirect()->route('payment.choose.service', $request->service_id);
+        return redirect()->route('booking.more.services');
+
+        //return redirect()->route('payment.choose.service', $request->service_id);
+    }
+
+
+    public function moreServices()
+    {
+        return view('booking.more_services');
+    }
+
+    public function finishBooking()
+    {
+        return redirect()->route('payment.choose.service');
     }
 
 

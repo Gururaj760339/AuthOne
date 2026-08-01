@@ -81,4 +81,24 @@ class User extends Authenticatable
     {
         return $this->hasOne(FinancePartner::class, 'user_id');
     }
+
+    public function kycVerification()
+    {
+        return $this->hasOne(KycVerification::class, 'user_id');
+    }
+
+    public function userCars()
+    {
+        return $this->hasMany(UserCar::class, 'user_id');
+    }
+
+    public function p2pBookingsAsOwner()
+    {
+        return $this->hasMany(P2PBooking::class, 'owner_id');
+    }
+
+    public function verification()
+    {
+        return $this->hasOne(UserVerification::class);
+    }
 }

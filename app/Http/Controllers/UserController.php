@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\FinanceRequests;
+use App\Models\ImportRequest;
+use App\Models\KycVerification;
+use App\Models\RentalBooking;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -243,5 +247,22 @@ class UserController extends Controller
         return redirect()
             ->route('admin.users')
             ->with('success', 'User created successfully');
+    }
+
+    public function myProfile()
+    {
+        $kyc = KycVerification::where('user_id', Auth::id())->first();
+        $user = auth()->user();
+        $bookingCount = RentalBooking::where('user_id', auth()->id())->count();
+        $financeCount = FinanceRequests::where('user_id', auth()->id())->count();
+        $importCount = ImportRequest::where('user_id', auth()->id())->count();
+
+        return view('customer.profile_dashboard', compact(
+            'user',
+            'bookingCount',
+            'financeCount',
+            'importCount',
+            'kyc'
+        ));
     }
 }

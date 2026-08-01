@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Car;
 use App\Models\Faq;
+use App\Models\KycVerification;
 use App\Models\Rental;
 use App\Models\RentalBooking;
 use App\Models\Setting;
+use App\Models\UserCar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -22,20 +24,40 @@ class RentalController extends Controller
     public function showVendorRental()
     {
         $rentals = Rental::with('car')
-        ->where('vendor_id', Auth::user()->vendor->id)
-        ->latest()->get();
+            ->where('vendor_id', Auth::user()->vendor->id)
+            ->latest()->get();
 
         return view('admin.rentals.admin_rental_show', compact('rentals'));
     }
 
     public function customerRentalShow()
     {
-        $rentals = Rental::with('car')->where('available', 1)->latest()->get();
+        // Rental Company Cars
+        $rentals = Rental::with('car')
+            ->where('available', 1)
+            ->latest()
+            ->get();
+
+        // P2P User Cars
+        $userCars = UserCar::with('user')
+            ->where('status', 'approved')
+            ->where('is_available', 1)
+            ->latest()
+            ->get();
+
         $rental_booking = RentalBooking::where('status', 'Completed')->first();
+
         $faqs = Faq::limit(3)->get();
+
         $setting = Setting::first();
 
-        return view('car_rental', compact('setting', 'faqs', 'rental_booking', 'rentals'));
+        return view('car_rental', compact(
+            'setting',
+            'faqs',
+            'rental_booking',
+            'rentals',
+            'userCars'
+        ));
     }
 
     public function retalCreate()
@@ -48,12 +70,14 @@ class RentalController extends Controller
 
     public function rentalStore(Request $request)
     {
+
         $request->validate([
             'car_id' => 'required|exists:cars,id',
             'price_per_day' => 'required|numeric|min:0',
             'price_per_week' => 'required|numeric|min:0',
             'price_per_month' => 'required|numeric|min:0',
             'available' => 'required|boolean',
+            'city' => 'required|string|max:255',
         ]);
 
         Rental::create([
@@ -62,7 +86,8 @@ class RentalController extends Controller
             'price_per_week' => $request->price_per_week,
             'price_per_month' => $request->price_per_month,
             'available' => $request->available,
-            'vendor_id' => Auth::user()->vendor->id
+            'vendor_id' => Auth::user()->vendor->id,
+            'city' => $request->city
         ]);
 
         return redirect()
@@ -81,7 +106,7 @@ class RentalController extends Controller
     }
 
 
-     public function rentalUpdate(Request $request, $id)
+    public function rentalUpdate(Request $request, $id)
     {
         $request->validate([
             'car_id' => 'required|exists:cars,id',
@@ -117,5 +142,25 @@ class RentalController extends Controller
         return redirect()
             ->route('admin.rental')
             ->with('success', 'Rental deleted successfully.');
+    }
+
+    public function carSearch(Request $request)
+    {
+        $setting = Setting::first();
+        $city = $request->city;
+        $rental_booking = RentalBooking::where('status', 'Completed')->first();
+        $faqs = Faq::limit(3)->get();
+
+
+        $rentals = Rental::query()
+            ->with('car')
+            ->when($city, function ($query) use ($city) {
+                $query->where('city', 'LIKE', "%{$city}%");
+            })
+            ->where('available', 1)
+            ->latest()
+            ->get();
+
+        return view('car_rental', compact('rentals', 'city', 'setting', 'faqs', 'rental_booking'));
     }
 }

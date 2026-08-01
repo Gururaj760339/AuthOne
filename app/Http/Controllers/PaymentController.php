@@ -30,11 +30,9 @@ class PaymentController extends Controller
         return view('customer_payment.choose_payment_finance', compact('finance'));
     }
 
-    public function choosePaymentService($id)
+    public function choosePaymentService()
     {
-        $service = Service::findOrFail($id);
-
-        return view('customer_payment.choose_payment_service', compact('service'));
+        return view('customer_payment.choose_payment_service');
     }
 
     public function choosePaymentCarRental($rentalId, $rentalBookingId)
@@ -90,6 +88,57 @@ class PaymentController extends Controller
                     'currency' => 'usd',
                     'product_data' => [
                         'name' => ucfirst($type) . ' Payment',
+                    ],
+                    'unit_amount' => (int) ($amount * 100),
+                ],
+                'quantity' => 1,
+            ]],
+
+            'mode' => 'payment',
+
+            'success_url' => route('stripe.success', $payment->id),
+
+            'cancel_url' => route('stripe.cancel', $payment->id),
+        ]);
+
+        return redirect($session->url);
+    }
+
+    public function stripeCheckoutService()
+    {
+        $amount = Booking::join('services', 'bookings.service_id', '=', 'services.id')
+            ->where('bookings.user_id', auth()->id())
+            ->where('bookings.status', 'Pending')
+            ->sum('services.price');
+
+
+        $referenceId = rand(100000, 999999);
+
+
+        $payment = Payment::create([
+            'user_id' => auth()->id(),
+            'payment_for' => 'service',
+            'reference_id' => $referenceId,
+            'amount' => $amount,
+            'payment_method' => 'stripe',
+            'status' => 'pending',
+        ]);
+
+        Booking::where('user_id', Auth::user()->id)
+        ->update(['status' => 'Confirmed']);
+
+        //dd(env('STRIPE_SECRET'));
+
+        Stripe::setApiKey(env('STRIPE_SECRET'));
+
+        $session = Session::create([
+            'payment_method_types' => ['card'],
+
+            'line_items' => [[
+                'price_data' => [
+                    'currency' => 'usd',
+                    'product_data' => [
+                        'name' => ucfirst('service') . ' Payment',
                     ],
                     'unit_amount' => (int) ($amount * 100),
                 ],
@@ -176,6 +225,7 @@ class PaymentController extends Controller
         return redirect($session->url);
     }
 
+
     // Payment Success
     public function stripeSuccess($id)
     {
@@ -234,6 +284,10 @@ class PaymentController extends Controller
                 if ($rental) {
                     $user->notify(new RentalPaymentNotification($rental, $payment));
                 }
+
+                return redirect()
+                    ->route('rental.contract.show', $rental->id)
+                    ->with('success', 'Payment completed successfully.');
 
                 break;
         }

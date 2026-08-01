@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\KycVerification;
 use App\Models\Rental;
 use App\Models\RentalBooking;
 use App\Notifications\RentalBookingConfirmedNotification;
@@ -28,6 +29,22 @@ class RentalBookingController extends Controller
 
     public function customerRentalBookingStore(Request $request)
     {
+        $kyc = KycVerification::where('user_id', Auth::id())->first();
+
+        if (!$kyc) {
+
+            return redirect()
+                ->route('customer.create.kyc')
+                ->with('error', 'Please complete your KYC verification before booking.');
+        }
+
+        if ($kyc->status != 'verified') {
+
+            return redirect()
+                ->route('customer.profile')
+                ->with('error', 'Your KYC is not verified yet.');
+        }
+
         $request->validate([
             'rental_id' => 'required|exists:rentals,id',
             'pickup_date' => 'required|date|after_or_equal:today',

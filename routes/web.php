@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminKycController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\BrandController;
@@ -7,10 +8,13 @@ use App\Http\Controllers\CarController;
 use App\Http\Controllers\CarImageController;
 use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\ContactsController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\FinancePartnerController;
 use App\Http\Controllers\FinanceRequestsController;
 use App\Http\Controllers\ImportRequestController;
+use App\Http\Controllers\KycVerificationController;
+use App\Http\Controllers\P2PBookingController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RentalBookingController;
 use App\Http\Controllers\RentalController;
@@ -20,11 +24,15 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\TestimoniasController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VendorController;
+use App\Http\Controllers\P2PCarController;
+use App\Http\Controllers\UserVerificationController;
 use App\Models\ImporteRequest;
 use App\Models\ServiceCategory;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\SocialAuthController;
+use App\Models\KycVerification;
+
 
 Route::get('/', [UserController::class, 'userPanel'])->name('home'); 
 Route::get('/about', [UserController::class, 'aboutPage'])->name('customer.about'); 
@@ -185,9 +193,11 @@ Route::get('/customer-single-car-wash-create/{slug}', [BookingController::class,
 Route::get('/customer-maintenance-create', [BookingController::class, 'MaintenanceBookingCreate'])->name('customer.maintenance.booking.create');
 Route::get('/customer-car-wash-create', [BookingController::class, 'CarWashBookingCreate'])->name('customer.carwash.booking.create');
 Route::post('/customer-booking-store', [BookingController::class, 'BookingStore'])->name('customer.booking.store');
+Route::get('/booking/more-services', [BookingController::class, 'moreServices'])->name('booking.more.services');
+Route::post('/booking/finish', [BookingController::class, 'finishBooking'])->name('booking.finish');
 
-Route::get('/admin-booking', [BookingController::class, 'showBooking'])
-->name('admin.booking')->middleware(['can:isAdmin']);
+
+Route::get('/admin-booking', [BookingController::class, 'showBooking'])->name('admin.booking')->middleware(['can:isAdmin']);
 
 Route::post('/admin-booking-update/{id}', [BookingController::class, 'updateStatus'])
 ->name('admin.booking.update')->middleware(['can:isAdmin']);
@@ -251,12 +261,15 @@ Route::delete('/admin-rentals-destroy/{id}', [RentalController::class, 'RentalDe
 ->name('admin.vendor.rental.destroy')->middleware(['can:isAdminOrisVendor']);
 
 Route::get('/rentals', [RentalController::class, 'customerRentalShow'])->name('customer.rental');
+Route::get('/rental/car/search/', [RentalController::class, 'carSearch'])->name('customer.rentals.car.search');
 
 
 
 Route::get('/rentals-booking-create/{id}', [RentalBookingController::class, 'singleRentalBookingCreate'])->name('customer.single.rental.bookin.create');
 Route::post('/rentals-booking-store', [RentalBookingController::class, 'customerRentalBookingStore'])->name('customer.rental.booking.store');
 Route::get('/rentals-booking-create', [RentalBookingController::class, 'rentalBookingCreate'])->name('customer.rental.booking.create');
+Route::get('/p2p-booking/create/{id}', [P2PBookingController::class, 'createBooking'])->name('p2p.booking.create');
+Route::post('/p2p-booking/store/{id}', [P2PBookingController::class, 'storeBooking'])->name('p2p.booking.store');
 
 Route::get('/admin-rentals-booking', [RentalBookingController::class, 'adminRentalBookingShow'])
 ->name('admin.rental.booking')->middleware(['can:isAdmin']);
@@ -332,19 +345,18 @@ Route::get('/settings-edit/{id}', [SettingController::class, 'editSetting'])
 Route::put('/settings-update/{id}', [SettingController::class, 'updateSetting'])
 ->name('admin.update.setting')->middleware(['can:isAdmin']);
 
-
 Route::get('/vendor-dashboard', [VendorController::class, 'vendorDashboard'])
 ->name('vendor.dashboard')->middleware(['can:isVendor']);
 
 
 
-
 Route::get('/payment/finance/{id}', [PaymentController::class, 'choosePaymentFinance'])->name('payment.choose.finance');
-Route::get('/payment/service/{id}', [PaymentController::class, 'choosePaymentService'])->name('payment.choose.service');
+Route::get('/payment/service', [PaymentController::class, 'choosePaymentService'])->name('payment.choose.service');
 Route::get('/payment/car-import/{id}', [PaymentController::class, 'choosePaymentCarImport'])->name('payment.choose.car.import');
 Route::get('/payment/rental/{rentalId}/booking/{rentalBookingId}',[PaymentController::class, 'choosePaymentCarRental'])->name('payment.choose.car.rental');
 
 Route::get('/payment/{type}/stripe/{id}', [PaymentController::class, 'stripeCheckout'])->name('stripe.checkout');
+Route::get('/payment/stripe', [PaymentController::class, 'stripeCheckoutService'])->name('stripe.checkout.services');
 Route::get('/payment/{type}/stripe/{rentalId}/{rentalBookingId}', [PaymentController::class, 'stripeRentalCheckout'])->name('stripe.checkout.rental');
 Route::get('/stripe/success/{id}', [PaymentController::class, 'stripeSuccess'])->name('stripe.success');
 Route::get('/stripe/cancel/{id}', [PaymentController::class, 'stripeCancel'])->name('stripe.cancel');
@@ -357,4 +369,39 @@ Route::get('/finance-partner/requests', [FinancePartnerController::class, 'finan
 Route::post('/finance-partner/requests/approve/{id}', [FinancePartnerController::class, 'approveFinanceRequest'])->name('finance.partner.approve');
 Route::post('/finance-partner/requests/reject/{id}', [FinancePartnerController::class, 'rejectFinanceRequest'])->name('finance.partner.reject');
 
+Route::get('/my-profile', [UserController::class, 'myProfile'])->name('customer.profile');
+Route::get('/create-kyc', [KycVerificationController::class, 'createKyc'])->name('customer.create.kyc');
+Route::post('/store-kyc', [KycVerificationController::class, 'storeKyc'])->name('customer.store.kyc');
+Route::get('/show-kyc', [KycVerificationController::class, 'showKyc'])->name('customer.show.kyc');
+Route::delete('/customer/kyc/delete', [KycVerificationController::class, 'destroyKyc'])->name('customer.kyc.destroy');
 
+Route::get('/admin-kycs', [AdminKycController::class, 'showKycs'])->name('admin.kycs.show');
+Route::get('/admin-kyc/{id}', [AdminKycController::class, 'showKyc'])->name('admin.kyc.show');
+Route::post('/admin-approve/{id}', [AdminKycController::class, 'approveKyc'])->name('admin.kyc.approve');
+Route::post('/admin-reject/{id}', [AdminKycController::class, 'rejectKyc'])->name('admin.kyc.reject');
+
+Route::get('/contract/{booking}/preview', [ContactsController::class, 'rentalContractPreview'])->name('rental.contract.preview');
+Route::get('/contract/{booking}/download', [ContactsController::class, 'rentalContractDownload'])->name('rental.contract.download');
+Route::get('/contract/{booking}', [ContactsController::class, 'showContact'])->name('rental.contract.show');
+
+Route::get('/p2p/cars', [P2PCarController::class, 'showCars'])->name('p2p.cars.show');
+Route::get('/p2p/cars/create', [P2PCarController::class, 'carCreate'])->name('p2p.cars.create');
+Route::post('/p2p/cars', [P2PCarController::class, 'storeCar'])->name('p2p.cars.store');
+Route::delete('/p2p/cars/destroy/{id}', [P2PCarController::class, 'carDestroy'])->name('p2p.cars.destroy');
+Route::get('/p2p/cars/rental-requests', [P2PBookingController::class, 'rentalRequests'])->name('p2p.cars.rental.requests');
+Route::put('/p2p/cars/rental-request/{id}', [P2PBookingController::class, 'updateRentalStatus'])->name('p2p.cars.rental.status.update');
+
+
+Route::get('/p2p/verifications/create', [UserVerificationController::class, 'createVerification'])->name('p2p.verifications.create');
+Route::post('/p2p/verifications', [UserVerificationController::class, 'storeVerification'])->name('p2p.verifications.store');
+
+
+Route::get('/admin/all-users-verification', [UserVerificationController::class, 'UserVerificationList'])->name('admin.all.users.verification')->middleware(['can:isAdmin']);
+Route::get('/admin/user-verification/{id}', [UserVerificationController::class, 'singleUserVerificationList'])->name('admin.single.user.verification')->middleware(['can:isAdmin']);
+Route::post('/admin/user-verification/approve/{id}', [UserVerificationController::class, 'approveUser'])->name('admin.user.verification.approve')->middleware(['can:isAdmin']);
+Route::post('/admin/user-verification/reject/{id}', [UserVerificationController::class, 'rejectUser'])->name('admin.user.verification.reject')->middleware(['can:isAdmin']);
+
+Route::get('/admin/users-cars', [P2PCarController::class, 'showAdminAllCars'])->name('admin.p2p.cars.show')->middleware(['can:isAdmin']);
+Route::get('/admin/users-car/{id}', [P2PCarController::class, 'showAdminSingleCar'])->name('admin.p2p.car.show')->middleware(['can:isAdmin']);
+Route::post('/admin/users-cars/approve/{id}', [P2PCarController::class, 'approveAdminCar'])->name('admin.p2p.car.approve')->middleware(['can:isAdmin']);
+Route::post('/admin/users-cars/reject/{id}', [P2PCarController::class, 'rejectAdminCar'])->name('admin.p2p.car.reject')->middleware(['can:isAdmin']);

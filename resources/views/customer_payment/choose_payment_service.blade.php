@@ -28,7 +28,7 @@
         </div>
 
         <!-- Stripe -->
-        <a href="{{ route('stripe.checkout', ['type' => 'service', 'id' => $service->id]) }}"
+        <a href="{{ route('stripe.checkout.services') }}"
             class="flex items-center justify-between bg-indigo-600 hover:bg-indigo-700 transition duration-300 text-white rounded-xl p-5 mb-4 shadow-lg">
 
             <div class="flex items-center gap-3">

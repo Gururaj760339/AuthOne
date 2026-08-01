@@ -22,4 +22,9 @@ class Rental extends Model
     {
         return $this->belongsTo(Vendor::class);
     }
+
+    public function p2pBookings()
+    {
+        return $this->hasMany(P2PBooking::class);
+    }
 }

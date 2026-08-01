@@ -79,54 +79,115 @@
 
             <div class="grid lg:grid-cols-3 gap-8 mt-14">
 
+                <form action="{{ route('customer.rentals.car.search') }}" method="GET"
+                    class="bg-white p-6 rounded-xl shadow-md mb-8">
+
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+
+                        <div class="md:col-span-3">
+                            <input type="text" name="city" value="{{ request('city') }}" placeholder="Enter City"
+                                class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+
+                        <button type="submit"
+                            class="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-3 py-3 transition">
+                            Search
+                        </button>
+
+                    </div>
+
+                </form>
+
                 <!-- Card -->
                 @foreach ($rentals as $rental)
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden">
 
-                    <img
-                        src="storage/{{ $rental->car->thumbnail }}">
+                        <img src="{{ asset('storage/' . $rental->car->thumbnail) }}">
 
-                    <div class="p-6">
+                        <div class="p-6">
 
-                        <h3 class="text-2xl font-bold">
-                            {{ $rental->car->title }}
-                        </h3>
+                            <h3 class="text-2xl font-bold">
+                                {{ $rental->car->title }}
+                            </h3>
 
-                        <p class="text-gray-600 mt-3">
-                            {{ $rental->car->transmission . ' • ' . $rental->car->fuel_type . ' • ' . $rental->car->mileage  }}
-                        </p>
+                            <p class="text-gray-600 mt-3">
+                                {{ $rental->car->transmission . ' • ' . $rental->car->fuel_type . ' • ' . $rental->car->mileage }}
+                            </p>
 
-                        <div class="flex justify-between items-center mt-6">
+                            <div class="flex justify-between items-center mt-6">
 
-                            <div>
+                                <div>
 
-                                <p class="text-gray-500 text-sm">
-                                    {{ __('messages.starting_from') }}
-                                </p>
+                                    <p class="text-gray-500 text-sm">
+                                        {{ __('messages.starting_from') }}
+                                    </p>
 
-                                <p class="text-3xl font-bold text-yellow-500">
-                                    ${{ $rental->price_per_day }}/day
-                                </p>
+                                    <p class="text-3xl font-bold text-yellow-500">
+                                        ${{ $rental->price_per_day }}/day
+                                    </p>
+
+                                </div>
+
+                                @if (Auth::check())
+                                    <a href="{{ route('customer.single.rental.bookin.create', $rental->id) }}"
+                                        class="bg-yellow-500 hover:bg-yellow-400 px-5 py-2 rounded-lg font-semibold">
+                                        {{ __('messages.rent_now') }}
+                                    </a>
+                                @else
+                                    <a href="/login"
+                                        class="bg-yellow-500 hover:bg-yellow-400 px-5 py-2 rounded-lg font-semibold">
+                                        {{ __('messages.rent_now') }}
+                                    </a>
+                                @endif
+
 
                             </div>
-
-                            @if (Auth::check())
-                                <a href="{{ route('customer.single.rental.bookin.create', $rental->id) }}" class="bg-yellow-500 hover:bg-yellow-400 px-5 py-2 rounded-lg font-semibold">
-                                    {{ __('messages.rent_now') }}
-                                </a>
-                            @else
-                                <a href="/login"
-                                    class="bg-yellow-500 hover:bg-yellow-400 px-5 py-2 rounded-lg font-semibold">
-                                    {{ __('messages.rent_now') }}
-                                </a>
-                            @endif
-
 
                         </div>
 
                     </div>
+                @endforeach
 
-                </div>
+
+            </div>
+
+            <h2 class="text-3xl font-bold mb-6">P2P Rental Cars</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                @foreach ($userCars as $car)
+                    <div class="bg-white rounded-lg shadow">
+
+                        <img src="{{ asset('storage/' . $car->main_image) }}"
+                            class="w-full h-52 object-cover rounded-t-lg">
+
+                        <div class="p-5">
+
+                            <h3 class="text-xl font-bold">
+                                {{ $car->brand }} {{ $car->model }}
+                            </h3>
+
+                            <p class="text-gray-600">
+                                Owner: {{ $car->user->name }}
+                            </p>
+
+                            <p class="font-semibold mt-2">
+                                ${{ $car->price_per_day }}/Day
+                            </p>
+
+                            @if (Auth::check())
+                                <a href="{{ route('p2p.booking.create', $car->id) }}" class="mt-4 inline-block bg-blue-600 text-white px-4 py-2 rounded">
+                                Rent Now
+                            </a>
+                            @else
+                                <a href="/login" class="mt-4 inline-block bg-blue-600 text-white px-4 py-2 rounded">
+                                Rent Now
+                            </a>
+                            @endif
+
+                        </div>
+
+                    </div>
                 @endforeach
 
             </div>
@@ -408,17 +469,17 @@
             <div class="space-y-6 mt-12">
 
                 @foreach ($faqs as $faq)
-                <div class="bg-gray-100 rounded-lg p-6">
+                    <div class="bg-gray-100 rounded-lg p-6">
 
-                    <h4 class="font-bold">
-                        {{ $faq->question }}
-                    </h4>
+                        <h4 class="font-bold">
+                            {{ $faq->question }}
+                        </h4>
 
-                    <p class="text-gray-600 mt-2">
-                        {{ $faq->answer }}
-                    </p>
+                        <p class="text-gray-600 mt-2">
+                            {{ $faq->answer }}
+                        </p>
 
-                </div>
+                    </div>
                 @endforeach
             </div>
 

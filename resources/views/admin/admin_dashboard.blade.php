@@ -71,6 +71,13 @@
 
                     </a>
 
+                    <a href="{{ route('admin.p2p.cars.show') }}"
+                        class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition">
+
+                        🚗 <span>Users Cars Rent</span>
+
+                    </a>
+
                     <a href="{{ route('admin.car.brand.show') }}"
                         class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition">
 
@@ -120,10 +127,17 @@
 
                     </a>
 
-                    <a href="{{ route('admin.finance.request') }}"
+                    <a href="{{ route('admin.kycs.show') }}"
                         class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition">
 
-                        💳 <span>Finance Requests</span>
+                        🪪 <span>KYC Verification</span>
+
+                    </a>
+
+                    <a href="{{ route('admin.all.users.verification') }}"
+                        class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition">
+
+                        📑 <span>User Verification Requests</span>
 
                     </a>
 

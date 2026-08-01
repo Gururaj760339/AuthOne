@@ -52,6 +52,13 @@
                 </svg>
             </button>
 
+            @if (Auth::check())
+                <a href="{{ route('customer.profile') }}"
+                    class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition whitespace-nowrap">
+                    {{ "My Profile" }}
+                </a>
+            @endif
+
             <!-- Right Side -->
             <div class="flex items-center gap-3">
 
@@ -89,8 +96,7 @@
     </div>
 </nav>
 
-<div id="mobile-menu"
-    class="hidden lg:hidden bg-white shadow-xl border-t border-gray-200">
+<div id="mobile-menu" class="hidden lg:hidden bg-white shadow-xl border-t border-gray-200">
 
     <div class="px-5 py-4 space-y-2">
 
@@ -151,14 +157,11 @@
                 class="block w-full text-center mt-3 border border-blue-600 text-blue-600 py-3 rounded-xl font-semibold hover:bg-blue-600 hover:text-white transition">
                 {{ __('messages.register') }}
             </a>
-
         @else
-
             <form action="{{ route('user.logout') }}" method="POST">
                 @csrf
 
-                <button
-                    class="w-full bg-red-600 text-white py-3 rounded-xl font-semibold hover:bg-red-700 transition">
+                <button class="w-full bg-red-600 text-white py-3 rounded-xl font-semibold hover:bg-red-700 transition">
                     {{ __('messages.logout') }}
                 </button>
             </form>
