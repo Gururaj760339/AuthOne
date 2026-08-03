@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ __('messages.car_import_request') }} | AutoOne</title>
+    <title>{{ translate('Car Import Request') }} | AutoOne</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -19,14 +19,14 @@
         <div class="w-full max-w-2xl bg-white rounded-2xl shadow-xl p-8">
 
 
-            @include('language_drop_down')
+            @include('ai_layer.ai_language_translate')
 
             <h2 class="text-3xl font-bold text-center text-slate-800 mb-2">
-                {{ __('messages.car_import_request') }}
+                {{ translate('Car Import Request') }}
             </h2>
 
             <p class="text-center text-gray-500 mb-8">
-                {{ __('messages.car_import_desc') }}
+                {{ translate('Car Import Description') }}
             </p>
 
 
@@ -34,34 +34,34 @@
             <div>
 
                 <label class="block font-semibold mb-2">
-                    {{ __('messages.select_country') }}
+                    {{ translate('Select Country') }}
                 </label>
 
                 <select name="country" class="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500"
                     required>
 
                     <option value="">
-                        {{ __('messages.choose_country') }}
+                        {{ translate('Choose Country') }}
                     </option>
 
                     <option value="Japan">
-                        {{ __('messages.japan') }}
+                        {{ translate('Japan') }}
                     </option>
 
                     <option value="Germany">
-                        {{ __('messages.germany') }}
+                        {{ translate('Germany') }}
                     </option>
 
                     <option value="USA">
-                        {{ __('messages.usa') }}
+                        {{ translate('USA') }}
                     </option>
 
                     <option value="South Korea">
-                        {{ __('messages.south_korea') }}
+                        {{ translate('South Korea') }}
                     </option>
 
                     <option value="United Kingdom">
-                        {{ __('messages.united_kingdom') }}
+                        {{ translate('United Kingdom') }}
                     </option>
 
                 </select>
@@ -73,10 +73,10 @@
             <div>
 
                 <label class="block font-semibold mb-2">
-                    {{ __('messages.car_name_model') }}
+                    {{ translate('Car Name') }}
                 </label>
 
-                <input type="text" name="car_name" placeholder="{{ __('messages.car_name_placeholder') }}"
+                <input type="text" name="car_name" placeholder="{{ translate('Car Name Placeholder') }}"
                     class="w-full border rounded-lg px-4 py-3" required>
 
             </div>
@@ -86,10 +86,10 @@
             <div>
 
                 <label class="block font-semibold mb-2">
-                    {{ __('messages.budget') }}
+                    {{ translate('Budget') }}
                 </label>
 
-                <input type="number" name="budget" placeholder="{{ __('messages.budget_placeholder') }}"
+                <input type="number" name="budget" placeholder="{{ translate('Budget Placeholder') }}"
                     class="w-full border rounded-lg px-4 py-3" required>
 
             </div>
@@ -99,10 +99,10 @@
             <div>
 
                 <label class="block font-semibold mb-2">
-                    {{ __('messages.additional_notes') }}
+                    {{ translate('Additional Notes') }}
                 </label>
 
-                <textarea name="notes" rows="5" placeholder="{{ __('messages.notes_placeholder') }}"
+                <textarea name="notes" rows="5" placeholder="{{ translate('Notes Placeholder') }}"
                     class="w-full border rounded-lg px-4 py-3"></textarea>
 
             </div>
@@ -112,7 +112,7 @@
             <button type="submit"
                 class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition">
 
-                {{ __('messages.submit_import_request') }}
+                {{ translate('Submit Import Request') }}
 
             </button>
 

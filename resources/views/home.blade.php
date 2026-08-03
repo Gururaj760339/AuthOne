@@ -17,21 +17,26 @@
         <div class="max-w-7xl mx-auto px-6 py-24">
             <div class="grid md:grid-cols-2 gap-10 items-center">
                 <div>
-                    <span class="bg-blue-500 px-4 py-2 rounded-full">{{ __('messages.trusted_platform') }}</span>
+                    <span class="bg-blue-500 px-4 py-2 rounded-full">
+                        {{ translate('Trusted Platform') }}
+                    </span>
+
                     <h1 class="text-5xl font-bold mt-6 leading-tight">
-                        {{ __('messages.hero_title') }}
+                        {{ translate('Premium Automotive Services') }}
                     </h1>
 
                     <p class="mt-6 text-lg text-gray-200">
-                        {{ __('messages.hero_description') }}
+                        {{ translate('Find trusted workshops, premium rental cars, car financing, imports and maintenance services all in one place.') }}
                     </p>
 
                     <div class="mt-8 flex gap-4">
                         <a href="#services" class="bg-white text-blue-700 px-6 py-3 rounded-lg font-semibold">
-                            {{ __('messages.browse_services') }}</a>
+                            {{ translate('Browse Services') }}
+                        </a>
 
                         <a href="#cars" class="border border-white px-6 py-3 rounded-lg">
-                            {{ __('messages.browse_cars') }}</a>
+                            {{ translate('Browse Cars') }}
+                        </a>
                     </div>
                 </div>
 
@@ -47,40 +52,56 @@
     <section class="py-20">
         <div id="services" class="max-w-7xl mx-auto px-6">
             <div class="text-center mb-14">
-                <h2 class="text-4xl font-bold">{{ __('messages.our_services') }}</h2>
-                <p class="text-gray-500 mt-3">{{ __('messages.services_description') }}</p>
+                <h2 class="text-4xl font-bold">
+                    {{ translate('Our Services') }}
+                </h2>
+
+                <p class="text-gray-500 mt-3">
+                    {{ translate('Everything you need for your vehicle in one platform.') }}
+                </p>
             </div>
 
             <div class="grid md:grid-cols-3 lg:grid-cols-5 gap-6">
                 <div class="bg-white rounded-xl shadow p-8 text-center">
                     🚗
-                    <h3 class="font-bold mt-4">{{ __('messages.workshop') }}</h3>
-                    <p class="text-sm text-gray-500 mt-2">{{ __('messages.maintenance_repairs') }}</p>
+                    <h3 class="font-bold mt-4">{{ translate('Workshop') }}</h3>
+                    <p class="text-sm text-gray-500 mt-2">
+                        {{ translate('Maintenance & Repairs') }}
+                    </p>
                 </div>
 
                 <div class="bg-white rounded-xl shadow p-8 text-center">
                     🧽
-                    <h3 class="font-bold mt-4">{{ __('messages.car_wash') }}</h3>
-                    <p class="text-sm text-gray-500">{{ __('messages.professional_cleaning') }}</p>
+                    <h3 class="font-bold mt-4">{{ translate('Car Wash') }}</h3>
+                    <p class="text-sm text-gray-500">
+                        {{ translate('Professional Cleaning') }}
+                    </p>
                 </div>
 
                 <div class="bg-white rounded-xl shadow p-8 text-center">
                     🚘
-                    <h3 class="font-bold mt-4">{{ __('messages.buy_cars') }}</h3>
-                    <p class="text-sm text-gray-500">{{ __('messages.new_used') }}</p>
+                    <h3 class="font-bold mt-4">{{ translate('Buy Cars') }}</h3>
+                    <p class="text-sm text-gray-500">
+                        {{ translate('New & Used Cars') }}
+                    </p>
                 </div>
 
                 <div class="bg-white rounded-xl shadow p-8 text-center">
                     💳
-                    <h3 class="font-bold mt-4">{{ __('messages.finance') }}</h3>
-                    <p class="text-sm text-gray-500">{{ __('messages.payment_plans') }}</p>
+                    <h3 class="font-bold mt-4">{{ translate('Finance') }}</h3>
+                    <p class="text-sm text-gray-500">
+                        {{ translate('Flexible Payment Plans') }}
+                    </p>
                 </div>
 
                 <div class="bg-white rounded-xl shadow p-8 text-center">
                     🌍
-                    <h3 class="font-bold mt-4">{{ __('messages.import_cars') }}</h3>
-                    <p class="text-sm text-gray-500">Japan • Germany • USA</p>
+                    <h3 class="font-bold mt-4">{{ translate('Import Cars') }}</h3>
+                    <p class="text-sm text-gray-500">
+                        {{ translate('Japan • Germany • USA') }}
+                    </p>
                 </div>
+
             </div>
         </div>
     </section>
@@ -91,19 +112,19 @@
             <div class="grid lg:grid-cols-4 gap-8 text-center">
                 <div>
                     <h2 class="text-5xl font-bold text-blue-600">500+</h2>
-                    <p class="mt-3">{{ __('messages.certified_workshops') }}</p>
+                    <p>{{ translate('Certified Workshops') }}</p>
                 </div>
                 <div>
                     <h2 class="text-5xl font-bold text-blue-600">10K+</h2>
-                    <p class="mt-3">{{ __('messages.happy_customers') }}</p>
+                    <p class="mt-3">{{ translate('Happy Customers') }}</p>
                 </div>
                 <div>
                     <h2 class="text-5xl font-bold text-blue-600">15+</h2>
-                    <p class="mt-3">{{ __('messages.countries_served') }}</p>
+                    <p class="mt-3">{{ translate('Countries Served') }}</p>
                 </div>
                 <div>
                     <h2 class="text-5xl font-bold text-blue-600">24/7</h2>
-                    <p class="mt-3">{{ __('messages.customer_support') }}</p>
+                    <p class="mt-3">{{ translate('Customer Support') }}</p>
                 </div>
             </div>
         </div>
@@ -112,10 +133,12 @@
     <!-- ================= TESTIMONIAL ================= -->
     <section class="bg-blue-700 text-white py-20">
         <div class="max-w-5xl mx-auto text-center px-6">
-            <h2 class="text-4xl font-bold">{{ __('messages.what_customers_say') }}</h2>
+            <h2 class="text-4xl font-bold">
+                {{ translate('What Our Customers Say') }}
+            </h2>
             <p class="mt-10 text-xl">★★★★★</p>
-            <p class="mt-4 text-lg">"{{ __('messages.testimonial') }}"</p>
-            <p class="mt-8 font-semibold">Ahmed Hassan — Dubai</p>
+            <p class="mt-4 text-lg">"{{ translate('testimonial') }}"</p>
+            <p class="mt-8 font-semibold">{{ translate('Ahmed Hassan — Dubai') }}</p>
         </div>
     </section>
 
@@ -124,15 +147,15 @@
     <!-- ================= CTA ================= -->
     <section class="py-20 bg-white">
         <div class="max-w-6xl mx-auto bg-blue-600 rounded-2xl text-white p-14 text-center">
-            <h2 class="text-4xl font-bold">{{ __('messages.ready_title') }}</h2>
-            <p class="mt-5">{{ __('messages.ready_description') }}</p>
+            <h2 class="text-4xl font-bold">{{ translate('ready_title') }}</h2>
+            <p class="mt-5">{{ translate('Ready Description') }}</p>
             <div class="mt-8">
                 @if (Auth::check())
                     <a href="/buy-finance-cars"
-                        class="bg-white text-blue-700 px-8 py-3 rounded-lg font-bold">{{ __('messages.get_started') }}</a>
+                        class="bg-white text-blue-700 px-8 py-3 rounded-lg font-bold">{{ translate('Get Started') }}</a>
                 @else
                     <a href="/login"
-                        class="bg-white text-blue-700 px-8 py-3 rounded-lg font-bold">{{ __('messages.get_started') }}</a>
+                        class="bg-white text-blue-700 px-8 py-3 rounded-lg font-bold">{{ translate('Get Started') }}</a>
                 @endif
             </div>
         </div>
@@ -147,32 +170,32 @@
                 <div>
                     <h2 class="text-2xl font-bold text-white">AutoOne</h2>
                     <p class="mt-4 text-gray-400">
-                        {{ __('messages.footer_description') }}
+                        {{ translate('footer_description') }}
                     </p>
                 </div>
 
                 <!-- Services -->
                 <div>
                     <h3 class="text-white font-bold mb-4">
-                        {{ __('messages.services') }}
+                        {{ translate('services') }}
                     </h3>
 
                     <div class="flex flex-col space-y-2">
                         <a href="{{ route('customer.workshops.maintenance.show') }}"
                             class="hover:text-red-500 transition">
-                            {{ __('messages.workshop') }}
+                            {{ translate('workshop') }}
                         </a>
 
                         <a href="{{ route('customer.carwash') }}" class="hover:text-red-500 transition">
-                            {{ __('messages.car_wash') }}
+                            {{ translate('car_wash') }}
                         </a>
 
                         <a href="{{ route('customer.rental') }}" class="hover:text-red-500 transition">
-                            {{ __('messages.rental') }}
+                            {{ translate('rental') }}
                         </a>
 
                         <a href="{{ route('customer.cars') }}" class="hover:text-red-500 transition">
-                            {{ __('messages.finance') }}
+                            {{ translate('finance') }}
                         </a>
                     </div>
                 </div>
@@ -180,20 +203,20 @@
                 <!-- Company -->
                 <div>
                     <h3 class="text-white font-bold mb-4">
-                        {{ __('messages.company') }}
+                        {{ translate('company') }}
                     </h3>
 
                     <div class="flex flex-col space-y-2">
                         <a href="{{ route('customer.about') }}" class="hover:text-red-500 transition">
-                            {{ __('messages.about') }}
+                            {{ translate('about') }}
                         </a>
 
                         <a href="{{ route('customer.faq') }}" class="hover:text-red-500 transition">
-                            {{ __('messages.faq') }}
+                            {{ translate('faq') }}
                         </a>
 
                         <a href="{{ route('customer.contact') }}" class="hover:text-red-500 transition">
-                            {{ __('messages.contact') }}
+                            {{ translate('contact') }}
                         </a>
                     </div>
                 </div>
@@ -201,7 +224,7 @@
                 <!-- Contact -->
                 <div>
                     <h3 class="text-white font-bold mb-4">
-                        {{ __('messages.contact') }}
+                        {{ translate('contact') }}
                     </h3>
 
                     <div class="space-y-2 text-gray-400">
@@ -215,7 +238,7 @@
 
             <!-- Bottom -->
             <div class="border-t border-gray-700 mt-10 pt-6 text-center text-gray-400">
-                {{ __('messages.copyright') }}
+                {{ translate('© 2026 AutoOne. All Rights Reserved.') }}
             </div>
         </div>
     </footer>

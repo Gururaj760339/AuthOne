@@ -59,6 +59,13 @@ class CarController extends Controller
 
         $finance = FinanceRequests::where('status', 'Approved')->first();
 
+        // Recommended Cars
+        $recommendedCars = Car::with('CarBrand')
+            ->where('status', 1) // যদি status field থাকে
+            ->latest()
+            ->take(6)
+            ->get();
+
         $setting = Setting::first();
 
         $featuredCars = Car::latest()->take(6)->get();
@@ -68,7 +75,8 @@ class CarController extends Controller
             'finance',
             'cars',
             'brands',
-            'featuredCars'
+            'featuredCars',
+            'recommendedCars'
         ));
     }
 

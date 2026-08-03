@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rental Requests</title>
+    <title>{{ translate('Rental Requests') }}</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -13,8 +13,10 @@
 
     <div class="max-w-7xl mx-auto py-10">
 
+        @include('ai_layer.ai_language_translate')
+
         <h2 class="text-3xl font-bold mb-8">
-            My Car Rental Requests
+            {{ translate('My Car Rental Requests') }}
         </h2>
 
         @if (session('success'))
@@ -36,32 +38,32 @@
                     <div>
 
                         <h3 class="text-xl font-bold">
-                            {{ $booking->car->brand }}
-                            {{ $booking->car->model }}
+                            {{ translate($booking->car->brand) }}
+                            {{ translate($booking->car->model) }}
                         </h3>
 
-                        <p><strong>Customer:</strong> {{ $booking->user->name }}</p>
+                        <p><strong>{{ translate('Customer') }}:</strong> {{ translate($booking->user->name) }}</p>
 
-                        <p><strong>Email:</strong> {{ $booking->user->email }}</p>
+                        <p><strong>{{ translate('Email') }}:</strong> {{ translate($booking->user->email) }}</p>
 
-                        <p><strong>Phone:</strong> {{ $booking->user->phone }}</p>
+                        <p><strong>{{ translate('Phone') }}:</strong> {{ translate($booking->user->phone) }}</p>
 
                     </div>
 
                     <div>
 
                         <p>
-                            <strong>Pickup:</strong>
-                            {{ $booking->pickup_date }}
+                            <strong>{{ translate('Pickup') }}:</strong>
+                            {{ translate($booking->pickup_date) }}
                         </p>
 
                         <p>
-                            <strong>Return:</strong>
-                            {{ $booking->return_date }}
+                            <strong>{{ translate('Return') }}:</strong>
+                            {{ translate($booking->return_date) }}
                         </p>
 
                         <p>
-                            <strong>Total:</strong>
+                            <strong>{{ translate('Total') }}:</strong>
                             ${{ number_format($booking->total_amount, 2) }}
                         </p>
 
@@ -78,30 +80,30 @@
                             <select name="status" class="border rounded-lg p-2">
 
                                 <option value="pending" {{ $booking->status == 'pending' ? 'selected' : '' }}>
-                                    Pending
+                                    {{ translate('Pending') }}
                                 </option>
 
                                 <option value="accepted" {{ $booking->status == 'accepted' ? 'selected' : '' }}>
-                                    Accepted
+                                    {{ translate('Accepted') }}
                                 </option>
 
                                 <option value="rejected" {{ $booking->status == 'rejected' ? 'selected' : '' }}>
-                                    Rejected
+                                    {{ translate('Rejected') }}
                                 </option>
 
                                 <option value="completed" {{ $booking->status == 'completed' ? 'selected' : '' }}>
-                                    Completed
+                                    {{ translate('Completed') }}
                                 </option>
 
                                 <option value="cancelled" {{ $booking->status == 'cancelled' ? 'selected' : '' }}>
-                                    Cancelled
+                                    {{ translate('Cancelled') }}
                                 </option>
 
                             </select>
 
                             <button type="submit"
                                 class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
-                                Update
+                                {{ translate('Update') }}
                             </button>
 
                         </form>
@@ -115,7 +117,7 @@
         @empty
 
             <div class="bg-white rounded-lg shadow p-10 text-center">
-                No rental requests found.
+                {{ translate('No rental requests found.') }}
             </div>
         @endforelse
 

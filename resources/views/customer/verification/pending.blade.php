@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Verification Pending</title>
+    <title>{{ translate('Verification Pending') }}</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100">
@@ -15,20 +15,20 @@
         </div>
 
         <h2 class="text-3xl font-bold">
-            Verification Pending
+            {{ translate('Verification Pending') }}
         </h2>
 
         <p class="text-gray-600 mt-4">
-            Your verification request has been submitted successfully.
+            {{ translate('Your verification request has been submitted successfully.') }}
         </p>
 
         <p class="mt-2">
-            Our admin team will review your documents.
+            {{ translate('Our admin team will review your documents.') }}
         </p>
 
         <a href="{{ route('customer.profile') }}"
            class="inline-block mt-8 bg-blue-600 text-white px-6 py-3 rounded-lg">
-            Back to Home
+            {{ translate('Back to Home') }}
         </a>
 
     </div>

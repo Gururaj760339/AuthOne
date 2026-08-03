@@ -25,6 +25,7 @@ use App\Http\Controllers\TestimoniasController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\P2PCarController;
+use App\Http\Controllers\PriceEstimationController;
 use App\Http\Controllers\UserVerificationController;
 use App\Models\ImporteRequest;
 use App\Models\ServiceCategory;
@@ -56,14 +57,14 @@ Route::get('/auth/google/callback',[SocialAuthController::class,'googleCallback'
 Route::get('/auth/apple',[SocialAuthController::class,'appleRedirect'])->name('apple.login');
 Route::get('/auth/apple/callback',[SocialAuthController::class,'appleCallback']);
 
-Route::get('/language/{locale}', function ($locale) {
+// Route::get('/language/{locale}', function ($locale) {
 
-    if (in_array($locale, ['en', 'ar', 'de'])) {
-        session(['locale' => $locale]);
-    }
+//     if (in_array($locale, ['en', 'ar', 'de'])) {
+//         session(['locale' => $locale]);
+//     }
 
-    return back();
-})->name('language.switch');
+//     return back();
+// })->name('language.switch');
 
 Route::get('/import-car-form', function () {
     return view('booking.car_import');
@@ -374,6 +375,7 @@ Route::get('/create-kyc', [KycVerificationController::class, 'createKyc'])->name
 Route::post('/store-kyc', [KycVerificationController::class, 'storeKyc'])->name('customer.store.kyc');
 Route::get('/show-kyc', [KycVerificationController::class, 'showKyc'])->name('customer.show.kyc');
 Route::delete('/customer/kyc/delete', [KycVerificationController::class, 'destroyKyc'])->name('customer.kyc.destroy');
+Route::get('/customer/import-requests', [ImportRequestController::class, 'customerProfileImportRequests'])->name('customer.import.requests');
 
 Route::get('/admin-kycs', [AdminKycController::class, 'showKycs'])->name('admin.kycs.show');
 Route::get('/admin-kyc/{id}', [AdminKycController::class, 'showKyc'])->name('admin.kyc.show');
@@ -405,3 +407,15 @@ Route::get('/admin/users-cars', [P2PCarController::class, 'showAdminAllCars'])->
 Route::get('/admin/users-car/{id}', [P2PCarController::class, 'showAdminSingleCar'])->name('admin.p2p.car.show')->middleware(['can:isAdmin']);
 Route::post('/admin/users-cars/approve/{id}', [P2PCarController::class, 'approveAdminCar'])->name('admin.p2p.car.approve')->middleware(['can:isAdmin']);
 Route::post('/admin/users-cars/reject/{id}', [P2PCarController::class, 'rejectAdminCar'])->name('admin.p2p.car.reject')->middleware(['can:isAdmin']);
+
+Route::post('/repair-estimation', [PriceEstimationController::class, 'repair'])->name('repair.estimation');
+Route::post('/rental-estimation', [PriceEstimationController::class, 'rental'])->name('rental.estimation');
+Route::post('/import-estimation', [PriceEstimationController::class, 'import'])->name('import.estimation');
+
+Route::get('/language/{lang}', function ($lang) {
+    if (!in_array($lang, ['en', 'ar', 'de'])) {
+        abort(404);
+    }
+    Session::put('language', $lang);
+    return redirect()->back();
+})->name('language.switch');

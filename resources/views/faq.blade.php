@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FAQ | AutoOne</title>
+    <title> {{ translate('FAQ') }} | AutoOne</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -24,22 +24,21 @@
         <div class="relative max-w-7xl mx-auto px-6 py-28 text-center">
 
             <span class="bg-blue-600 px-4 py-2 rounded-full text-sm">
-                Help Center
+                {{ translate('Help Center') }}
             </span>
 
             <h1 class="text-5xl font-bold mt-6">
 
-                Frequently Asked
+                {{ translate('Frequently Asked') }}
                 <span class="text-blue-400">
-                    Questions
+                    {{ translate('Questions') }}
                 </span>
 
             </h1>
 
             <p class="text-gray-300 mt-6 max-w-3xl mx-auto text-lg">
 
-                Find answers to the most common questions about buying, financing,
-                renting, importing, servicing, and maintaining your vehicle with AutoOne.
+                {{ translate('Find answers to the most common questions about buying, financing, renting, importing, servicing, and maintaining your vehicle with AutoOne.') }}
 
             </p>
 
@@ -56,7 +55,7 @@
 
             <h2 class="text-4xl font-bold text-center">
 
-                General Questions
+                {{ translate('General Questions') }}
 
             </h2>
 
@@ -66,13 +65,13 @@
 
                     <h3 class="text-xl font-semibold">
 
-                        {{ $faq->question }}
+                        {{ translate($faq->question) }}
 
                     </h3>
 
                     <p class="text-gray-600 mt-3">
 
-                        {{ $faq->answer }}
+                        {{ translate($faq->answer) }}
 
                     </p>
 

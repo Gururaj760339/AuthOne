@@ -251,6 +251,7 @@ class UserController extends Controller
 
     public function myProfile()
     {
+        $setting = Setting::first();
         $kyc = KycVerification::where('user_id', Auth::id())->first();
         $user = auth()->user();
         $bookingCount = RentalBooking::where('user_id', auth()->id())->count();
@@ -262,7 +263,8 @@ class UserController extends Controller
             'bookingCount',
             'financeCount',
             'importCount',
-            'kyc'
+            'kyc',
+            'setting'
         ));
     }
 }

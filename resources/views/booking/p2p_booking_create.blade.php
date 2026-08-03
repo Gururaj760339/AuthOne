@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>P2P Car Booking</title>
+    <title>{{ translate('P2P Car Booking') }}</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -39,17 +39,17 @@
             <div class="p-6">
 
                 <h2 class="text-3xl font-bold">
-                    {{ $car->brand }} {{ $car->model }}
+                    {{ translate($car->brand) }} {{ translate($car->model) }}
                 </h2>
 
                 <p class="mt-3">
-                    <strong>Owner:</strong>
-                    {{ $car->user->name }}
+                    <strong>{{ translate('Owner') }}:</strong>
+                    {{ translate($car->user->name) }}
                 </p>
 
                 <p>
-                    <strong>Price:</strong>
-                    ${{ number_format($car->price_per_day,2) }}/Day
+                    <strong>{{ translate('Price') }}:</strong>
+                    ${{ number_format($car->price_per_day,2) }}/{{ translate('day') }}
                 </p>
 
                 <hr class="my-5">
@@ -66,7 +66,7 @@
                     <div class="mb-4">
 
                         <label class="block mb-2 font-semibold">
-                            Pickup Date
+                            {{ translate('Pickup Date') }}
                         </label>
 
                         <input type="date"
@@ -80,7 +80,7 @@
                     <div class="mb-4">
 
                         <label class="block mb-2 font-semibold">
-                            Return Date
+                            {{ translate('Return Date') }}
                         </label>
 
                         <input type="date"
@@ -93,7 +93,7 @@
                     <div class="mb-4">
 
                         <label class="block mb-2 font-semibold">
-                            Pickup Location
+                            {{ translate('Pickup Location') }}
                         </label>
 
                         <input type="text"
@@ -106,7 +106,7 @@
                     <div class="mb-4">
 
                         <label class="block mb-2 font-semibold">
-                            Notes
+                            {{ translate('Notes') }}
                         </label>
 
                         <textarea
@@ -119,7 +119,7 @@
                     <button
                         class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg">
 
-                        Continue Booking
+                        {{ translate('Continue Booking') }}
 
                     </button>
 

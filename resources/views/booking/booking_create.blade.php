@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ __('messages.book_maintenance') }} | AutoOne</title>
+    <title>{{ translate('Book Maintenance') }} | AutoOne</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -15,14 +15,14 @@
 
         <div class="w-full max-w-2xl bg-white rounded-2xl shadow-xl p-8">
 
-            @include('language_drop_down')
+            @include('ai_layer.ai_language_translate')
 
             <h1 class="text-3xl font-bold text-center text-slate-800 mb-2">
-                Book Maintenance & Car Wash
+                {{ translate('Book Maintenance & Car Wash') }}
             </h1>
 
             <p class="text-center text-gray-500 mb-8">
-                {{ __('messages.book_maintenance_desc') }}
+                {{ translate('book maintenance desc') }}
             </p>
 
             <form action="{{ route('customer.booking.store') }}" method="POST" class="space-y-6">
@@ -31,7 +31,7 @@
                 <!-- Service -->
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-2">
-                        {{ __('messages.select_service') }}
+                        {{ translate('select service') }}
                     </label>
 
                     <select name="service_id"
@@ -40,7 +40,7 @@
 
                         @foreach ($services as $service)
                             <option value="{{ $service->id }}">
-                                {{ $service->title }}
+                                {{ translate($service->title) }}
                             </option>
                         @endforeach
 
@@ -60,7 +60,7 @@
                 <!-- Date -->
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-2">
-                        {{ __('messages.booking_date') }}
+                        {{ translate('Booking Date') }}
                     </label>
 
                     <input type="date" name="booking_date"
@@ -71,7 +71,7 @@
                 <!-- Time -->
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-2">
-                        {{ __('messages.preferred_time') }}
+                        {{ translate('Preferred Time') }}
                     </label>
 
                     <input type="time" name="booking_time"
@@ -82,17 +82,17 @@
                 <!-- Notes -->
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-2">
-                        {{ __('messages.additional_notes') }}
+                        {{ translate('Additional Notes') }}
                     </label>
 
-                    <textarea name="notes" rows="5" placeholder="{{ __('messages.notes_placeholder') }}"
+                    <textarea name="notes" rows="5" placeholder="{{ translate('notes placeholder') }}"
                         class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
                 </div>
 
                 <!-- Button -->
                 <button type="submit"
                     class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition duration-300">
-                    {{ __('messages.confirm_booking') }}
+                    {{ translate('Confirm Booking') }}
                 </button>
 
             </form>

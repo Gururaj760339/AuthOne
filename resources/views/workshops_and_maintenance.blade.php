@@ -28,33 +28,33 @@
             <!-- Hero -->
 
             <span class="bg-red-600 px-4 py-2 rounded-full text-sm">
-                {{ __('messages.trusted_auto_service') }}
+                {{ translate('Trusted Auto Service') }}
             </span>
 
             <h1 class="text-5xl font-bold mt-6 leading-tight">
-                {{ __('messages.workshops_maintenance') }}
+                {{ translate('Workshops & Maintenance') }}
             </h1>
 
             <p class="text-gray-300 mt-6 max-w-2xl text-lg leading-8">
-                {{ __('messages.maintenance_description') }}
+                {{ translate('maintenance description') }}
             </p>
 
             <div class="mt-10 flex flex-wrap gap-4">
                 @if (Auth::check())
                     <a href="{{ route('customer.maintenance.booking.create') }}"
                         class="bg-red-600 hover:bg-red-700 px-7 py-4 rounded-lg font-semibold transition">
-                        {{ __('messages.book_maintenance') }}
+                        {{ translate('Book Maintenance') }}
                     </a>
                 @else
                     <a href="/login" class="bg-red-600 hover:bg-red-700 px-7 py-4 rounded-lg font-semibold transition">
-                        {{ __('messages.book_maintenance') }}
+                        {{ translate('Book Maintenance') }}
                     </a>
                 @endif
 
 
                 <a href="#services"
                     class="border border-white px-7 py-4 rounded-lg hover:bg-white hover:text-black transition">
-                    {{ __('messages.explore_services') }}
+                    {{ translate('Explore Services') }}
                 </a>
 
             </div>
@@ -72,11 +72,11 @@
             <div class="text-center">
 
                 <h2 class="text-4xl font-bold">
-                    {{ __('messages.our_maintenance_services') }}
+                    {{ translate('Our Maintenance Services') }}
                 </h2>
 
                 <p class="text-gray-600 mt-4">
-                    {{ __('messages.maintenance_services_desc') }}
+                    {{ translate('maintenance Services Desc') }}
                 </p>
 
             </div>
@@ -90,11 +90,11 @@
                         </div>
 
                         <h3 class="font-bold text-xl">
-                            {{ $service->title }}
+                            {{ translate($service->title) }}
                         </h3>
 
                         <p class="mt-3 text-gray-600">
-                            {{ $service->description }}
+                            {{ translate($service->description) }}
                         </p>
 
                     </div>
@@ -104,6 +104,52 @@
         </div>
 
     </section>
+
+
+    @if ($recommendedServices->count())
+        <section class="py-16 bg-gray-100">
+            <div class="max-w-7xl mx-auto px-6">
+
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl font-bold">
+                        {{ translate('Recommended Services') }}
+                    </h2>
+                    <p class="text-gray-600 mt-2">
+                        {{ translate('Most booked maintenance services for you') }}
+                    </p>
+                </div>
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+
+                    @foreach ($recommendedServices as $service)
+                        <div class="bg-white p-8 rounded-xl shadow hover:shadow-xl transition">
+
+                            <div class="text-5xl mb-5 text-blue-600">
+                                <i class="{{ $service->serviceCategory->icon }}"></i>
+                            </div>
+
+                            <h3 class="font-bold text-xl">
+                                {{ translate($service->title) }}
+                            </h3>
+
+                            <p class="mt-3 text-gray-600 line-clamp-3">
+                                {{ translate($service->description) }}
+                            </p>
+
+                            <div class="mt-4">
+                                <span class="text-lg font-bold text-green-600">
+                                    {{ translate($service->price) }} $
+                                </span>
+                            </div>
+
+                        </div>
+                    @endforeach
+
+                </div>
+
+            </div>
+        </section>
+    @endif
 
     <!-- Why Choose -->
 
@@ -121,7 +167,7 @@
             <div>
 
                 <h2 class="text-4xl font-bold">
-                    {{ __('messages.why_choose_workshop') }}
+                    {{ translate('Why Choose Our Workshop') }}
                 </h2>
 
                 <div class="space-y-6 mt-10">
@@ -129,11 +175,11 @@
                     <div>
 
                         <h4 class="font-bold text-xl">
-                            ✔ {{ __('messages.certified_technicians') }}
+                            ✔ {{ translate('certified_technicians') }}
                         </h4>
 
                         <p class="text-gray-600 mt-2">
-                            {{ __('messages.certified_technicians_desc') }}
+                            {{ translate('certified technicians_desc') }}
                         </p>
 
                     </div>
@@ -141,11 +187,11 @@
                     <div>
 
                         <h4 class="font-bold text-xl">
-                            ✔ {{ __('messages.genuine_parts') }}
+                            ✔ {{ translate('genuine Parts') }}
                         </h4>
 
                         <p class="text-gray-600 mt-2">
-                            {{ __('messages.genuine_parts_desc') }}
+                            {{ translate('genuine Parts Desc') }}
                         </p>
 
                     </div>
@@ -153,11 +199,11 @@
                     <div>
 
                         <h4 class="font-bold text-xl">
-                            ✔ {{ __('messages.transparent_pricing') }}
+                            ✔ {{ translate('transparent Pricing') }}
                         </h4>
 
                         <p class="text-gray-600 mt-2">
-                            {{ __('messages.transparent_pricing_desc') }}
+                            {{ translate('transparent pricing desc') }}
                         </p>
 
                     </div>
@@ -165,11 +211,11 @@
                     <div>
 
                         <h4 class="font-bold text-xl">
-                            ✔ {{ __('messages.warranty_included') }}
+                            ✔ {{ translate('Warranty included') }}
                         </h4>
 
                         <p class="text-gray-600 mt-2">
-                            {{ __('messages.warranty_included_desc') }}
+                            {{ translate('warranty included desc') }}
                         </p>
 
                     </div>
@@ -189,7 +235,7 @@
         <div class="max-w-7xl mx-auto px-6">
 
             <h2 class="text-center text-4xl font-bold">
-                {{ __('messages.how_it_works') }}
+                {{ translate('How It Works') }}
             </h2>
 
             <div class="grid md:grid-cols-4 gap-8 mt-14">
@@ -205,7 +251,7 @@
 
                     <h4 class="font-bold mt-6">
 
-                        {{ __('messages.book_service') }}
+                        {{ translate('book Service') }}
 
 
                     </h4>
@@ -223,7 +269,7 @@
 
                     <h4 class="font-bold mt-6">
 
-                        {{ __('messages.vehicle_inspection') }}
+                        {{ translate('vehicle Inspection') }}
 
                     </h4>
 
@@ -240,7 +286,7 @@
 
                     <h4 class="font-bold mt-6">
 
-                        {{ __('messages.maintenance') }}
+                        {{ translate('Maintenance') }}
 
                     </h4>
 
@@ -257,7 +303,7 @@
 
                     <h4 class="font-bold mt-6">
 
-                        {{ __('messages.ready_for_pickup') }}
+                        {{ translate('ready For Pickup') }}
 
                     </h4>
 
@@ -269,6 +315,8 @@
 
     </section>
 
+    @include('predict_maintenance')
+    @include('estimation_price.repair')
     @include('ai_layer.chatbot')
 
     @if ($booking && $booking->status == 'Completed')
@@ -286,11 +334,11 @@
                     </div>
 
                     <h2 class="text-3xl font-bold mt-5">
-                        Leave Your Review
+                        {{ translate('Leave Your Review') }}
                     </h2>
 
                     <p class="text-gray-500 mt-2">
-                        We'd love to hear about your experience.
+                        {{ translate('We\'d love to hear about your experience.') }}
                     </p>
 
                 </div>
@@ -301,7 +349,7 @@
 
                     <div>
                         <label class="block mb-2 font-semibold">
-                            Your Name
+                            {{ translate('Your Name') }}
                         </label>
 
                         <input type="text" name="name" value="{{ Auth::user()->name }}"
@@ -310,7 +358,7 @@
 
                     <div>
                         <label class="block mb-2 font-semibold">
-                            Location
+                            {{ translate('Location') }}
                         </label>
 
                         <input type="text" name="location" placeholder="Dhaka, Bangladesh"
@@ -319,24 +367,24 @@
 
                     <div>
                         <label class="block mb-2 font-semibold">
-                            Rating
+                            {{ translate('Rating') }}
                         </label>
 
                         <select name="rating" class="w-full border rounded-lg p-3" required>
 
-                            <option value="">Select Rating</option>
-                            <option value="5">⭐⭐⭐⭐⭐ Excellent</option>
-                            <option value="4">⭐⭐⭐⭐ Very Good</option>
-                            <option value="3">⭐⭐⭐ Good</option>
-                            <option value="2">⭐⭐ Fair</option>
-                            <option value="1">⭐ Poor</option>
+                            <option value="">{{ translate('Select Rating') }}</option>
+                            <option value="5">{{ translate('⭐⭐⭐⭐⭐ Excellent') }}</option>
+                            <option value="4">{{ translate('⭐⭐⭐⭐ Very Good') }}</option>
+                            <option value="3">{{ translate('⭐⭐⭐ Good') }}</option>
+                            <option value="2">{{ translate('⭐⭐ Fair') }}</option>
+                            <option value="1">{{ translate('⭐ Poor') }}</option>
 
                         </select>
                     </div>
 
                     <div>
                         <label class="block mb-2 font-semibold">
-                            Review
+                            {{ translate('Review') }}
                         </label>
 
                         <textarea name="review" rows="5" class="w-full border rounded-lg p-3" placeholder="Write your review..."
@@ -345,14 +393,14 @@
 
                     <div>
                         <label class="block mb-2 font-semibold">
-                            Image
+                            {{ translate('Image') }}
                         </label>
 
                         <input type="file" name="image" class="w-full border rounded-lg p-3">
                     </div>
 
                     <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700">
-                        Submit Review
+                        {{ translate('Submit Review') }}
                     </button>
 
                 </form>
@@ -361,7 +409,7 @@
         </div>
     @endif
 
-    
+
 
     <!-- Reviews -->
 
@@ -370,47 +418,45 @@
         <div class="max-w-7xl mx-auto px-6">
 
             <h2 class="text-center text-4xl font-bold">
-                {{ __('messages.customer_reviews') }}
+                {{ translate('Customer Reviews') }}
             </h2>
 
             <div class="grid md:grid-cols-3 gap-8 mt-14">
 
-    @foreach($testimonials as $testimonial)
+                @foreach ($testimonials as $testimonial)
+                    <div class="bg-gray-100 rounded-xl p-8 rounded-lg shadow">
 
-    <div class="bg-gray-100 rounded-xl p-8 rounded-lg shadow">
+                        @if ($testimonial->image)
+                            <img src="{{ asset('storage/' . $testimonial->image) }}"
+                                class="w-20 h-20 rounded-full object-cover mx-auto mb-4">
+                        @endif
 
-        @if($testimonial->image)
-            <img src="{{ asset('storage/'.$testimonial->image) }}"
-                class="w-20 h-20 rounded-full object-cover mx-auto mb-4">
-        @endif
+                        <div class="text-yellow-500 text-xl mb-3">
+                            @for ($i = 1; $i <= 5; $i++)
+                                @if ($i <= $testimonial->rating)
+                                    ⭐
+                                @else
+                                    ☆
+                                @endif
+                            @endfor
+                        </div>
 
-        <div class="text-yellow-500 text-xl mb-3">
-            @for($i = 1; $i <= 5; $i++)
-                @if($i <= $testimonial->rating)
-                    ⭐
-                @else
-                    ☆
-                @endif
-            @endfor
-        </div>
+                        <p class="text-gray-600">
+                            {{ translate($testimonial->review) }}
+                        </p>
 
-        <p class="text-gray-600">
-            {{ $testimonial->review }}
-        </p>
+                        <h5 class="mt-5 font-bold text-lg">
+                            {{ translate($testimonial->name) }}
+                        </h5>
 
-        <h5 class="mt-5 font-bold text-lg">
-            {{ $testimonial->name }}
-        </h5>
+                        <p class="text-gray-500 text-sm">
+                            {{ translate($testimonial->location) }}
+                        </p>
 
-        <p class="text-gray-500 text-sm">
-            {{ $testimonial->location }}
-        </p>
+                    </div>
+                @endforeach
 
-    </div>
-
-    @endforeach
-
-</div>
+            </div>
 
         </div>
 
@@ -423,22 +469,22 @@
         <div class="max-w-4xl mx-auto px-6">
 
             <h2 class="text-4xl font-bold text-center">
-                {{ __('messages.faq') }}
+                {{ translate('Frequently Asked Questions') }}
             </h2>
 
             <div class="space-y-6 mt-12">
                 @foreach ($faqs as $faq)
-                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="bg-white rounded-lg shadow p-6">
 
-                    <h4 class="font-bold">
-                        {{ $faq->question }}
-                    </h4>
+                        <h4 class="font-bold">
+                            {{ translate($faq->question) }}
+                        </h4>
 
-                    <p class="text-gray-600 mt-2">
-                        {{ $faq->answer }}
-                    </p>
+                        <p class="text-gray-600 mt-2">
+                            {{ translate($faq->answer) }}
+                        </p>
 
-                </div>
+                    </div>
                 @endforeach
 
             </div>
@@ -454,22 +500,22 @@
         <div class="max-w-4xl mx-auto px-6">
 
             <h2 class="text-4xl font-bold">
-                {{ __('messages.keep_car_perfect') }}
+                {{ translate('Keep Your Car in Perfect Condition') }}
             </h2>
 
             <p class="mt-5 text-red-100 text-lg">
-                {{ __('messages.keep_car_desc') }}
+                {{ translate('keep your car desc') }}
             </p>
 
             @if (Auth::check())
                 <a href="{{ route('customer.maintenance.booking.create') }}"
                     class="inline-block mt-8 bg-white text-red-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-200 transition">
-                    {{ __('messages.book_appointment') }}
+                    {{ translate('book Appointment') }}
                 </a>
             @else
                 <a href="/login"
                     class="inline-block mt-8 bg-white text-red-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-200 transition">
-                    {{ __('messages.book_appointment') }}
+                    {{ translate('book Appointment') }}
                 </a>
             @endif
 

@@ -4,12 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customer Profile</title>
+    <title>{{ translate('Customer Profile') }}</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body class="bg-gray-100">
+
+    @include('navbar', ['setting' => $setting])
 
     <div class="max-w-6xl mx-auto py-10 px-4">
 
@@ -23,16 +25,16 @@
                     <div
                         class="w-24 h-24 rounded-full bg-blue-600 text-white flex items-center justify-center text-4xl font-bold mx-auto">
 
-                        {{ strtoupper(substr($user->name, 0, 1)) }}
+                        {{ strtoupper(substr(translate($user->name), 0, 1)) }}
 
                     </div>
 
                     <h2 class="mt-4 text-2xl font-bold">
-                        {{ $user->name }}
+                        {{ translate($user->name) }}
                     </h2>
 
                     <p class="text-gray-500">
-                        {{ $user->email }}
+                        {{ translate($user->email) }}
                     </p>
 
                 </div>
@@ -42,39 +44,41 @@
                 <div class="space-y-3">
 
                     <a href="{{ route('customer.profile') }}" class="block bg-blue-50 hover:bg-blue-100 p-3 rounded-lg">
-                        👤 My Profile
+                        👤 {{ translate('My Profile') }}
                     </a>
 
                     <a href="{{ route('customer.show.kyc') }}"
                         class="block bg-green-50 hover:bg-green-100 p-3 rounded-lg">
-                        🆔 KYC Verification
+                        🆔 {{ translate('KYC Verification') }}   
                     </a>
 
                     <a href="#" class="block bg-yellow-50 hover:bg-yellow-100 p-3 rounded-lg">
-                        🚗 My Bookings
+                        🚗 {{ translate('My Bookings') }}
                     </a>
 
                     <a href="#" class="block bg-purple-50 hover:bg-purple-100 p-3 rounded-lg">
-                        💳 Finance Requests
+                        💳 {{ translate('Finance Requests') }}
                     </a>
 
-                    <a href="#" class="block bg-pink-50 hover:bg-pink-100 p-3 rounded-lg">
-                        🌍 Import Requests
+                    <a href="{{ route('customer.import.requests') }}" class="block bg-pink-50 hover:bg-pink-100 p-3 rounded-lg">
+                        🌍 {{ translate('Import Requests') }}
                     </a>
 
                     <a href="#" class="block bg-gray-50 hover:bg-gray-100 p-3 rounded-lg">
-                        🔑 Change Password
+                        🔑 {{ translate('Change Password') }}
                     </a>
 
                     <a href="{{ route('p2p.cars.show') }}" class="block bg-yellow-50 hover:bg-yellow-100 p-3 rounded-lg">
-                        🚗 Rent My Car
+                        🚗 {{ translate('Rent My Car') }}
                     </a>
 
                     <a href="{{ route('p2p.cars.rental.requests') }}" class="block bg-blue-50 hover:bg-blue-100 p-3 rounded-lg">
-                        📝 Rental Requests
+                        📝 {{ translate('Rental Requests') }}
                     </a>
 
                 </div>
+
+                
 
             </div>
 
@@ -85,44 +89,44 @@
                 <div id="profile" class="bg-white rounded-xl shadow-lg p-6">
 
                     <h2 class="text-2xl font-bold mb-6">
-                        Personal Information
+                        {{ translate('Personal Information') }}
                     </h2>
 
                     <div class="grid md:grid-cols-2 gap-6">
 
                         <div>
                             <label class="font-semibold text-gray-600">
-                                Name
+                                {{ translate('Name') }}
                             </label>
 
                             <p class="mt-1">
-                                {{ $user->name }}
+                                {{ translate($user->name) }}
                             </p>
                         </div>
 
                         <div>
                             <label class="font-semibold text-gray-600">
-                                Email
+                                {{ translate('Email') }}
                             </label>
 
                             <p class="mt-1">
-                                {{ $user->email }}
+                                {{ translate($user->email) }}
                             </p>
                         </div>
 
                         <div>
                             <label class="font-semibold text-gray-600">
-                                Phone
+                                {{ translate('Phone') }}
                             </label>
 
                             <p class="mt-1">
-                                {{ $user->phone ?? 'N/A' }}
+                                {{ translate($user->phone ?? 'N/A') }}
                             </p>
                         </div>
 
                         <div>
                             <label class="font-semibold text-gray-600">
-                                Member Since
+                                {{ translate('Member Since') }}
                             </label>
 
                             <p class="mt-1">
@@ -142,36 +146,36 @@
                         <div>
 
                             <h2 class="text-2xl font-bold">
-                                🆔 KYC Verification
+                                🆔 {{ translate('KYC Verification') }}
                             </h2>
 
                             <p class="text-gray-500 mt-2">
-                                Complete KYC to rent cars, apply for finance and import vehicles.
+                                {{ translate('Complete KYC to rent cars, apply for finance and import vehicles.') }}
                             </p>
 
                         </div>
 
                         @if(!$kyc)
                             <span class="bg-yellow-100 text-yellow-700 px-4 py-2 rounded-full font-semibold">
-                                Please Verify Your KYC
+                                {{ translate('Please Verify Your KYC') }}
                             </span>
                         
                         @elseif($kyc->status == 'pending')
                             <span class="bg-yellow-100 text-yellow-700 px-5 py-2 rounded-lg font-semibold">
 
-                                Pending Review
+                                {{ translate('Pending Review') }}
 
                             </span>
                         @elseif($kyc->status == 'verified')
                             <span class="bg-green-100 text-green-700 px-5 py-2 rounded-lg font-semibold">
 
-                                Verified
+                                {{ translate('Verified') }}
 
                             </span>
                         @elseif($kyc->status == 'rejected')
                             <span class="bg-red-100 text-red-700 px-5 py-2 rounded-lg font-semibold">
 
-                                Rejected
+                                {{ translate('Rejected') }}
 
                             </span>
                         
@@ -183,7 +187,7 @@
 
                     <a href="{{ route('customer.create.kyc') }}"
                         class="inline-block mt-6 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg">
-                        Verify Now
+                        {{ translate('Verify Now') }}
                     </a>
 
                 </div>
@@ -198,7 +202,7 @@
                         </h3>
 
                         <p class="mt-2">
-                            Car Bookings
+                            {{ translate('Car Bookings') }}
                         </p>
 
                     </div>
@@ -210,7 +214,7 @@
                         </h3>
 
                         <p class="mt-2">
-                            Finance Requests
+                            {{ translate('Finance Requests') }}
                         </p>
 
                     </div>
@@ -222,7 +226,7 @@
                         </h3>
 
                         <p class="mt-2">
-                            Import Requests
+                            {{ translate('Import Requests') }}
                         </p>
 
                     </div>
@@ -230,7 +234,7 @@
                 </div>
 
                 <a href="/" class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg">
-                    ← Back Home
+                    ← {{ translate('Back Home') }}
                 </a>
 
             </div>

@@ -15,14 +15,14 @@
 
         <div class="w-full max-w-3xl bg-white rounded-2xl shadow-xl p-8">
 
-            @include('language_drop_down')
+            @include('ai_layer.ai_language_translate')
 
             <h2 class="text-3xl font-bold text-center text-slate-800 mb-2">
-                {{ __('messages.apply_finance') }}
+                {{ translate('Apply for Finance') }}
             </h2>
 
             <p class="text-center text-gray-500 mb-8">
-                {{ __('messages.apply_finance_desc') }}
+                {{ translate('apply finance desc') }}
             </p>
 
 
@@ -34,19 +34,19 @@
                 <!-- Select Car -->
                 <div>
                     <label class="block font-semibold mb-2">
-                        {{ __('messages.select_car') }}
+                        {{ translate('select car') }}
                     </label>
 
                     <select name="car_id" class="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500"
                         required>
 
                         <option value="">
-                            {{ __('messages.choose_car') }}
+                            {{ translate('choose car') }}
                         </option>
 
                         @foreach ($cars as $car)
                             <option value="{{ $car->id }}">
-                                {{ $car->title }}
+                                {{ translate($car->title) }}
                             </option>
                         @endforeach
                     </select>
@@ -56,10 +56,10 @@
                 <!-- Full Name -->
                 <div>
                     <label class="block font-semibold mb-2">
-                        {{ __('messages.full_name') }}
+                        {{ translate('Full Name') }}
                     </label>
 
-                    <input type="text" name="full_name" placeholder="{{ __('messages.enter_full_name') }}"
+                    <input type="text" name="full_name" placeholder="{{ translate('enter full name') }}"
                         class="w-full border rounded-lg px-4 py-3" required>
                 </div>
 
@@ -67,10 +67,10 @@
                 <!-- Email -->
                 <div>
                     <label class="block font-semibold mb-2">
-                        {{ __('messages.email_address') }}
+                        {{ translate('Email Address') }}
                     </label>
 
-                    <input type="email" name="email" placeholder="{{ __('messages.enter_email') }}"
+                    <input type="email" name="email" placeholder="{{ translate('enter email') }}"
                         class="w-full border rounded-lg px-4 py-3" required>
                 </div>
 
@@ -78,10 +78,10 @@
                 <!-- Phone -->
                 <div>
                     <label class="block font-semibold mb-2">
-                        {{ __('messages.phone_number') }}
+                        {{ translate('Phone Number') }}
                     </label>
 
-                    <input type="text" name="phone" placeholder="{{ __('messages.phone_placeholder') }}"
+                    <input type="text" name="phone" placeholder="{{ translate('enter phone') }}"
                         class="w-full border rounded-lg px-4 py-3" required>
                 </div>
 
@@ -89,10 +89,10 @@
                 <!-- Salary -->
                 <div>
                     <label class="block font-semibold mb-2">
-                        {{ __('messages.monthly_salary') }}
+                        {{ translate('Monthly Salary') }}
                     </label>
 
-                    <input type="number" name="salary" placeholder="{{ __('messages.salary_placeholder') }}"
+                    <input type="number" name="salary" placeholder="{{ translate('salary placeholder') }}"
                         class="w-full border rounded-lg px-4 py-3" required>
                 </div>
 
@@ -100,33 +100,33 @@
                 <!-- Employment -->
                 <div>
                     <label class="block font-semibold mb-2">
-                        {{ __('messages.employment_status') }}
+                        {{ translate('Employment Status') }}
                     </label>
 
                     <select name="employment" class="w-full border rounded-lg px-4 py-3" required>
 
                         <option value="">
-                            {{ __('messages.select_employment') }}
+                            {{ translate('select employment') }}
                         </option>
 
                         <option value="Full Time">
-                            {{ __('messages.full_time') }}
+                            {{ translate('full time') }}
                         </option>
 
                         <option value="Part Time">
-                            {{ __('messages.part_time') }}
+                            {{ translate('part time') }}
                         </option>
 
                         <option value="Self Employed">
-                            {{ __('messages.self_employed') }}
+                            {{ translate('self employed') }}
                         </option>
 
                         <option value="Business Owner">
-                            {{ __('messages.business_owner') }}
+                            {{ translate('business owner') }}
                         </option>
 
                         <option value="Government Employee">
-                            {{ __('messages.government_employee') }}
+                            {{ translate('government employee') }}
                         </option>
 
                     </select>
@@ -136,17 +136,17 @@
                 <!-- Down Payment -->
                 <div>
                     <label class="block font-semibold mb-2">
-                        {{ __('messages.down_payment') }}
+                        {{ translate('Down Payment') }}
                     </label>
 
                     <input type="number" name="down_payment"
-                        placeholder="{{ __('messages.down_payment_placeholder') }}"
+                        placeholder="{{ translate('down payment placeholder') }}"
                         class="w-full border rounded-lg px-4 py-3" required>
                 </div>
 
                 <div class="w-full">
                     <label class="block text-sm font-medium text-gray-700 mb-2">
-                        Select Finance Partner
+                        {{ translate('Select Finance Partner') }}
                     </label>
 
                     <select name="finance_partner_id"
@@ -155,12 +155,12 @@
                focus:outline-none focus:ring-2 focus:ring-blue-500 
                focus:border-blue-500 transition duration-200">
                         <option value="" disabled selected>
-                            Choose a finance partner
+                            {{ translate('choose finance partner') }}
                         </option>
 
                         @foreach ($partners as $partner)
                             <option value="{{ $partner->id }}">
-                                {{ $partner->name }}
+                                {{ translate($partner->name) }}
                             </option>
                         @endforeach
                     </select>
@@ -171,7 +171,7 @@
                 <button type="submit"
                     class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition">
 
-                    {{ __('messages.submit_finance') }}
+                    {{ translate('submit finance') }}
 
                 </button>
 

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Car Rental | AutoOne</title>
+    <title>{{ translate('Car Rental | AutoOne') }}</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -24,33 +24,33 @@
         <div class="relative max-w-7xl mx-auto px-6 py-28">
 
             <span class="bg-yellow-500 text-black px-4 py-2 rounded-full text-sm font-semibold">
-                {{ __('messages.premium_car_rental') }}
+                {{ translate('Premium Car Rental') }}
             </span>
 
             <h1 class="text-5xl font-bold mt-6">
-                {{ __('messages.rent_perfect_car') }}
+                {{ translate('Rent Your Perfect Car') }}
             </h1>
 
             <p class="text-gray-300 mt-6 max-w-2xl text-lg leading-8">
-                {{ __('messages.rental_description') }}
+                {{ translate('Rental Description') }}
             </p>
 
             <div class="flex gap-4 mt-10 flex-wrap">
 
                 <a href="#cars"
                     class="bg-yellow-500 text-black px-8 py-4 rounded-lg font-semibold hover:bg-yellow-400 transition">
-                    {{ __('messages.browse_cars') }}
+                    {{ translate('Browse Cars') }}
                 </a>
 
                 @if (Auth::check())
                     <a href="{{ route('customer.rental.booking.create') }}"
                         class="border border-white px-8 py-4 rounded-lg hover:bg-white hover:text-black transition">
-                        {{ __('messages.book_now') }}
+                        {{ translate('Book Now') }}
                     </a>
                 @else
                     <a href="/login"
                         class="border border-white px-8 py-4 rounded-lg hover:bg-white hover:text-black transition">
-                        {{ __('messages.book_now') }}
+                        {{ translate('Book Now') }}
                     </a>
                 @endif
             </div>
@@ -68,11 +68,11 @@
             <div class="text-center">
 
                 <h2 class="text-4xl font-bold">
-                    {{ __('messages.available_rental_cars') }}
+                    {{ translate('Available Rental Cars') }}
                 </h2>
 
                 <p class="text-gray-600 mt-4">
-                    {{ __('messages.choose_range_cars') }}
+                    {{ translate('Choose from our range of rental cars') }}
                 </p>
 
             </div>
@@ -85,13 +85,13 @@
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
 
                         <div class="md:col-span-3">
-                            <input type="text" name="city" value="{{ request('city') }}" placeholder="Enter City"
+                            <input type="text" name="city" value="{{ request('city') }}" placeholder="{{ translate('Enter City') }}"
                                 class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
                         </div>
 
                         <button type="submit"
                             class="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-3 py-3 transition">
-                            Search
+                            {{ translate('Search') }}
                         </button>
 
                     </div>
@@ -107,11 +107,11 @@
                         <div class="p-6">
 
                             <h3 class="text-2xl font-bold">
-                                {{ $rental->car->title }}
+                                {{ translate($rental->car->title) }}
                             </h3>
 
                             <p class="text-gray-600 mt-3">
-                                {{ $rental->car->transmission . ' • ' . $rental->car->fuel_type . ' • ' . $rental->car->mileage }}
+                                {{ translate($rental->car->transmission) . ' • ' . translate($rental->car->fuel_type) . ' • ' . translate($rental->car->mileage) }}
                             </p>
 
                             <div class="flex justify-between items-center mt-6">
@@ -119,11 +119,11 @@
                                 <div>
 
                                     <p class="text-gray-500 text-sm">
-                                        {{ __('messages.starting_from') }}
+                                        {{ translate('Starting from') }}
                                     </p>
 
                                     <p class="text-3xl font-bold text-yellow-500">
-                                        ${{ $rental->price_per_day }}/day
+                                        ${{ translate($rental->price_per_day) }}{{translate('/day')}} 
                                     </p>
 
                                 </div>
@@ -131,12 +131,12 @@
                                 @if (Auth::check())
                                     <a href="{{ route('customer.single.rental.bookin.create', $rental->id) }}"
                                         class="bg-yellow-500 hover:bg-yellow-400 px-5 py-2 rounded-lg font-semibold">
-                                        {{ __('messages.rent_now') }}
+                                        {{ translate('Rent Now') }}
                                     </a>
                                 @else
                                     <a href="/login"
                                         class="bg-yellow-500 hover:bg-yellow-400 px-5 py-2 rounded-lg font-semibold">
-                                        {{ __('messages.rent_now') }}
+                                        {{ translate('Rent Now') }}
                                     </a>
                                 @endif
 
@@ -151,7 +151,7 @@
 
             </div>
 
-            <h2 class="text-3xl font-bold mb-6">P2P Rental Cars</h2>
+            <h2 class="text-3xl font-bold mb-6">{{ translate('P2P Rental Cars') }}</h2>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
@@ -164,25 +164,26 @@
                         <div class="p-5">
 
                             <h3 class="text-xl font-bold">
-                                {{ $car->brand }} {{ $car->model }}
+                                {{ translate($car->brand) }} {{ translate($car->model) }}
                             </h3>
 
                             <p class="text-gray-600">
-                                Owner: {{ $car->user->name }}
+                                Owner: {{ translate($car->user->name) }}
                             </p>
 
                             <p class="font-semibold mt-2">
-                                ${{ $car->price_per_day }}/Day
+                                ${{ translate($car->price_per_day) }}/{{translate('/day')}}
                             </p>
 
                             @if (Auth::check())
-                                <a href="{{ route('p2p.booking.create', $car->id) }}" class="mt-4 inline-block bg-blue-600 text-white px-4 py-2 rounded">
-                                Rent Now
-                            </a>
+                                <a href="{{ route('p2p.booking.create', $car->id) }}"
+                                    class="mt-4 inline-block bg-blue-600 text-white px-4 py-2 rounded">
+                                    {{ translate('Rent Now') }}
+                                </a>
                             @else
                                 <a href="/login" class="mt-4 inline-block bg-blue-600 text-white px-4 py-2 rounded">
-                                Rent Now
-                            </a>
+                                    {{ translate('Rent Now') }}
+                                </a>
                             @endif
 
                         </div>
@@ -195,6 +196,87 @@
         </div>
 
     </section>
+
+    @if ($recommendedRentals->count())
+
+        <section class="mt-20 max-w-7xl mx-auto px-6">
+
+            <div class="text-center mb-10">
+                <h2 class="text-4xl font-bold">
+                    ⭐ {{ translate('Recommended Rental Cars') }}
+                </h2>
+                <p class="text-gray-500 mt-2">
+                    {{ translate('Most popular rental cars for you') }}
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-3 md:grid-cols-2 gap-8">
+
+                @foreach ($recommendedRentals as $rental)
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition duration-300">
+
+                        <div class="relative">
+
+                            <img src="{{ asset('storage/' . $rental->car->thumbnail) }}"
+                                alt="{{ translate($rental->car->title) }}" class="w-full h-56 object-cover">
+
+                            <span
+                                class="absolute top-3 left-3 bg-yellow-500 text-white text-xs font-semibold px-3 py-1 rounded-full">
+                                ⭐ {{ translate('Recommended') }}
+                            </span>
+
+                        </div>
+
+                        <div class="p-6">
+
+                            <h3 class="text-2xl font-bold">
+                                {{ translate($rental->car->title) }}
+                            </h3>
+
+                            <p class="text-gray-600 mt-3">
+                                {{ translate($rental->car->transmission) }}
+                                •
+                                {{ translate($rental->car->fuel_type) }}
+                                •
+                                {{ translate($rental->car->mileage) }}
+                            </p>
+
+                            <div class="flex justify-between items-center mt-6">
+
+                                <div>
+                                    <p class="text-gray-500 text-sm">
+                                        {{ translate('Starting from') }}
+                                    </p>
+
+                                    <p class="text-3xl font-bold text-yellow-500">
+                                        ${{ $rental->price_per_day }}{{ translate('/day') }}
+                                    </p>
+                                </div>
+
+                                @auth
+                                    <a href="{{ route('customer.single.rental.bookin.create', $rental->id) }}"
+                                        class="bg-yellow-500 hover:bg-yellow-400 px-5 py-2 rounded-lg font-semibold">
+                                        {{ translate('Rent Now') }}
+                                    </a>
+                                @else
+                                    <a href="{{ route('user.login') }}"
+                                        class="bg-yellow-500 hover:bg-yellow-400 px-5 py-2 rounded-lg font-semibold">
+                                        {{ translate('Rent Now') }}
+                                    </a>
+                                @endauth
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                @endforeach
+
+            </div>
+
+        </section>
+
+    @endif
 
     <!-- ================= WHY CHOOSE ================= -->
 
@@ -212,7 +294,7 @@
             <div>
 
                 <h2 class="text-4xl font-bold">
-                    {{ __('messages.why_rent') }}
+                    {{ translate('Why Rent') }}
                 </h2>
 
                 <div class="space-y-6 mt-10">
@@ -220,11 +302,11 @@
                     <div>
 
                         <h4 class="font-bold text-xl">
-                            ✔ {{ __('messages.insured') }}
+                            ✔ {{ translate('Insured') }}
                         </h4>
 
                         <p class="text-gray-600 mt-2">
-                            {{ __('messages.insured_desc') }}
+                            {{ translate('Insured Desc') }}
                         </p>
 
                     </div>
@@ -233,11 +315,11 @@
                     <div>
 
                         <h4 class="font-bold text-xl">
-                            ✔ {{ __('messages.roadside') }}
+                            ✔ {{ translate('Roadside') }}
                         </h4>
 
                         <p class="text-gray-600 mt-2">
-                            {{ __('messages.roadside_desc') }}
+                            {{ translate('Roadside Desc') }}
                         </p>
 
                     </div>
@@ -246,11 +328,11 @@
                     <div>
 
                         <h4 class="font-bold text-xl">
-                            ✔ {{ __('messages.flexible_plans') }}
+                            ✔ {{ translate('Flexible Plans') }}
                         </h4>
 
                         <p class="text-gray-600 mt-2">
-                            {{ __('messages.flexible_plans_desc') }}
+                            {{ translate('Flexible Plans Desc') }}
                         </p>
 
                     </div>
@@ -259,11 +341,11 @@
                     <div>
 
                         <h4 class="font-bold text-xl">
-                            ✔ {{ __('messages.no_hidden') }}
+                            ✔ {{ translate('No Hidden Fees') }}
                         </h4>
 
                         <p class="text-gray-600 mt-2">
-                            {{ __('messages.no_hidden_desc') }}
+                            {{ translate('No Hidden Fees Desc') }}
                         </p>
 
                     </div>
@@ -283,7 +365,7 @@
         <div class="max-w-7xl mx-auto px-6">
 
             <h2 class="text-4xl font-bold text-center">
-                {{ __('messages.how_it_works') }}
+                {{ translate('How It Works') }}
             </h2>
 
 
@@ -300,7 +382,7 @@
                     </div>
 
                     <h4 class="font-semibold mt-5">
-                        {{ __('messages.choose_vehicle') }}
+                        {{ translate('Choose Vehicle') }}
                     </h4>
 
                 </div>
@@ -317,7 +399,7 @@
                     </div>
 
                     <h4 class="font-semibold mt-5">
-                        {{ __('messages.select_dates') }}
+                        {{ translate('Select Dates') }}
                     </h4>
 
                 </div>
@@ -334,7 +416,7 @@
                     </div>
 
                     <h4 class="font-semibold mt-5">
-                        {{ __('messages.confirm_booking') }}
+                        {{ translate('Confirm Booking') }}
                     </h4>
 
                 </div>
@@ -351,7 +433,7 @@
                     </div>
 
                     <h4 class="font-semibold mt-5">
-                        {{ __('messages.pickup_drive') }}
+                        {{ translate('Pickup Drive') }}
                     </h4>
 
                 </div>
@@ -363,6 +445,7 @@
 
     </section>
 
+    @include('estimation_price.rental')
     @include('ai_layer.chatbot')
 
     @if (Auth::check() && $rental_booking && $rental_booking->status == 'Completed')
@@ -380,11 +463,11 @@
                     </div>
 
                     <h2 class="text-3xl font-bold mt-5">
-                        Leave Your Review
+                        {{ translate('Leave Your Review') }}
                     </h2>
 
                     <p class="text-gray-500 mt-2">
-                        We'd love to hear about your experience.
+                        {{ translate('We\'d love to hear about your experience.') }}
                     </p>
 
                 </div>
@@ -396,16 +479,16 @@
 
                     <div>
                         <label class="block mb-2 font-semibold">
-                            Your Name
+                            {{ translate('Your Name') }}
                         </label>
 
-                        <input type="text" name="name" value="{{ Auth::user()->name }}"
+                        <input type="text" name="name" value="{{ translate(Auth::user()->name) }}"
                             class="w-full border rounded-lg p-3" required>
                     </div>
 
                     <div>
                         <label class="block mb-2 font-semibold">
-                            Location
+                            {{ translate('Location') }}
                         </label>
 
                         <input type="text" name="location" placeholder="Dhaka, Bangladesh"
@@ -414,24 +497,25 @@
 
                     <div>
                         <label class="block mb-2 font-semibold">
-                            Rating
+                            {{ translate('Rating') }}
                         </label>
 
                         <select name="rating" class="w-full border rounded-lg p-3" required>
 
-                            <option value="">Select Rating</option>
-                            <option value="5">⭐⭐⭐⭐⭐ Excellent</option>
-                            <option value="4">⭐⭐⭐⭐ Very Good</option>
-                            <option value="3">⭐⭐⭐ Good</option>
-                            <option value="2">⭐⭐ Fair</option>
-                            <option value="1">⭐ Poor</option>
+                            <option value="">{{
+                                translate('Select Rating') }}</option>
+                            <option value="5">⭐⭐⭐⭐⭐ {{ translate('Excellent') }}</option>
+                            <option value="4">⭐⭐⭐⭐ {{ translate('Very Good') }}</option>
+                            <option value="3">⭐⭐⭐ {{ translate('Good') }}</option>
+                            <option value="2">⭐⭐ {{ translate('Fair') }}</option>
+                            <option value="1">⭐ {{ translate('Poor') }}</option>
 
                         </select>
                     </div>
 
                     <div>
                         <label class="block mb-2 font-semibold">
-                            Review
+                            {{ translate('Review') }}
                         </label>
 
                         <textarea name="review" rows="5" class="w-full border rounded-lg p-3" placeholder="Write your review..."
@@ -440,14 +524,14 @@
 
                     <div>
                         <label class="block mb-2 font-semibold">
-                            Image
+                            {{ translate('Image') }}
                         </label>
 
                         <input type="file" name="image" class="w-full border rounded-lg p-3">
                     </div>
 
                     <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700">
-                        Submit Review
+                        {{ translate('Submit Review') }}
                     </button>
 
                 </form>
@@ -462,7 +546,7 @@
         <div class="max-w-4xl mx-auto px-6">
 
             <h2 class="text-4xl font-bold text-center">
-                {{ __('messages.faq') }}
+                {{ translate('FAQ') }}
             </h2>
 
 
@@ -472,11 +556,11 @@
                     <div class="bg-gray-100 rounded-lg p-6">
 
                         <h4 class="font-bold">
-                            {{ $faq->question }}
+                            {{ translate($faq->question) }}
                         </h4>
 
                         <p class="text-gray-600 mt-2">
-                            {{ $faq->answer }}
+                            {{ translate($faq->answer) }}
                         </p>
 
                     </div>
@@ -493,24 +577,24 @@
 
         <div class="max-w-4xl mx-auto text-center px-6">
             <h2 class="text-4xl font-bold">
-                {{ __('messages.ready_journey') }}
+                {{ translate('Ready for Your Journey') }}
             </h2>
 
 
             <p class="mt-5 text-lg">
-                {{ __('messages.journey_desc') }}
+                {{ translate('Journey Desc') }}
             </p>
 
 
             @if (Auth::check())
                 <a href="{{ route('customer.rental.booking.create') }}"
                     class="inline-block mt-8 bg-black text-white px-8 py-4 rounded-lg hover:bg-gray-800 transition">
-                    {{ __('messages.reserve_car') }}
+                    {{ translate('Reserve Car') }}
                 </a>
             @else
                 <a href="/login"
                     class="inline-block mt-8 bg-black text-white px-8 py-4 rounded-lg hover:bg-gray-800 transition">
-                    {{ __('messages.reserve_car') }}
+                    {{ translate('Reserve Car') }}
                 </a>
             @endif
 

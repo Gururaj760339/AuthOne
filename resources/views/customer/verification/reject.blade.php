@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Verification Rejected</title>
+    <title>{{ translate('Verification Rejected') }}</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100">
@@ -15,22 +15,22 @@
         </div>
 
         <h2 class="text-3xl font-bold">
-            Verification Rejected
+            {{ translate('Verification Rejected') }}
         </h2>
 
         <p class="text-gray-600 mt-4">
-            Unfortunately your verification request was rejected.
+            {{ translate('Unfortunately your verification request was rejected.') }}
         </p>
 
         @if($verification->admin_note)
 
             <div class="bg-red-100 border border-red-300 rounded p-4 mt-6">
 
-                <strong>Reason:</strong>
+                <strong>{{ translate('Reason:') }}</strong>
 
                 <br>
 
-                {{ $verification->admin_note }}
+                {{ translate($verification->admin_note) }}
 
             </div>
 
@@ -41,7 +41,7 @@
 
             <button
                 class="mt-8 bg-blue-600 text-white px-6 py-3 rounded-lg">
-                Submit Again
+                {{ translate('Submit Again') }}
             </button>
 
         </form>

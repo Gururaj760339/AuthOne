@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Verification</title>
+    <title>{{ translate('User Verification') }}</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -14,9 +14,9 @@
     <div class="bg-white rounded-lg shadow-lg">
 
         <div class="border-b px-6 py-4">
-            <h2 class="text-2xl font-bold">User Verification</h2>
+            <h2 class="text-2xl font-bold">{{ translate('User Verification') }}</h2>
             <p class="text-gray-500">
-                Verify your identity to list your car for P2P Rental.
+                {{ translate('Verify your identity to list your car for P2P Rental.') }}
             </p>
         </div>
 
@@ -48,7 +48,7 @@
 
                     <div>
                         <label class="block font-semibold mb-2">
-                            NID Number
+                            {{ translate('NID Number') }}
                         </label>
 
                         <input type="text"
@@ -60,7 +60,7 @@
 
                     <div>
                         <label class="block font-semibold mb-2">
-                            Driving License Number
+                            {{ translate('Driving License Number') }}
                         </label>
 
                         <input type="text"
@@ -72,7 +72,7 @@
 
                     <div>
                         <label class="block font-semibold mb-2">
-                            NID Front Image
+                            {{ translate('NID Front Image') }}
                         </label>
 
                         <input type="file"
@@ -83,7 +83,7 @@
 
                     <div>
                         <label class="block font-semibold mb-2">
-                            NID Back Image
+                            {{ translate('NID Back Image') }}
                         </label>
 
                         <input type="file"
@@ -94,7 +94,7 @@
 
                     <div>
                         <label class="block font-semibold mb-2">
-                            Driving License Image
+                            {{ translate('Driving License Image') }}
                         </label>
 
                         <input type="file"
@@ -105,7 +105,7 @@
 
                     <div>
                         <label class="block font-semibold mb-2">
-                            Selfie (Optional)
+                            {{ translate('Selfie (Optional)') }}
                         </label>
 
                         <input type="file"
@@ -119,12 +119,12 @@
 
                     <a href="{{ route('customer.profile') }}"
                        class="bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600">
-                        Back
+                        {{ translate('Back') }}
                     </a>
 
                     <button type="submit"
                             class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700">
-                        Submit Verification
+                        {{ translate('Submit Verification') }}
                     </button>
 
                 </div>

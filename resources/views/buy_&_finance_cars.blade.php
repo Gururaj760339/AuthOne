@@ -28,30 +28,30 @@
             <!-- Hero -->
 
             <span class="bg-green-600 px-4 py-2 rounded-full text-sm">
-                {{ __('messages.buy_dream_car') }}
+                {{ translate('Messages Buy Dream Car') }}
             </span>
 
             <h1 class="text-5xl font-bold mt-6 leading-tight">
 
-                {{ __('messages.buy_finance_cars') }}
+                {{ translate('Buy & Finance Cars') }}
 
             </h1>
 
             <p class="text-gray-300 mt-6 max-w-2xl text-lg">
-                {{ __('messages.browse_quality_cars') }}
+                {{ translate('Browse our selection of quality cars for sale and financing options.') }}
             </p>
 
 
             <div class="mt-10 flex gap-4 flex-wrap">
 
                 <a href="#cars" class="bg-green-600 px-8 py-4 rounded-lg font-semibold hover:bg-green-700 transition">
-                    {{ __('messages.browse_cars') }}
+                    {{ translate('Browse Cars') }}
                 </a>
 
                 <a href="#finance"
                     class="border border-white px-8 py-4 rounded-lg hover:bg-white hover:text-black transition">
 
-                    {{ __('messages.finance_options') }}
+                    {{ translate('Finance Options') }}
 
                 </a>
 
@@ -71,7 +71,7 @@
             <div class="bg-white shadow rounded-lg p-5 h-fit">
 
                 <h2 class="text-xl font-bold mb-5">
-                    Filter Cars
+                    {{ translate('Filter Cars') }}
                 </h2>
 
                 <form action="{{ route('cars.filter') }}" method="GET">
@@ -79,16 +79,16 @@
                     <!-- Brand -->
                     <div class="mb-4">
                         <label class="font-semibold">
-                            Brand
+                            {{ translate('Brand') }}
                         </label>
 
                         <select name="brand" class="w-full mt-2 border rounded-lg p-2">
 
-                            <option value="">All Brands</option>
+                            <option value="">{{ translate('All Brands') }}</option>
 
                             @foreach ($brands as $brand)
                                 <option value="{{ $brand->id }}" @selected(request('brand') == $brand->id)>
-                                    {{ $brand->name }}
+                                    {{ translate($brand->name) }}
                                 </option>
                             @endforeach
 
@@ -100,20 +100,20 @@
                     <div class="mb-4">
 
                         <label class="font-semibold">
-                            Fuel Type
+                            {{ translate('Fuel Type') }}
                         </label>
 
                         <select name="fuel_type" class="w-full mt-2 border rounded-lg p-2">
 
-                            <option value="">All</option>
+                            <option value="">{{ translate('All') }}</option>
 
-                            <option value="Petrol">Petrol</option>
+                            <option value="Petrol">{{ translate('Petrol') }}</option>
 
-                            <option value="Diesel">Diesel</option>
+                            <option value="Diesel">{{ translate('Diesel') }}</option>
 
-                            <option value="Hybrid">Hybrid</option>
+                            <option value="Hybrid">{{ translate('Hybrid') }}</option>
 
-                            <option value="Electric">Electric</option>
+                            <option value="Electric">{{ translate('Electric') }}</option>
 
                         </select>
 
@@ -124,16 +124,16 @@
                     <div class="mb-4">
 
                         <label class="font-semibold">
-                            Condition
+                            {{ translate('Condition') }}
                         </label>
 
                         <select name="condition" class="w-full mt-2 border rounded-lg p-2">
 
-                            <option value="">All</option>
+                            <option value="">{{ translate('All') }} </option>
 
-                            <option value="New">New</option>
+                            <option value="New">{{ translate('New') }}</option>
 
-                            <option value="Used">Used</option>
+                            <option value="Used">{{ translate('Used') }}</option>
 
                         </select>
 
@@ -144,7 +144,7 @@
                     <div class="mb-4">
 
                         <label class="font-semibold">
-                            Min Price
+                            {{ translate('Min Price') }}
                         </label>
 
                         <input type="number" name="min_price" value="{{ request('min_price') }}"
@@ -155,7 +155,7 @@
                     <div class="mb-4">
 
                         <label class="font-semibold">
-                            Max Price
+                            {{ translate('Max Price') }}
                         </label>
 
                         <input type="number" name="max_price" value="{{ request('max_price') }}"
@@ -168,7 +168,7 @@
                     <div class="mb-5">
 
                         <label class="font-semibold">
-                            Year
+                            {{ translate('Year') }}
                         </label>
 
                         <input type="number" name="year" value="{{ request('year') }}"
@@ -178,7 +178,7 @@
 
                     <button class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg">
 
-                        Search
+                        {{ translate('Search') }}
 
                     </button>
 
@@ -201,13 +201,13 @@
 
                                 <h3 class="text-xl font-bold">
 
-                                    {{ $car->title }}
+                                    {{ translate($car->title) }}
 
                                 </h3>
 
                                 <p class="text-gray-600 mt-2">
 
-                                    {{ $car->transmission . ' • ' . $car->fuel_type . ' • ' . $car->mileage }}
+                                    {{ translate($car->transmission) . ' • ' . translate($car->fuel_type) . ' • ' . translate($car->mileage) }}
 
                                 </p>
 
@@ -215,14 +215,14 @@
 
                                     <span class="text-2xl font-bold text-green-600">
 
-                                        ${{ $car->price }}
+                                        ${{ translate($car->price) }}
 
                                     </span>
 
                                     <a href="{{ route('vehicle.details', $car->slug) }} "
                                         class="bg-green-600 text-white px-5 py-2 rounded">
 
-                                        {{ __('messages.view') }}
+                                        {{ translate('View Details') }}
 
                                     </a>
 
@@ -236,7 +236,7 @@
 
                         <div class="col-span-3 text-center py-10">
 
-                            No Cars Found
+                            {{ translate('No Cars Found') }}    
 
                         </div>
                     @endforelse
@@ -255,6 +255,65 @@
 
     </div>
 
+    @if ($recommendedCars->count())
+
+        <section class="mt-20 ml-20 mr-6">
+
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-gray-800">
+                    ⭐ {{ translate('Recommended Cars') }}
+                </h2>
+                <p class="text-gray-500 mt-2">
+                    {{ translate('Best cars selected for you') }}
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+                @foreach ($recommendedCars as $car)
+                    <div class="bg-white rounded-lg shadow hover:shadow-lg transition overflow-hidden">
+
+                        <div class="relative">
+                            <img src="{{ asset('storage/' . $car->thumbnail) }}" alt="{{ $car->title }}"
+                                class="w-full h-40 object-cover">
+
+                            <span
+                                class="absolute top-2 left-2 bg-yellow-400 text-black text-xs font-semibold px-2 py-1 rounded">
+                                ⭐ {{ translate('Recommended') }}
+                            </span>
+                        </div>
+
+                        <div class="p-4">
+
+                            <h3 class="font-semibold text-lg truncate">
+                                {{ translate($car->title) }}
+                            </h3>
+
+                            <p class="text-sm text-gray-500 mt-2">
+                                {{ translate($car->transmission) }} •
+                                {{ translate($car->fuel_type) }}
+                            </p>
+
+                            <p class="text-lg font-bold text-green-600 mt-3">
+                                ${{ number_format(translate($car->price)) }}
+                            </p>
+
+                            <a href="{{ route('vehicle.details', $car->slug) }}"
+                                class="block mt-4 text-center bg-green-600 hover:bg-green-700 text-white py-2 rounded-md text-sm">
+                                {{ translate('View Details') }}
+                            </a>
+
+                        </div>
+
+                    </div>
+                @endforeach
+
+            </div>
+
+        </section>
+
+    @endif
+
     <section id="cars" class="py-20">
 
         <div class="max-w-7xl mx-auto px-6">
@@ -263,14 +322,14 @@
 
                 <h2 class="text-4xl font-bold">
 
-                    {{ __('messages.featured_vehicles') }}
+                    {{ translate('Featured Vehicles') }}
 
                 </h2>
 
 
                 <p class="text-gray-600 mt-4">
 
-                    {{ __('messages.popular_cars') }}
+                    {{ translate('Popular Cars') }}
 
                 </p>
 
@@ -286,13 +345,13 @@
 
                             <h3 class="text-xl font-bold">
 
-                                {{ $car->title }}
+                                {{ translate($car->title) }}
 
                             </h3>
 
                             <p class="text-gray-600 mt-2">
 
-                                {{ $car->transmission . ' • ' . $car->fuel_type . ' • ' . $car->mileage }}
+                                {{ translate($car->transmission) . ' • ' . translate($car->fuel_type) . ' • ' . translate($car->mileage) }}
 
                             </p>
 
@@ -300,14 +359,14 @@
 
                                 <span class="text-2xl font-bold text-green-600">
 
-                                    ${{ $car->price }}
+                                    ${{ number_format(translate($car->price)) }}
 
                                 </span>
 
                                 <a href="{{ route('vehicle.details', $car->slug) }} "
                                     class="bg-green-600 text-white px-5 py-2 rounded">
 
-                                    {{ __('messages.view') }}
+                                    {{ translate('View Details') }}
 
                                 </a>
 
@@ -342,7 +401,7 @@
 
                 <h2 class="text-4xl font-bold">
 
-                    {{ __('messages.flexible_finance_plans') }}
+                    {{ translate('Flexible Finance Plans') }}
 
                 </h2>
 
@@ -354,14 +413,14 @@
 
                         <h4 class="font-bold text-xl">
 
-                            {{ __('messages.low_down_payment') }}
+                            {{ translate('Low Down Payment') }}
 
                         </h4>
 
 
                         <p class="text-gray-600 mt-2">
 
-                            {{ __('messages.low_down_payment_desc') }}
+                            {{ translate('low_down_payment_desc') }}
 
                         </p>
 
@@ -373,14 +432,14 @@
 
                         <h4 class="font-bold text-xl">
 
-                            {{ __('messages.fast_approval') }}
+                            {{ translate('Fast Approval') }}
 
                         </h4>
 
 
                         <p class="text-gray-600 mt-2">
 
-                            {{ __('messages.fast_approval_desc') }}
+                            {{ translate('Fast Approval Desc') }}
 
                         </p>
 
@@ -392,14 +451,14 @@
 
                         <h4 class="font-bold text-xl">
 
-                            {{ __('messages.flexible_terms') }}
+                            {{ translate('Flexible Terms') }}
 
                         </h4>
 
 
                         <p class="text-gray-600 mt-2">
 
-                            {{ __('messages.flexible_terms_desc') }}
+                            {{ translate('flexible_terms_desc') }}
 
                         </p>
 
@@ -411,14 +470,14 @@
 
                         <h4 class="font-bold text-xl">
 
-                            {{ __('messages.competitive_rates') }}
+                            {{ translate('Competitive Rates') }}
 
                         </h4>
 
 
                         <p class="text-gray-600 mt-2">
 
-                            {{ __('messages.competitive_rates_desc') }}
+                            {{ translate('Competitive Rates Description') }}
 
                         </p>
 
@@ -442,7 +501,7 @@
 
             <h2 class="text-4xl font-bold text-center">
 
-                {{ __('messages.finance_process') }}
+                {{ translate('Finance Process') }}
 
             </h2>
 
@@ -461,7 +520,7 @@
 
                     <h4 class="font-semibold mt-5">
 
-                        {{ __('messages.choose_car') }}
+                        {{ translate('Choose Car') }}
 
                     </h4>
 
@@ -480,7 +539,7 @@
 
                     <h4 class="font-semibold mt-5">
 
-                        {{ __('messages.apply_finance') }}
+                        {{ translate('Apply for Finance') }}
 
                     </h4>
 
@@ -499,7 +558,7 @@
 
                     <h4 class="font-semibold mt-5">
 
-                        {{ __('messages.document_review') }}
+                        {{ translate('Document Review') }}
 
                     </h4>
 
@@ -518,7 +577,7 @@
 
                     <h4 class="font-semibold mt-5">
 
-                        {{ __('messages.drive_away') }}
+                        {{ translate('Drive Away') }}
 
                     </h4>
 
@@ -550,11 +609,11 @@
                     </div>
 
                     <h2 class="text-3xl font-bold mt-5">
-                        Leave Your Review
+                        {{ translate('Leave Your Review') }}
                     </h2>
 
                     <p class="text-gray-500 mt-2">
-                        We'd love to hear about your experience.
+                        {{ translate('We\'d love to hear about your experience.') }}
                     </p>
 
                 </div>
@@ -565,7 +624,7 @@
 
                     <div>
                         <label class="block mb-2 font-semibold">
-                            Your Name
+                           {{ translate('Your Name') }}
                         </label>
 
                         <input type="text" name="name" value="{{ Auth::user()->name }}"
@@ -574,7 +633,7 @@
 
                     <div>
                         <label class="block mb-2 font-semibold">
-                            Location
+                            {{ translate('Location') }} 
                         </label>
 
                         <input type="text" name="location" placeholder="Dhaka, Bangladesh"
@@ -583,24 +642,24 @@
 
                     <div>
                         <label class="block mb-2 font-semibold">
-                            Rating
+                            {{ translate('Rating') }}
                         </label>
 
                         <select name="rating" class="w-full border rounded-lg p-3" required>
 
-                            <option value="">Select Rating</option>
-                            <option value="5">⭐⭐⭐⭐⭐ Excellent</option>
-                            <option value="4">⭐⭐⭐⭐ Very Good</option>
-                            <option value="3">⭐⭐⭐ Good</option>
-                            <option value="2">⭐⭐ Fair</option>
-                            <option value="1">⭐ Poor</option>
+                            <option value="">{{ translate('Select Rating') }} </option>
+                            <option value="5">⭐⭐⭐⭐⭐ {{ translate('Excellent') }}</option>
+                            <option value="4">⭐⭐⭐⭐ {{ translate('Very Good') }}</option>
+                            <option value="3">⭐⭐⭐ {{ translate('Good') }}</option>
+                            <option value="2">⭐⭐ {{ translate('Fair') }}</option>
+                            <option value="1">⭐ {{ translate('Poor') }}</option>
 
                         </select>
                     </div>
 
                     <div>
                         <label class="block mb-2 font-semibold">
-                            Review
+                            {{ translate('Review') }}
                         </label>
 
                         <textarea name="review" rows="5" class="w-full border rounded-lg p-3" placeholder="Write your review..."
@@ -609,14 +668,14 @@
 
                     <div>
                         <label class="block mb-2 font-semibold">
-                            Image
+                            {{ translate('Image') }}
                         </label>
 
                         <input type="file" name="image" class="w-full border rounded-lg p-3">
                     </div>
 
                     <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700">
-                        Submit Review
+                        {{ translate('Submit Review') }}
                     </button>
 
                 </form>
@@ -633,26 +692,26 @@
 
             <h2 class="text-4xl font-bold">
 
-                {{ __('messages.ready_next_car') }}
+                {{ translate('Ready for Your Next Car') }}
 
             </h2>
 
 
             <p class="mt-5 text-lg text-green-100">
 
-                {{ __('messages.ready_next_car_desc') }}
+                {{ translate('Ready for Your Next Car Desc') }}
 
             </p>
 
             @if (Auth::check())
                 <a href="{{ route('customer.finance.apply') }}"
                     class="inline-block mt-8 bg-white text-green-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100">
-                    {{ __('messages.apply_for_finance') }}
+                    {{ translate('Apply for Finance') }}
                 </a>
             @else
                 <a href="/login"
                     class="inline-block mt-8 bg-white text-green-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100">
-                    {{ __('messages.apply_for_finance') }}
+                    {{ translate('Apply for Finance') }}
                 </a>
             @endif
 

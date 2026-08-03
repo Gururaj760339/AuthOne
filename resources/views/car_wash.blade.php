@@ -23,35 +23,35 @@
         <div class="relative max-w-7xl mx-auto px-6 py-28">
 
             <span class="bg-blue-600 px-4 py-2 rounded-full text-sm">
-                {{ __('messages.car_wash_badge') }}
+                {{ translate('Messages Car Wash Badge') }}
             </span>
 
             <h1 class="text-5xl font-bold mt-6">
-                {{ __('messages.car_wash_title_1') }}
-                <span class="text-blue-400">{{ __('messages.car_wash_title_2') }}</span>
-                {{ __('messages.car_wash_title_3') }}
+                {{ translate('Car Wash Title 1') }}
+                <span class="text-blue-400">{{ translate('Car Wash Title 2') }}</span>
+                {{ translate('Car Wash Title 3') }}
             </h1>
 
             <p class="text-gray-300 text-lg mt-6 max-w-2xl leading-8">
-                {{ __('messages.car_wash_description') }}
+                {{ translate('Car Wash Description') }}
             </p>
 
             <div class="flex flex-wrap gap-4 mt-10">
                 @if (Auth::check())
                     <a href="{{ route('customer.carwash.booking.create') }}"
                         class="bg-blue-600 hover:bg-blue-700 px-8 py-4 rounded-lg font-semibold transition">
-                        {{ __('messages.book_now') }}
+                        {{ translate('Book Now') }}
                     </a>
                 @else
                     <a href="/login"
                         class="bg-blue-600 hover:bg-blue-700 px-8 py-4 rounded-lg font-semibold transition">
-                        {{ __('messages.book_now') }}
+                        {{ translate('Book Now') }}
                     </a>
                 @endif
 
                 <a href="#packages"
                     class="border border-white px-8 py-4 rounded-lg hover:bg-white hover:text-black transition">
-                    {{ __('messages.view_packages') }}
+                    {{ translate('View Packages') }}
                 </a>
             </div>
 
@@ -67,11 +67,11 @@
 
             <div class="text-center">
                 <h2 class="text-4xl font-bold">
-                    {{ __('messages.car_wash_packages') }}
+                    {{ translate('Car Wash Packages') }}
                 </h2>
 
                 <p class="text-gray-600 mt-4">
-                    {{ __('messages.choose_package_text') }}
+                    {{ translate('Choose Package Text') }}
                 </p>
             </div>
 
@@ -81,7 +81,7 @@
                     <div class="bg-white rounded-xl shadow-lg p-8 hover:shadow-2xl transition duration-300">
 
                         <h3 class="text-2xl font-bold">
-                            {{ $service->title }}
+                            {{ translate($service->title) }}
                         </h3>
 
                         <p class="text-5xl font-bold text-blue-600 mt-6">
@@ -89,12 +89,12 @@
                         </p>
 
                         <p class="text-gray-600 mt-6 leading-7">
-                            {{ $service->description }}
+                            {{ translate($service->description) }}
                         </p>
 
                         <a href="{{ route('customer.single.carwash', $service->slug) }}"
                             class="mt-8 block w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition text-center">
-                            {{ __('messages.package_choose') }}
+                            {{ translate('Package Choose') }}
                         </a>
 
                     </div>
@@ -105,6 +105,63 @@
         </div>
 
     </section>
+
+    @if ($recommendedServices->count())
+
+        <section class="py-16 bg-gray-50">
+            <div class="container mx-auto px-4">
+
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold">
+                        {{ translate('Recommended Car Wash Services') }}
+                    </h2>
+                    <p class="text-gray-600 mt-2">
+                        {{ translate('Our most popular car wash packages') }}
+                    </p>
+                </div>
+
+                <div class="grid lg:grid-cols-3 md:grid-cols-2 gap-8">
+
+                    @foreach ($recommendedServices as $service)
+                        <div class="bg-white rounded-xl shadow-lg p-8 hover:shadow-2xl transition duration-300">
+
+                            <span
+                                class="inline-block bg-blue-100 text-blue-700 text-xs font-semibold px-3 py-1 rounded-full mb-4">
+                                {{ translate('⭐ Recommended') }}
+                            </span>
+
+                            <h3 class="text-2xl font-bold">
+                                {{ translate($service->title) }}
+                            </h3>
+
+                            <p class="text-5xl font-bold text-blue-600 mt-6">
+                                ${{ number_format($service->price) }}
+                            </p>
+
+                            <p class="text-gray-600 mt-6 leading-7">
+                                {{ translate(Str::limit($service->description, 120)) }}
+                            </p>
+
+                            @if (isset($service->bookings_count))
+                                <div class="mt-4 text-sm text-gray-500">
+                                    {{ translate('Bookings') }}: {{ $service->bookings_count }}
+                                </div>
+                            @endif
+
+                            <a href="{{ route('customer.single.carwash', $service->slug) }}"
+                                class="mt-8 block w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition text-center">
+                                {{ translate('Package Choose') }}
+                            </a>
+
+                        </div>
+                    @endforeach
+
+                </div>
+
+            </div>
+        </section>
+
+    @endif
 
     <!-- Features -->
 
@@ -129,37 +186,37 @@
 
                     <div>
                         <h4 class="font-bold text-xl">
-                            💧 {{ __('messages.feature_title_1') }}
+                            💧 {{ translate('messages.Feature Title 1') }}
                         </h4>
                         <p class="text-gray-600 mt-2">
-                            {{ __('messages.feature_desc_1') }}
+                            {{ translate('Messages Feature Desc 1') }}
                         </p>
                     </div>
 
                     <div>
                         <h4 class="font-bold text-xl">
-                            ✨ {{ __('messages.feature_title_2') }}
+                            ✨ {{ translate('messages.Feature Title 2') }}
                         </h4>
                         <p class="text-gray-600 mt-2">
-                            {{ __('messages.feature_desc_2') }}
+                            {{ translate('Messages Feature Desc 2') }}
                         </p>
                     </div>
 
                     <div>
                         <h4 class="font-bold text-xl">
-                            ⚡ {{ __('messages.feature_title_3') }}
+                            ⚡ {{ translate('messages.Feature Title 3') }}
                         </h4>
                         <p class="text-gray-600 mt-2">
-                            {{ __('messages.feature_desc_3') }}
+                            {{ translate('Messages Feature Desc 3') }}
                         </p>
                     </div>
 
                     <div>
                         <h4 class="font-bold text-xl">
-                            🛡 {{ __('messages.feature_title_4') }}
+                            🛡 {{ translate('messages.Feature Title 4') }}
                         </h4>
                         <p class="text-gray-600 mt-2">
-                            {{ __('messages.feature_desc_4') }}
+                            {{ translate('Messages Feature Desc 4') }}
                         </p>
                     </div>
 
@@ -178,7 +235,7 @@
         <div class="max-w-7xl mx-auto px-6">
 
             <h2 class="text-4xl font-bold text-center">
-                {{ __('messages.how_it_works') }}
+                {{ translate('messages How It Works') }}
             </h2>
 
             <div class="grid md:grid-cols-4 gap-8 mt-14 text-center">
@@ -194,7 +251,7 @@
 
 
                     <h4 class="mt-5 font-semibold">
-                        {{ __('messages.step_1') }}
+                        {{ translate('Messages Step 1') }}
                     </h4>
 
 
@@ -211,7 +268,7 @@
 
 
                     <h4 class="mt-5 font-semibold">
-                        {{ __('messages.step_2') }}
+                        {{ translate('Messages Step 2') }}
                     </h4>
 
                 </div>
@@ -226,7 +283,7 @@
                     </div>
 
                     <h4 class="mt-5 font-semibold">
-                        {{ __('messages.step_3') }}
+                        {{ translate('Messages Step 3') }}
                     </h4>
 
                 </div>
@@ -242,7 +299,7 @@
 
 
                     <h4 class="mt-5 font-semibold">
-                        {{ __('messages.step_4') }}
+                        {{ translate('Messages Step 4') }}
                     </h4>
 
                 </div>
@@ -268,11 +325,11 @@
                     </div>
 
                     <h2 class="text-3xl font-bold mt-5">
-                        Leave Your Review
+                        {{ translate('Leave Your Review') }}
                     </h2>
 
                     <p class="text-gray-500 mt-2">
-                        We'd love to hear about your experience.
+                        {{ translate('We\'d love to hear about your experience.') }}
                     </p>
 
                 </div>
@@ -283,7 +340,7 @@
 
                     <div>
                         <label class="block mb-2 font-semibold">
-                            Your Name
+                            {{ translate('Your Name') }}
                         </label>
 
                         <input type="text" name="name" value="{{ Auth::user()->name }}"
@@ -292,7 +349,7 @@
 
                     <div>
                         <label class="block mb-2 font-semibold">
-                            Location
+                            {{ translate('Location') }}             
                         </label>
 
                         <input type="text" name="location" placeholder="Dhaka, Bangladesh"
@@ -301,40 +358,40 @@
 
                     <div>
                         <label class="block mb-2 font-semibold">
-                            Rating
+                            {{ translate('Rating') }}
                         </label>
 
                         <select name="rating" class="w-full border rounded-lg p-3" required>
 
-                            <option value="">Select Rating</option>
-                            <option value="5">⭐⭐⭐⭐⭐ Excellent</option>
-                            <option value="4">⭐⭐⭐⭐ Very Good</option>
-                            <option value="3">⭐⭐⭐ Good</option>
-                            <option value="2">⭐⭐ Fair</option>
-                            <option value="1">⭐ Poor</option>
+                            <option value="">{{ translate('Select Rating') }}</option>
+                            <option value="5">⭐⭐⭐⭐⭐ {{ translate('Excellent') }}</option>
+                            <option value="4">⭐⭐⭐⭐ {{ translate('Very Good') }}</option>
+                            <option value="3">⭐⭐⭐ {{ translate('Good') }}</option>
+                            <option value="2">⭐⭐ {{ translate('Fair') }}</option>
+                            <option value="1">⭐ {{ translate('Poor') }}</option>
 
                         </select>
                     </div>
 
                     <div>
                         <label class="block mb-2 font-semibold">
-                            Review
+                            {{ translate('Review') }}
                         </label>
 
-                        <textarea name="review" rows="5" class="w-full border rounded-lg p-3" placeholder="Write your review..."
+                        <textarea name="review" rows="5" class="w-full border rounded-lg p-3" placeholder="{{ translate('Write your review...') }}"
                             required></textarea>
                     </div>
 
                     <div>
                         <label class="block mb-2 font-semibold">
-                            Image
+                            {{ translate('Image') }}        
                         </label>
 
                         <input type="file" name="image" class="w-full border rounded-lg p-3">
                     </div>
 
                     <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700">
-                        Submit Review
+                        {{ translate('Submit Review') }}
                     </button>
 
                 </form>
@@ -350,7 +407,7 @@
         <div class="max-w-7xl mx-auto px-6">
 
             <h2 class="text-4xl font-bold text-center">
-                {{ __('messages.customer_reviews') }}
+                {{ translate('Customer Reviews') }}
             </h2>
 
             <div class="grid md:grid-cols-3 gap-8 mt-14">
@@ -401,22 +458,22 @@
         <div class="max-w-4xl mx-auto px-6">
 
             <h2 class="text-4xl font-bold text-center">
-                {{ __('messages.faq') }}
+                {{ translate('Frequently Asked Questions') }}
             </h2>
 
             <div class="space-y-6 mt-12">
                 @foreach ($faqs as $faq)
-                <div class="bg-white shadow rounded-lg p-6">
+                    <div class="bg-white shadow rounded-lg p-6">
 
-                    <h4 class="font-bold">
-                        {{ $faq->question }}
-                    </h4>
+                        <h4 class="font-bold">
+                            {{ translate($faq->question) }}
+                        </h4>
 
-                    <p class="text-gray-600 mt-2">
-                        {{ $faq->answer }}
-                    </p>
+                        <p class="text-gray-600 mt-2">
+                            {{ translate($faq->answer) }}
+                        </p>
 
-                </div>
+                    </div>
                 @endforeach
 
             </div>
@@ -424,7 +481,7 @@
         </div>
 
     </section>
-    
+
     @include('ai_layer.chatbot')
 
     <!-- CTA -->
@@ -434,22 +491,22 @@
         <div class="max-w-4xl mx-auto text-center px-6">
 
             <h2 class="text-4xl font-bold">
-                {{ __('messages.cta_title') }}
+                {{ translate('Ready to Get Clean?') }}
             </h2>
 
             <p class="mt-5 text-blue-100 text-lg">
-                {{ __('messages.cta_description') }}
+                {{ translate('Book your car wash today and experience the difference!') }}
             </p>
 
             @if (Auth::check())
                 <a href="{{ route('customer.carwash.booking.create') }}"
                     class="inline-block mt-8 bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition">
-                    {{ __('messages.book_car_wash') }}
+                    {{ translate('Book Car Wash') }}
                 </a>
             @else
                 <a href="/login"
                     class="inline-block mt-8 bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition">
-                    {{ __('messages.book_car_wash') }}
+                    {{ translate('Book Car Wash') }}
                 </a>
             @endif
 

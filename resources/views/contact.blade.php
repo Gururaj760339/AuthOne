@@ -23,15 +23,15 @@
         <div class="relative max-w-7xl mx-auto px-6 py-28 text-center">
 
             <span class="bg-red-600 px-4 py-2 rounded-full text-sm">
-                {{ __('messages.get_in_touch') }}
+                {{ translate('Get In Touch') }}
             </span>
 
             <h1 class="text-5xl font-bold mt-6">
-                {{ __('messages.contact_autoone') }}
+                {{ translate('Contact AutoOne') }}
             </h1>
 
             <p class="text-gray-300 mt-6 max-w-3xl mx-auto text-lg leading-8">
-                {{ __('messages.contact_description') }}
+                {{ translate('Contact Description') }}
             </p>
 
         </div>
@@ -57,11 +57,11 @@
                         <div class="text-4xl">📍</div>
 
                         <h3 class="text-xl font-bold mt-4">
-                            {{ __('messages.head_office') }}
+                            {{ translate('Head Office') }}
                         </h3>
 
                         <p class="text-gray-600 mt-2">
-                            {{ $setting->address }}
+                            {{ translate('Address') }}: {{ $setting->address }}
                         </p>
 
                     </div>
@@ -73,7 +73,7 @@
                         <div class="text-4xl">📞</div>
 
                         <h3 class="text-xl font-bold mt-4">
-                            {{ __('messages.phone') }}
+                            {{ translate('Phone') }}
                         </h3>
 
                         <p class="text-gray-600 mt-2">
@@ -89,7 +89,7 @@
                         <div class="text-4xl">✉️</div>
 
                         <h3 class="text-xl font-bold mt-4">
-                            {{ __('messages.email') }}
+                            {{ translate('Email') }}
                         </h3>
 
                         <p class="text-gray-600 mt-2">
@@ -142,11 +142,11 @@
                         <div class="grid md:grid-cols-2 gap-6">
 
                             <input type="text" name="name" value="{{ old('name') }}"
-                                placeholder="{{ __('messages.full_name') }}"
+                                placeholder="{{ translate('Full Name') }}"
                                 class="border rounded-lg px-4 py-3 w-full">
 
                             <input type="email" name="email" value="{{ old('email') }}"
-                                placeholder="{{ __('messages.email_address') }}"
+                                placeholder="{{ translate('Email Address') }}"
                                 class="border rounded-lg px-4 py-3 w-full">
 
                         </div>
@@ -154,31 +154,31 @@
                         <div class="grid md:grid-cols-2 gap-6">
 
                             <input type="text" name="phone" value="{{ old('phone') }}"
-                                placeholder="{{ __('messages.phone_number') }}"
+                                placeholder="{{ translate('Phone Number') }}"
                                 class="border rounded-lg px-4 py-3 w-full">
 
                             <select name="subject" class="border rounded-lg px-4 py-3 w-full">
 
-                                <option value="">Select Inquiry</option>
-                                <option value="Buy Car">Buy Car</option>
-                                <option value="Finance">Finance</option>
-                                <option value="Car Rental">Car Rental</option>
-                                <option value="Workshop">Workshop</option>
-                                <option value="Car Wash">Car Wash</option>
-                                <option value="Car Imports">Car Imports</option>
-                                <option value="General Question">General Question</option>
+                                <option value="">{{ translate('Select Inquiry') }}</option>
+                                <option value="Buy Car">{{ translate('Buy Car') }}</option>
+                                <option value="Finance">{{ translate('Finance') }}</option>
+                                <option value="Car Rental">{{ translate('Car Rental') }}</option>
+                                <option value="Workshop">{{ translate('Workshop') }}</option>
+                                <option value="Car Wash">{{ translate('Car Wash') }}</option>
+                                <option value="Car Imports">{{ translate('Car Imports') }}</option>
+                                <option value="General Question">{{ translate('General Question') }}</option>
 
                             </select>
 
                         </div>
 
-                        <textarea name="message" rows="6" placeholder="{{ __('messages.write_message') }}"
+                        <textarea name="message" rows="6" placeholder="{{ translate('Write Message') }}"
                             class="border rounded-lg px-4 py-3 w-full">{{ old('message') }}</textarea>
 
                         <button type="submit"
                             class="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg font-semibold">
 
-                            {{ __('messages.send') }}
+                            {{ translate('Send Message') }}
 
                         </button>
 
@@ -207,7 +207,7 @@
                 <div>
 
                     <h2 class="text-4xl font-bold">
-                        {{ __('messages.business_hours') }}
+                        {{ translate('Business Hours') }}
                     </h2>
 
 
@@ -217,7 +217,7 @@
                         <div class="flex justify-between border-b pb-3">
 
                             <span>
-                                {{ __('messages.monday_friday') }}
+                                {{ translate('Monday - Friday') }}
                             </span>
 
                             <span>
@@ -231,7 +231,7 @@
                         <div class="flex justify-between border-b pb-3">
 
                             <span>
-                                {{ __('messages.saturday') }}
+                                {{ translate('Saturday') }}
                             </span>
 
                             <span>
@@ -245,11 +245,11 @@
                         <div class="flex justify-between">
 
                             <span>
-                                {{ __('messages.sunday') }}
+                                {{ translate('Sunday') }}
                             </span>
 
                             <span class="text-red-600 font-semibold">
-                                {{ __('messages.closed') }}
+                                {{ translate('Closed') }}
                             </span>
 
                         </div>
@@ -264,7 +264,7 @@
                 <div>
 
                     <h2 class="text-4xl font-bold">
-                        {{ __('messages.regional_offices') }}
+                        {{ translate('Regional Offices') }}
                     </h2>
 
 
@@ -272,22 +272,22 @@
 
 
                         <div class="bg-gray-100 rounded-lg p-4">
-                            📍 {{ __('messages.dubai_uae') }}
+                            📍 {{ translate('Dubai, UAE') }}
                         </div>
 
 
                         <div class="bg-gray-100 rounded-lg p-4">
-                            📍 {{ __('messages.riyadh_saudi') }}
+                            📍 {{ translate('Riyadh, Saudi Arabia') }}
                         </div>
 
 
                         <div class="bg-gray-100 rounded-lg p-4">
-                            📍 {{ __('messages.doha_qatar') }}
+                            📍 {{ translate('Doha, Qatar') }}
                         </div>
 
 
                         <div class="bg-gray-100 rounded-lg p-4">
-                            📍 {{ __('messages.kuwait_city') }}
+                            📍 {{ translate('Kuwait City') }}
                         </div>
 
 
@@ -315,7 +315,7 @@
                 <div class="max-w-7xl mx-auto px-6">
 
                     <h2 class="text-4xl font-bold text-center">
-                        {{ __('messages.find_office') }}
+                        {{ translate('Find Our Office') }}
                     </h2>
 
                     <p class="text-center text-gray-600 mt-3">
@@ -344,7 +344,7 @@
         <div class="max-w-7xl mx-auto px-6">
 
             <h2 class="text-4xl font-bold text-center">
-                {{ __('messages.quick_help') }}
+                {{ translate('Quick Help') }}
             </h2>
 
 
@@ -354,15 +354,15 @@
                 <div class="bg-gray-50 rounded-xl p-8 text-center">
 
                     <h3 class="font-bold text-xl">
-                        {{ __('messages.faq') }}
+                        {{ translate('Frequently Asked Questions') }}
                     </h3>
 
                     <p class="text-gray-600 mt-4">
-                        {{ __('messages.faq_desc') }}
+                        {{ translate('Find answers to common questions') }}
                     </p>
 
                     <a href="{{ route('customer.contact.faq') }}" class="text-red-600 font-semibold mt-6 inline-block">
-                        {{ __('messages.view_faq') }} →
+                        {{ translate('View FAQ') }} →
                     </a>
 
                 </div>
@@ -370,15 +370,15 @@
                 <div class="bg-gray-50 rounded-xl p-8 text-center">
 
                     <h3 class="font-bold text-xl">
-                        {{ __('messages.book_service') }}
+                        {{ translate('Book a Service') }}
                     </h3>
 
                     <p class="text-gray-600 mt-4">
-                        {{ __('messages.service_desc') }}
+                        {{ translate('Book a service at your convenience') }}
                     </p>
 
                     <a href="{{ route('customer.workshops.maintenance.show') }}" class="text-red-600 font-semibold mt-6 inline-block">
-                        {{ __('messages.book_now') }} →
+                        {{ translate('Book Now') }} →
                     </a>
 
                 </div>
@@ -388,15 +388,15 @@
                 <div class="bg-gray-50 rounded-xl p-8 text-center">
 
                     <h3 class="font-bold text-xl">
-                        {{ __('messages.support_center') }}
+                        {{ translate('Support Center') }}
                     </h3>
 
                     <p class="text-gray-600 mt-4">
-                        {{ __('messages.support_desc') }}
+                        {{ translate('Get help from our support team') }}
                     </p>
 
                     <a href="{{ route('customer.contact') }}" class="text-red-600 font-semibold mt-6 inline-block">
-                        {{ __('messages.get_support') }} →
+                        {{ translate('Get Support') }} →
                     </a>
 
                 </div>
@@ -415,17 +415,17 @@
         <div class="max-w-4xl mx-auto text-center px-6">
 
             <h2 class="text-4xl font-bold">
-                {{ __('messages.ready_help') }}
+                {{ translate('Ready for Help?') }}
             </h2>
 
 
             <p class="mt-6 text-red-100 text-lg">
-                {{ __('messages.help_description') }}
+                {{ translate('We are here to assist you with any questions or concerns') }}
             </p>
 
 
             <a href="{{ route('customer.contact') }}" class="inline-block mt-8 bg-white text-red-600 px-8 py-4 rounded-lg font-semibold">
-                {{ __('messages.contact_team') }}
+                {{ translate('Contact Our Team') }}
             </a>
 
         </div>

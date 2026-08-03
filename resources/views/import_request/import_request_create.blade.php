@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Import Request</title>
+    <title>{{ translate('Import Request') }}</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -12,7 +12,7 @@
 <div class="max-w-3xl mx-auto mt-10 bg-white shadow-lg rounded-lg p-8">
 
     <h2 class="text-3xl font-bold text-center mb-8">
-        Car Import Request
+        {{ translate('Car Import Request') }}
     </h2>
 
     @if(session('success'))
@@ -37,7 +37,7 @@
 
         <div class="mb-5">
             <label class="block font-semibold mb-2">
-                Country
+                {{ translate('Country') }}
             </label>
 
             <input
@@ -50,7 +50,7 @@
 
         <div class="mb-5">
             <label class="block font-semibold mb-2">
-                Car Name
+                {{ translate('Car Name') }}
             </label>
 
             <input
@@ -63,7 +63,7 @@
 
         <div class="mb-5">
             <label class="block font-semibold mb-2">
-                Budget
+                {{ translate('Budget') }}
             </label>
 
             <input
@@ -76,7 +76,7 @@
 
         <div class="mb-6">
             <label class="block font-semibold mb-2">
-                Notes
+                {{ translate('Notes') }}
             </label>
 
             <textarea
@@ -89,7 +89,7 @@
         <button
             type="submit"
             class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold">
-            Submit Import Request
+            {{ translate('Submit Import Request') }}
         </button>
 
     </form>

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Choose Payment Method</title>
+    <title>{{ translate('Choose Payment Method') }}</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -20,11 +20,11 @@
             </div>
 
             <h2 class="text-3xl font-bold text-gray-800">
-                Choose Payment
+                {{ translate('Choose Payment Method') }}
             </h2>
 
             <p class="text-gray-500 mt-2">
-                Select your preferred payment method
+                {{ translate('Select your preferred payment method') }}
             </p>
         </div>
 
@@ -37,10 +37,10 @@
 
                 <div>
                     <h3 class="font-semibold text-lg">
-                        Stripe
+                        {{ translate('Stripe') }}
                     </h3>
                     <p class="text-sm text-indigo-100">
-                        Visa, Mastercard & More
+                        {{ translate('Visa, Mastercard & More') }}
                     </p>
                 </div>
             </div>
@@ -83,7 +83,7 @@
         <!-- Secure -->
         <div class="mt-8 text-center">
             <p class="text-sm text-gray-500">
-                🔒 Your payment is protected with secure encryption.
+                🔒 {{ translate('Your payment is protected with secure encryption.') }}
             </p>
         </div>
 

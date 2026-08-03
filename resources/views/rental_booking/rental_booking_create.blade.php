@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rental Booking</title>
+    <title>{{ translate('Rental Booking') }}</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -31,10 +31,10 @@
 
         <div class="border-b p-6">
             <h2 class="text-3xl font-bold">
-                Rental Booking
+                {{ translate('Rental Booking') }}
             </h2>
             <p class="text-gray-500 mt-2">
-                Fill in the booking details below.
+                {{ translate('Fill in the booking details below.') }}
             </p>
         </div>
 
@@ -47,7 +47,7 @@
 
             <div>
                 <label class="block font-semibold mb-2">
-                    Pickup Date
+                    {{ translate('Pickup Date') }}
                 </label>
 
                 <input
@@ -61,7 +61,7 @@
 
             <div>
                 <label class="block font-semibold mb-2">
-                    Return Date
+                    {{ translate('Return Date') }}
                 </label>
 
                 <input
@@ -76,7 +76,7 @@
             <button
                 type="submit"
                 class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold">
-                Book Now
+                {{ translate('Book Now') }}
             </button>
 
         </form>

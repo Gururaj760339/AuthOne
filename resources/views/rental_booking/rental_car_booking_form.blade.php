@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ __('messages.book_rental_car') }} | AutoOne</title>
+    <title>{{ translate('Book Rental Car') }} | AutoOne</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -15,16 +15,16 @@
 
     <div class="w-full max-w-2xl bg-white rounded-2xl shadow-xl p-8">
 
-        @include('language_drop_down')
+            @include('ai_layer.ai_language_translate')
 
 
         <h2 class="text-3xl font-bold text-center text-slate-800 mb-2">
-            {{ __('messages.book_rental_car') }}
+            {{ translate('Book Rental Car') }}
         </h2>
 
 
         <p class="text-center text-gray-500 mb-8">
-            {{ __('messages.book_rental_car_desc') }}
+            {{ translate('book_rental_car_desc') }}
         </p>
 
 
@@ -34,7 +34,7 @@
             <div>
 
                 <label class="block font-semibold mb-2">
-                    {{ __('messages.select_rental_car') }}
+                    {{ translate('Select Rental Car') }}
                 </label>
 
 
@@ -60,7 +60,7 @@
             <div>
 
                 <label class="block font-semibold mb-2">
-                    {{ __('messages.pickup_date') }}
+                    {{ translate('Pickup Date') }}
                 </label>
 
 
@@ -79,7 +79,7 @@
             <div>
 
                 <label class="block font-semibold mb-2">
-                    {{ __('messages.return_date') }}
+                    {{ translate('Return Date') }}
                 </label>
 
 
@@ -98,7 +98,7 @@
                 type="submit"
                 class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition">
 
-                {{ __('messages.confirm_rental_booking') }}
+                {{ translate('Confirm Rental Booking') }}
 
             </button>
 

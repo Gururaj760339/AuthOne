@@ -24,28 +24,28 @@
         <div class="relative max-w-7xl mx-auto px-6 py-28">
 
             <span class="bg-indigo-600 px-4 py-2 rounded-full text-sm">
-                {{ __('messages.worldwide_vehicle_import') }}
+                {{ translate('Worldwide Vehicle Import') }}
             </span>
 
             <h1 class="text-5xl font-bold mt-6">
-                {{ __('messages.import_dream_car') }}
+                {{ translate('Import Your Dream Car') }}
             </h1>
 
             <p class="text-gray-300 mt-6 max-w-2xl text-lg leading-8">
-                {{ __('messages.import_description') }}
+                {{ translate('Import Your Dream Car Desc') }}
             </p>
 
             <div class="flex flex-wrap gap-4 mt-10">
 
                 <a href="#inventory"
                     class="bg-indigo-600 hover:bg-indigo-700 px-8 py-4 rounded-lg font-semibold transition">
-                    {{ __('messages.browse_imported_cars') }}
+                    {{ translate('Browse Imported Cars') }}
                 </a>
 
 
                 <a href="#process"
                     class="border border-white px-8 py-4 rounded-lg hover:bg-white hover:text-black transition">
-                    {{ __('messages.import_process') }}
+                    {{ translate('Import Process') }}
                 </a>
 
             </div>
@@ -63,53 +63,119 @@
             <div class="text-center">
 
                 <h2 class="text-4xl font-bold">
-                    {{ __('messages.featured_imported_cars') }}
+                    {{ translate('Featured Imported Cars') }}
                 </h2>
 
                 <p class="text-gray-600 mt-4">
-                    {{ __('messages.premium_ready_delivery') }}
+                    {{ translate('Premium Ready for Delivery') }}
                 </p>
 
             </div>
 
             <div class="grid lg:grid-cols-3 gap-8 mt-14">
                 @foreach ($requests as $request)
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-                    <img
-                        src="https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=900&q=80">
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                        <img
+                            src="https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=900&q=80">
 
-                    <div class="p-6">
-                        <span class="text-sm bg-green-100 text-green-700 px-3 py-1 rounded-full">
-                            {{ 'Imported from ' . $request->country}}
-                        </span>
+                        <div class="p-6">
+                            <span class="text-sm bg-green-100 text-green-700 px-3 py-1 rounded-full">
+                                {{ translate('Imported from') }} {{ $request->country }}
+                            </span>
 
 
-                        <h3 class="text-2xl font-bold mt-4">
-                            {{  $request->car_name }}
-                        </h3>
+                            <h3 class="text-2xl font-bold mt-4">
+                                {{ translate('Car Name') }}: {{ translate($request->car_name) }}
+                            </h3>
 
-                        <div class="flex justify-between items-center mt-6">
+                            <div class="flex justify-between items-center mt-6">
 
-                            <p class="text-2xl font-bold text-indigo-600">
+                                <p class="text-2xl font-bold text-indigo-600">
 
-                                ${{ $request->budget }}
+                                    ${{ $request->budget }}
 
-                            </p>
+                                </p>
+
+                            </div>
 
                         </div>
 
                     </div>
-
-                </div>
-
                 @endforeach
-                </div>
-
             </div>
 
         </div>
 
+        </div>
+
     </section>
+
+    @if ($recommendedImports->count())
+
+        <section class="py-20 bg-gray-50">
+
+            <div class="max-w-7xl mx-auto px-6">
+
+                <div class="text-center">
+
+                    <h2 class="text-4xl font-bold">
+                        ⭐ {{ translate('Recommended Import Cars') }}
+                    </h2>
+
+                    <p class="text-gray-600 mt-4">
+                        {{ translate('Best completed import requests for you') }}
+                    </p>
+
+                </div>
+
+                <div class="grid lg:grid-cols-4 md:grid-cols-2 gap-8 mt-14">
+
+                    @foreach ($recommendedImports as $request)
+                        <div
+                            class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition duration-300">
+
+                            <div class="relative">
+
+                                <img src="https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=900&q=80"
+                                    class="w-full h-56 object-cover" alt="{{ $request->car_name }}">
+
+                                <span
+                                    class="absolute top-3 left-3 bg-yellow-500 text-white text-xs px-3 py-1 rounded-full">
+                                    ⭐ {{ translate('Recommended') }}
+                                </span>
+
+                            </div>
+
+                            <div class="p-6">
+
+                                <span class="text-sm bg-green-100 text-green-700 px-3 py-1 rounded-full">
+                                    {{ translate('Imported from') }} {{ $request->country }}
+                                </span>
+
+                                <h3 class="text-xl font-bold mt-4">
+                                    {{ translate('Car Name') }}: {{ $request->car_name }}
+                                </h3>
+
+                                <p class="text-gray-500 mt-3">
+                                    {{ translate('Budget') }}
+                                </p>
+
+                                <p class="text-2xl font-bold text-indigo-600 mt-1">
+                                    ${{ number_format($request->budget) }}
+                                </p>
+
+                            </div>
+
+                        </div>
+                    @endforeach
+
+                </div>
+
+            </div>
+
+        </section>
+
+    @endif
 
     <!-- Why Choose -->
 
@@ -128,7 +194,7 @@
             <div>
 
                 <h2 class="text-4xl font-bold">
-                    {{ __('messages.why_import') }}
+                    {{ translate('Why Import') }}
                 </h2>
 
 
@@ -138,11 +204,11 @@
                     <div>
 
                         <h4 class="font-bold text-xl">
-                            ✔ {{ __('messages.global_network') }}
+                            ✔ {{ translate('Global Network') }}
                         </h4>
 
                         <p class="text-gray-600 mt-2">
-                            {{ __('messages.global_network_desc') }}
+                            {{ translate('Global Network Description') }}
                         </p>
 
                     </div>
@@ -152,11 +218,11 @@
                     <div>
 
                         <h4 class="font-bold text-xl">
-                            ✔ {{ __('messages.complete_documentation') }}
+                            ✔ {{ translate('Complete Documentation') }}
                         </h4>
 
                         <p class="text-gray-600 mt-2">
-                            {{ __('messages.complete_documentation_desc') }}
+                            {{ translate('Complete Documentation Description') }}
                         </p>
 
                     </div>
@@ -166,11 +232,11 @@
                     <div>
 
                         <h4 class="font-bold text-xl">
-                            ✔ {{ __('messages.secure_shipping') }}
+                            ✔ {{ translate('Secure Shipping') }}
                         </h4>
 
                         <p class="text-gray-600 mt-2">
-                            {{ __('messages.secure_shipping_desc') }}
+                            {{ translate('Secure Shipping Description') }}
                         </p>
 
                     </div>
@@ -180,11 +246,11 @@
                     <div>
 
                         <h4 class="font-bold text-xl">
-                            ✔ {{ __('messages.transparent_pricing') }}
+                            ✔ {{ translate('Transparent Pricing') }}
                         </h4>
 
                         <p class="text-gray-600 mt-2">
-                            {{ __('messages.transparent_pricing_desc') }}
+                            {{ translate('Transparent Pricing Description') }}
                         </p>
 
                     </div>
@@ -204,7 +270,7 @@
         <div class="max-w-7xl mx-auto px-6">
 
             <h2 class="text-4xl font-bold text-center">
-                {{ __('messages.import_process') }}
+                {{ translate('Import Process') }}
             </h2>
 
 
@@ -219,7 +285,7 @@
                     </div>
 
                     <h4 class="mt-5 font-semibold">
-                        {{ __('messages.choose_vehicle') }}
+                        {{ translate('Choose Vehicle') }}
                     </h4>
 
                 </div>
@@ -234,7 +300,7 @@
                     </div>
 
                     <h4 class="mt-5 font-semibold">
-                        {{ __('messages.request_quote') }}
+                        {{ translate('Request Quote') }}
                     </h4>
 
                 </div>
@@ -249,7 +315,7 @@
                     </div>
 
                     <h4 class="mt-5 font-semibold">
-                        {{ __('messages.documentation') }}
+                        {{ translate('Documentation') }}
                     </h4>
 
                 </div>
@@ -264,7 +330,7 @@
                     </div>
 
                     <h4 class="mt-5 font-semibold">
-                        {{ __('messages.shipping') }}
+                        {{ translate('Shipping') }}
                     </h4>
 
                 </div>
@@ -279,7 +345,7 @@
                     </div>
 
                     <h4 class="mt-5 font-semibold">
-                        {{ __('messages.delivery') }}
+                        {{ translate('Delivery') }}
                     </h4>
 
                 </div>
@@ -291,6 +357,7 @@
 
     </section>
 
+    @include('estimation_price.import')
     @include('ai_layer.chatbot')
 
     @if (Auth::check() && $import_requests && $import_requests->status == 'Completed')
@@ -308,11 +375,11 @@
                     </div>
 
                     <h2 class="text-3xl font-bold mt-5">
-                        Leave Your Review
+                        {{ translate('Leave Your Review') }}
                     </h2>
 
                     <p class="text-gray-500 mt-2">
-                        We'd love to hear about your experience.
+                        {{ translate('We\'d love to hear about your experience.') }}
                     </p>
 
                 </div>
@@ -323,7 +390,7 @@
 
                     <div>
                         <label class="block mb-2 font-semibold">
-                            Your Name
+                            {{ translate('Your Name') }}
                         </label>
 
                         <input type="text" name="name" value="{{ Auth::user()->name }}"
@@ -332,7 +399,7 @@
 
                     <div>
                         <label class="block mb-2 font-semibold">
-                            Location
+                            {{ translate('Location') }}
                         </label>
 
                         <input type="text" name="location" placeholder="Dhaka, Bangladesh"
@@ -341,24 +408,24 @@
 
                     <div>
                         <label class="block mb-2 font-semibold">
-                            Rating
+                            {{ translate('Rating') }}
                         </label>
 
                         <select name="rating" class="w-full border rounded-lg p-3" required>
 
-                            <option value="">Select Rating</option>
-                            <option value="5">⭐⭐⭐⭐⭐ Excellent</option>
-                            <option value="4">⭐⭐⭐⭐ Very Good</option>
-                            <option value="3">⭐⭐⭐ Good</option>
-                            <option value="2">⭐⭐ Fair</option>
-                            <option value="1">⭐ Poor</option>
+                            <option value="">{{ translate('Select Rating') }}</option>
+                            <option value="5">{{ translate('⭐⭐⭐⭐⭐ Excellent') }}</option>
+                            <option value="4">{{ translate('⭐⭐⭐⭐ Very Good') }}</option>
+                            <option value="3">{{ translate('⭐⭐⭐ Good') }}</option>
+                            <option value="2">{{ translate('⭐⭐ Fair') }}</option>
+                            <option value="1">{{ translate('⭐ Poor') }}</option>
 
                         </select>
                     </div>
 
                     <div>
                         <label class="block mb-2 font-semibold">
-                            Review
+                            {{ translate('Review') }}
                         </label>
 
                         <textarea name="review" rows="5" class="w-full border rounded-lg p-3" placeholder="Write your review..."
@@ -367,14 +434,14 @@
 
                     <div>
                         <label class="block mb-2 font-semibold">
-                            Image
+                            {{ translate('Image') }}
                         </label>
 
                         <input type="file" name="image" class="w-full border rounded-lg p-3">
                     </div>
 
                     <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700">
-                        Submit Review
+                        {{ translate('Submit Review') }}
                     </button>
 
                 </form>
@@ -390,21 +457,23 @@
         <div class="max-w-4xl mx-auto text-center px-6">
 
             <h2 class="text-4xl font-bold">
-                {{ __('messages.ready_import_vehicle') }}
+                {{ translate('Ready to Import a Vehicle?') }}
             </h2>
 
 
             <p class="mt-5 text-lg text-indigo-100">
-                {{ __('messages.cta_import_desc') }}
+                {{ translate('Cta Import Description') }}
             </p>
 
             @if (Auth::check())
-                <a href="{{ route('customer.import.request.create') }}" class="inline-block mt-8 bg-white text-indigo-600 px-8 py-4 rounded-lg font-semibold">
-                    {{ __('messages.request_import_quote') }}
+                <a href="{{ route('customer.import.request.create') }}"
+                    class="inline-block mt-8 bg-white text-indigo-600 px-8 py-4 rounded-lg font-semibold">
+                    {{ translate('Request Import Quote') }}
                 </a>
             @else
-                <a href="/login" class="inline-block mt-8 bg-white text-indigo-600 px-8 py-4 rounded-lg font-semibold">
-                    {{ __('messages.request_import_quote') }}
+                <a href="/login"
+                    class="inline-block mt-8 bg-white text-indigo-600 px-8 py-4 rounded-lg font-semibold">
+                    {{ translate('Request Import Quote') }}
                 </a>
             @endif
 

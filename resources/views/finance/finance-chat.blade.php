@@ -12,7 +12,7 @@
 
     <!-- Header -->
     <div class="bg-blue-600 text-white p-4 flex justify-between items-center">
-        <h2 class="font-bold">🤖 AutoOne AI Assistant</h2>
+        <h2 class="font-bold">🤖 {{ translate('AutoOne AI Assistant') }}</h2>
 
         <button id="closeChats" class="text-2xl">&times;</button>
     </div>
@@ -29,25 +29,25 @@
             <div class="ml-3 bg-gray-100 rounded-xl p-4 w-full">
 
                 <p class="font-semibold mb-4">
-                    👋 Hello! I can calculate your monthly finance payment.
+                    👋 {{ translate('Hello! I can calculate your monthly finance payment.') }}
                 </p>
 
                 <form id="financeForm">
 
                     <input type="number" name="car_price" class="w-full border rounded-lg p-3 mb-3"
-                        placeholder="Car Price" required>
+                        placeholder="{{ translate('Car Price') }}" required>
 
                     <input type="number" name="down_payment" class="w-full border rounded-lg p-3 mb-3"
-                        placeholder="Down Payment" required>
+                        placeholder="{{ translate('Down Payment') }}" required>
 
                     <input type="number" step="0.01" name="interest_rate" class="w-full border rounded-lg p-3 mb-3"
-                        placeholder="Interest Rate (%)" required>
+                        placeholder="{{ translate('Interest Rate (%)') }}" required>
 
                     <input type="number" name="months" class="w-full border rounded-lg p-3 mb-3"
-                        placeholder="Loan Duration (Months)" required>
+                        placeholder="{{ translate('Loan Duration (Months)') }}" required>
 
                     <button class="w-full bg-blue-600 text-white py-3 rounded-lg">
-                        Calculate EMI
+                        {{ translate('Calculate EMI') }}
                     </button>
 
                 </form>

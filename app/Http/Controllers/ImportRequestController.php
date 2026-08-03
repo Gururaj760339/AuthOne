@@ -42,16 +42,32 @@ class ImportRequestController extends Controller
         $user->notify(new ImportRequestNotification($importRequest));
 
         return redirect()->route('payment.choose.car.import', $importRequest);
-
     }
 
     public function customerShowImporte()
     {
-        $requests = ImportRequest::where('status', 'Completed')->get();
-        $import_requests = ImportRequest::where('status', 'Completed')->first();
+        $requests = ImportRequest::where('status', 'Completed')
+            ->latest()
+            ->get();
+
+        $import_requests = ImportRequest::where('status', 'Completed')
+            ->latest()
+            ->first();
+
+        // Recommended Import Requests
+        $recommendedImports = ImportRequest::where('status', 'Completed')
+            ->latest()
+            ->take(4)
+            ->get();
+
         $setting = Setting::first();
 
-        return view('import_request.car_imports', compact('import_requests', 'setting', 'requests'));
+        return view('import_request.car_imports', compact(
+            'setting',
+            'requests',
+            'import_requests',
+            'recommendedImports'
+        ));
     }
 
     public function adminImportRequestShow()
@@ -83,5 +99,14 @@ class ImportRequestController extends Controller
         $importRequest->delete();
 
         return redirect()->back()->with('success', 'Request Deleted Successfully.');
+    }
+
+    public function customerProfileImportRequests()
+    {
+        $importRequests = ImportRequest::where('user_id', Auth::id())
+            ->latest()
+            ->paginate(10);
+
+        return view('customer.import_request', compact('importRequests'));
     }
 }

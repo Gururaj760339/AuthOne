@@ -42,6 +42,7 @@ class ServiceController extends Controller
 
     public function showMaintenanceCustomer()
     {
+        // All Services
         $services = Service::with('serviceCategory')
             ->whereHas('serviceCategory', function ($query) {
                 $query->where('slug', 'workshops-maintenance');
@@ -50,18 +51,36 @@ class ServiceController extends Controller
             ->latest()
             ->get();
 
+        // User Booking
         $booking = Booking::whereHas('service.serviceCategory', function ($query) {
             $query->where('slug', 'workshops-maintenance');
         })
-            ->where('user_id', Auth::id())->first();
+            ->where('user_id', Auth::id())
+            ->latest()
+            ->first();
 
-        $testimonials = Testimonial::get();
+        // Recommended Services
+        $recommendedServices = Service::whereHas('serviceCategory', function ($query) {
+            $query->where('slug', 'workshops-maintenance');
+        })
+            ->where('status', 1)
+            ->withCount('bookings')
+            ->orderByDesc('bookings_count')
+            ->take(5)
+            ->get();
 
+        $testimonials = Testimonial::all();
         $faqs = Faq::limit(3)->get();
-
         $setting = Setting::first();
 
-        return view('workshops_and_maintenance', compact('setting', 'faqs', 'testimonials', 'booking', 'services'));
+        return view('workshops_and_maintenance', compact(
+            'setting',
+            'faqs',
+            'testimonials',
+            'booking',
+            'services',
+            'recommendedServices'
+        ));
     }
 
     public function showCarWashCustomer()
@@ -76,15 +95,34 @@ class ServiceController extends Controller
 
         $booking = Booking::whereHas('service.serviceCategory', function ($query) {
             $query->where('slug', 'car-wash-services');
-        })->first();
+        })
+            ->where('user_id', Auth::id())
+            ->latest()
+            ->first();
 
-        $testimonials = Testimonial::get();
+        // Recommended Services
+        $recommendedServices = Service::with('serviceCategory')
+            ->whereHas('serviceCategory', function ($query) {
+                $query->where('slug', 'car-wash-services');
+            })
+            ->where('status', 1)
+            ->withCount('bookings')
+            ->orderByDesc('bookings_count')
+            ->take(4)
+            ->get();
 
+        $testimonials = Testimonial::all();
         $faqs = Faq::limit(3)->get();
-
         $setting = Setting::first();
 
-        return view('car_wash', compact('setting', 'faqs', 'testimonials', 'booking', 'services'));
+        return view('car_wash', compact(
+            'setting',
+            'faqs',
+            'testimonials',
+            'booking',
+            'services',
+            'recommendedServices'
+        ));
     }
 
     public function serviceCreate()

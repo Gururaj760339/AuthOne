@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Your Car</title>
+    <title>{{ translate('Add Your Car') }}</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100">
@@ -13,9 +13,9 @@
     <div class="bg-white shadow-lg rounded-lg">
 
         <div class="border-b px-6 py-4">
-            <h2 class="text-2xl font-bold">Add Your Car</h2>
+            <h2 class="text-2xl font-bold">{{ translate('Add Your Car') }}</h2>
             <p class="text-gray-500">
-                Submit your car for approval.
+                {{ translate('Submit your car for approval.') }}
             </p>
         </div>
 
@@ -41,7 +41,7 @@
 
                     <div>
                         <label class="block font-semibold mb-2">
-                            Brand
+                            {{ translate('Brand') }}
                         </label>
 
                         <input type="text"
@@ -53,7 +53,7 @@
 
                     <div>
                         <label class="block font-semibold mb-2">
-                            Model
+                            {{ translate('Model') }}
                         </label>
 
                         <input type="text"
@@ -65,7 +65,7 @@
 
                     <div>
                         <label class="block font-semibold mb-2">
-                            Year
+                            {{ translate('Year') }}
                         </label>
 
                         <input type="number"
@@ -76,7 +76,7 @@
 
                     <div>
                         <label class="block font-semibold mb-2">
-                            Registration Number
+                            {{ translate('Registration Number') }}
                         </label>
 
                         <input type="text"
@@ -87,7 +87,7 @@
 
                     <div>
                         <label class="block font-semibold mb-2">
-                            Color
+                            {{ translate('Color') }}
                         </label>
 
                         <input type="text"
@@ -98,24 +98,25 @@
 
                     <div>
                         <label class="block font-semibold mb-2">
-                            Fuel Type
+                            {{ translate('Fuel Type') }}
                         </label>
 
                         <select name="fuel_type"
                                 class="w-full border rounded-lg p-3">
 
-                            <option value="">Select Fuel</option>
-                            <option value="Petrol">Petrol</option>
-                            <option value="Diesel">Diesel</option>
-                            <option value="Hybrid">Hybrid</option>
-                            <option value="Electric">Electric</option>
+                            <option value="">{{
+                                translate('Select Fuel') }}</option>
+                            <option value="Petrol">{{ translate('Petrol') }}</option>
+                            <option value="Diesel">{{ translate('Diesel') }}</option>
+                            <option value="Hybrid">{{ translate('Hybrid') }}</option>
+                            <option value="Electric">{{ translate('Electric') }}</option>
 
                         </select>
                     </div>
 
                     <div>
                         <label class="block font-semibold mb-2">
-                            Seats
+                            {{ translate('Seats') }}
                         </label>
 
                         <input type="number"
@@ -126,7 +127,7 @@
 
                     <div>
                         <label class="block font-semibold mb-2">
-                            Price Per Day ($)
+                            {{ translate('Price Per Day ($)') }}
                         </label>
 
                         <input type="number"
@@ -141,7 +142,7 @@
                 <div class="mt-5">
 
                     <label class="block font-semibold mb-2">
-                        Description
+                        {{ translate('Description') }}
                     </label>
 
                     <textarea name="description"
@@ -153,7 +154,7 @@
                 <div class="mt-5">
 
                     <label class="block font-semibold mb-2">
-                        Car Image
+                        {{ translate('Car Image') }}
                     </label>
 
                     <input type="file"
@@ -171,7 +172,7 @@
 
                     <button type="submit"
                             class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700">
-                        Submit Car
+                        {{ translate('Submit Car') }}
                     </button>
 
                 </div>

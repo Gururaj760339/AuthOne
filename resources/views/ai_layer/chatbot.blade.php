@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>AI Chatbot</title>
+    <title>{{ translate('AI Chatbot') }}</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -41,11 +41,11 @@
             <div>
 
                 <h2 class="font-bold text-lg">
-                    AI Assistant
+                    {{ translate('AI Assistant') }}
                 </h2>
 
                 <p class="text-xs opacity-80">
-                    Ask me anything
+                    {{ translate('Ask me anything') }}
                 </p>
 
             </div>
@@ -59,7 +59,7 @@
         <div id="messages" class="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50">
 
             <div class="bg-blue-100 p-3 rounded-xl w-fit max-w-xs">
-                👋 Hello! How can I help you?
+                👋 {{ translate('Hello! How can I help you?') }}
             </div>
 
         </div>
@@ -75,7 +75,7 @@
 
                 <button onclick="sendMessage()" class="bg-blue-600 hover:bg-blue-700 text-white px-5 rounded-xl">
 
-                    Send
+                    {{ translate('Send') }}
 
                 </button>
 

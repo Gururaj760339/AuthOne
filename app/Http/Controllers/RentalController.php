@@ -45,10 +45,17 @@ class RentalController extends Controller
             ->latest()
             ->get();
 
+        // Recommended Rental Cars
+        $recommendedRentals = Rental::with('car')
+            ->where('available', 1)
+            ->withCount('rentalBookings')
+            ->orderByDesc('rental_bookings_count')
+            ->take(4)
+            ->get();
+
         $rental_booking = RentalBooking::where('status', 'Completed')->first();
 
         $faqs = Faq::limit(3)->get();
-
         $setting = Setting::first();
 
         return view('car_rental', compact(
@@ -56,7 +63,8 @@ class RentalController extends Controller
             'faqs',
             'rental_booking',
             'rentals',
-            'userCars'
+            'userCars',
+            'recommendedRentals'
         ));
     }
 

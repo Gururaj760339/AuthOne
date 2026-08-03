@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KYC Verification</title>
+    <title>{{ translate('KYC Verification') }}</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -16,7 +16,7 @@
         <div class="bg-white shadow-lg rounded-xl p-8">
 
             <h2 class="text-3xl font-bold mb-6">
-                KYC Verification
+                {{ translate('KYC Verification') }}
             </h2>
 
             {{-- Success Message --}}
@@ -50,27 +50,27 @@
                 <div class="border rounded-xl p-6 bg-gray-50">
 
                     <h3 class="text-xl font-semibold mb-4">
-                        KYC Status
+                        {{ translate('KYC Status') }}
                     </h3>
 
                     @if($kyc->status == 'pending')
                         <span class="px-4 py-2 bg-yellow-100 text-yellow-700 rounded">
-                            Pending
+                            {{ translate('Pending') }}
                         </span>
 
                     @elseif($kyc->status == 'verified')
                         <span class="px-4 py-2 bg-green-100 text-green-700 rounded">
-                            Verified
+                            {{ translate('Verified') }}
                         </span>
 
                     @else
                         <span class="px-4 py-2 bg-red-100 text-red-700 rounded">
-                            Rejected
+                            {{ translate('Rejected') }}
                         </span>
 
                         <div class="mt-4">
-                            <strong>Reason:</strong>
-                            {{ $kyc->rejection_reason }}
+                            <strong>{{ translate('Reason') }}:</strong>
+                            {{ translate($kyc->rejection_reason) }}
                         </div>
                     @endif
 
@@ -88,7 +88,7 @@
 
                         <div>
                             <label class="font-semibold">
-                                Driver License Front *
+                                {{ translate('Driver License Front') }} *
                             </label>
 
                             <input type="file"
@@ -99,7 +99,7 @@
 
                         <div>
                             <label class="font-semibold">
-                                Driver License Back *
+                                {{ translate('Driver License Back') }} *
                             </label>
 
                             <input type="file"
@@ -110,7 +110,7 @@
 
                         <div>
                             <label class="font-semibold">
-                                National ID
+                                {{ translate('National ID') }}
                             </label>
 
                             <input type="file"
@@ -120,7 +120,7 @@
 
                         <div>
                             <label class="font-semibold">
-                                Passport
+                                {{ translate('Passport') }}
                             </label>
 
                             <input type="file"
@@ -130,7 +130,7 @@
 
                         <div class="md:col-span-2">
                             <label class="font-semibold">
-                                Selfie
+                                {{ translate('Selfie') }}
                             </label>
 
                             <input type="file"
@@ -142,7 +142,7 @@
 
                     <button
                         class="mt-8 bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg rounded-lg">
-                        Submit KYC
+                        {{ translate('Submit KYC') }}
                     </button>
 
                 </form>
@@ -152,7 +152,7 @@
             <div class="mt-8">
                 <a href="{{ route('customer.profile') }}"
                    class="inline-block bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg">
-                    ← Back to Profile
+                    ← {{ translate('Back to Profile') }}
                 </a>
             </div>
 
