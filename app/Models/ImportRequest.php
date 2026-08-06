@@ -11,4 +11,19 @@ class ImportRequest extends Model
     public function user(){
         return $this->belongsTo(User::class);
     }
+
+    public function importFinanceRequests()
+    {
+        return $this->hasMany(ImportFinanceRequest::class);
+    }
+
+    public function car()
+    {
+        return $this->belongsTo(Car::class);
+    }
+
+    public function carWarranty()
+    {
+        return $this->hasMany(CarWarranty::class);
+    }
 }

@@ -59,4 +59,9 @@ return [
         'key' => env('STRIPE_KEY'),
     ],
 
+    'shippo' => [
+        'token' => env('SHIPPO_API_TOKEN'),
+        'url' => env('SHIPPO_API_URL'),
+    ],
+
 ];

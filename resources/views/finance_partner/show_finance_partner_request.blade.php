@@ -91,7 +91,7 @@
 
                     <td class="px-6 py-4">
 
-                        ${{ number_format($request->amount,2) }}
+                        ${{ number_format(($request->car->price - $request->down_payment),2) }}
 
                     </td>
 

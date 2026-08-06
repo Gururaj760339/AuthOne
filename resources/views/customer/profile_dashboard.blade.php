@@ -64,8 +64,8 @@
                         🌍 {{ translate('Import Requests') }}
                     </a>
 
-                    <a href="#" class="block bg-gray-50 hover:bg-gray-100 p-3 rounded-lg">
-                        🔑 {{ translate('Change Password') }}
+                    <a href="{{ route('customer.warranties') }}" class="block bg-gray-50 hover:bg-gray-100 p-3 rounded-lg">
+                        🔑 {{ translate('Warranties') }}
                     </a>
 
                     <a href="{{ route('p2p.cars.show') }}" class="block bg-yellow-50 hover:bg-yellow-100 p-3 rounded-lg">

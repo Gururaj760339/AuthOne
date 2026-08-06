@@ -14,6 +14,8 @@ use App\Notifications\ImportPaymentNotification;
 use App\Notifications\RentalBookingConfirmedNotification;
 use App\Notifications\RentalPaymentNotification;
 use App\Notifications\servicePaymentNotification;
+use App\Models\CarWarranty;
+use App\Models\WarrantyPlan;
 use Illuminate\Http\Request;
 use Stripe\Stripe;
 use Stripe\Checkout\Session;
@@ -48,6 +50,11 @@ class PaymentController extends Controller
         $carImport = ImportRequest::findOrFail($id);
 
         return view('customer_payment.choose_payment_car_import', compact('carImport'));
+    }
+
+    public function choosePaymentWarrantyExtended($warrantyId, $planId)
+    {
+        return view('customer_payment.choose_payment_warranty_extended', compact('warrantyId', 'planId'));
     }
 
     public function stripeRentalCheckout($type, $rentalId, $rentalBookingId)
@@ -125,7 +132,7 @@ class PaymentController extends Controller
         ]);
 
         Booking::where('user_id', Auth::user()->id)
-        ->update(['status' => 'Confirmed']);
+            ->update(['status' => 'Confirmed']);
 
         //dd(env('STRIPE_SECRET'));
 
@@ -225,6 +232,82 @@ class PaymentController extends Controller
         return redirect($session->url);
     }
 
+    public function stripeCheckoutWarrantyExtended($warrantyId, $planId)
+    {
+        //dd('Controller Hit', $warrantyId, $planId);
+        $plan = WarrantyPlan::findOrFail($planId);
+        $amount = $plan->price;
+        $referenceId = rand(100000, 999999);
+
+        $payment = Payment::create([
+            'user_id' => auth()->id(),
+            'payment_for' => 'warranty_extended',
+            'reference_id' => $referenceId,
+            'amount' => $amount,
+            'payment_method' => 'stripe',
+            'status' => 'pending',
+        ]);
+
+        Stripe::setApiKey(env('STRIPE_SECRET'));
+
+        $session = Session::create([
+            'payment_method_types' => ['card'],
+            'line_items' => [[
+                'price_data' => [
+                    'currency' => 'usd',
+                    'product_data' => [
+                        'name' => 'Extended Warranty Payment',
+                    ],
+                    'unit_amount' => (int) ($amount * 100),
+                ],
+                'quantity' => 1,
+            ]],
+            'mode' => 'payment',
+            'success_url' => route('warranty.stripe.success', [
+                'paymentId' => $payment->id,
+                'warrantyId' => $warrantyId,
+                'planId' => $planId,
+            ]),
+            'cancel_url' => route('stripe.cancel', $payment->id),
+        ]);
+
+        return redirect($session->url);
+    }
+
+
+    // Payment Success
+    public function warrantyStripeSuccess($paymentId, $warrantyId, $planId)
+    {
+        $payment = Payment::findOrFail($paymentId);
+
+        $payment->update([
+            'payment_method' => 'stripe',
+            'status' => 'paid',
+            'paid_at' => now(),
+        ]);
+
+        $warranty = CarWarranty::findOrFail($warrantyId);
+        $plan = WarrantyPlan::findOrFail($planId);
+
+        $warranty->update([
+            'warranty_plan_id' => $planId,
+
+            'end_date' => Carbon::parse($warranty->end_date)
+                ->addMonths($plan->duration_months),
+
+            'duration_months' => $warranty->duration_months + $plan->duration_months,
+
+            'max_km' => $plan->max_km,
+
+            'type' => 'Extended',
+        ]);
+
+
+        return redirect()
+            ->route('home')
+            ->with('success', 'Payment completed successfully.');
+    }
+
 
     // Payment Success
     public function stripeSuccess($id)
@@ -258,9 +341,9 @@ class PaymentController extends Controller
 
                 if ($finance) {
 
-                    $finance->update([
-                        'status' => 'Approved',
-                    ]);
+                    // $finance->update([
+                    //     'status' => 'Approved',
+                    // ]);
 
                     $user->notify(new FinancePaymentNotification($finance, $payment));
                 }

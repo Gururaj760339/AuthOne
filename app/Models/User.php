@@ -101,4 +101,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(UserVerification::class);
     }
+
+    public function carWarranty()
+    {
+        return $this->hasMany(CarWarranty::class);
+    }
 }

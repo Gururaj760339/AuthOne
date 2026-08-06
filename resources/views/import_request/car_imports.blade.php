@@ -357,6 +357,7 @@
 
     </section>
 
+    {{-- @include('import_request.import_calculation') --}}
     @include('estimation_price.import')
     @include('ai_layer.chatbot')
 

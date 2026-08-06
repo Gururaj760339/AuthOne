@@ -32,4 +32,14 @@ class Car extends Model
     {
         return $this->belongsTo(Vendor::class);
     }
+
+    public function importRequests()
+    {
+        return $this->hasMany(ImportRequest::class);
+    }
+
+    public function carWarranty()
+    {
+        return $this->hasMany(CarWarranty::class);
+    }
 }

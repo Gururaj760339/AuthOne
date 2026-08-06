@@ -17,4 +17,9 @@ class FinancePartner extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function importFinanceRequests()
+    {
+        return $this->hasMany(ImportFinanceRequest::class, 'finance_partner_id');
+    }
 }

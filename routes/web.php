@@ -22,11 +22,17 @@ use App\Http\Controllers\ServiceCategoryController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\TestimoniasController;
+use App\Http\Controllers\CustomerWarrantyController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VendorController;
+use App\Http\Controllers\ExtendedWarrantyController;
 use App\Http\Controllers\P2PCarController;
 use App\Http\Controllers\PriceEstimationController;
 use App\Http\Controllers\UserVerificationController;
+use App\Http\Controllers\WarrantyPlanController;
+use App\Http\Controllers\ImportController;
+use App\Http\Controllers\ImportFinanceRequestController;
+use App\Services\ShippoService;
 use App\Models\ImporteRequest;
 use App\Models\ServiceCategory;
 use Illuminate\Support\Facades\Route;
@@ -285,6 +291,8 @@ Route::delete('/admin-rentals-delete/{id}', [RentalBookingController::class, 'ad
 Route::get('/importe-request-create', [ImportRequestController::class, 'customerImporteRequestCreate'])->name('customer.import.request.create');
 Route::post('/importe-request-store', [ImportRequestController::class, 'customerImporteRequestStore'])->name('customer.import.request.store');
 Route::get('/importe-request', [ImportRequestController::class, 'customerShowImporte'])->name('customer.import.request');
+Route::get('/customer/import-finance/{importRequest}', [ImportFinanceRequestController::class, 'CustomerImportFinanceCreate'])->name('customer.import.finance.create');
+Route::post('/customer/import-finance/store', [ImportFinanceRequestController::class, 'customerImportFinanceStore'])->name('customer.import.finance.store');
 
 Route::get('/admin-importe-request', [ImportRequestController::class, 'adminImportRequestShow'])
 ->name('admin.import.request')->middleware(['can:isAdmin']);
@@ -355,13 +363,15 @@ Route::get('/payment/finance/{id}', [PaymentController::class, 'choosePaymentFin
 Route::get('/payment/service', [PaymentController::class, 'choosePaymentService'])->name('payment.choose.service');
 Route::get('/payment/car-import/{id}', [PaymentController::class, 'choosePaymentCarImport'])->name('payment.choose.car.import');
 Route::get('/payment/rental/{rentalId}/booking/{rentalBookingId}',[PaymentController::class, 'choosePaymentCarRental'])->name('payment.choose.car.rental');
+Route::get('/payment/warranty/{warrantyId}/extended/{planId}', [PaymentController::class, 'choosePaymentWarrantyExtended'])->name('payment.choose.warranty.extended');
 
 Route::get('/payment/{type}/stripe/{id}', [PaymentController::class, 'stripeCheckout'])->name('stripe.checkout');
 Route::get('/payment/stripe', [PaymentController::class, 'stripeCheckoutService'])->name('stripe.checkout.services');
 Route::get('/payment/{type}/stripe/{rentalId}/{rentalBookingId}', [PaymentController::class, 'stripeRentalCheckout'])->name('stripe.checkout.rental');
+Route::get('/payment/warranty/{warrantyId}/stripe/{planId}/checkout',[PaymentController::class, 'stripeCheckoutWarrantyExtended'])->name('stripe.checkout.warranty.extended');
 Route::get('/stripe/success/{id}', [PaymentController::class, 'stripeSuccess'])->name('stripe.success');
-Route::get('/stripe/cancel/{id}', [PaymentController::class, 'stripeCancel'])->name('stripe.cancel');
-
+Route::get('/payment/{paymentId}/warranty/{warrantyId}/plan/{planId}/success',[PaymentController::class, 'warrantyStripeSuccess'])->name('warranty.stripe.success');Route::get('/stripe/cancel/{id}', [PaymentController::class, 'stripeCancel'])->name('stripe.cancel');
+ 
 Route::post('/chatbot', [ChatbotController::class, 'chat']);
 
 
@@ -369,6 +379,9 @@ Route::get('/finance-partner/dashboard', [FinancePartnerController::class, 'fina
 Route::get('/finance-partner/requests', [FinancePartnerController::class, 'financeRequests'])->name('finance.partner.requests');
 Route::post('/finance-partner/requests/approve/{id}', [FinancePartnerController::class, 'approveFinanceRequest'])->name('finance.partner.approve');
 Route::post('/finance-partner/requests/reject/{id}', [FinancePartnerController::class, 'rejectFinanceRequest'])->name('finance.partner.reject');
+Route::get('/import-finance-partner/requests', [FinancePartnerController::class, 'ImportFinanceRequests'])->name('import.finance.partner.requests');
+Route::post('/import-finance-partner/requests/approve/{id}', [FinancePartnerController::class, 'approveImportFinanceRequest'])->name('import.finance.partner.approve');
+Route::post('/import-finance-partner/requests/reject/{id}', [FinancePartnerController::class, 'rejectImportFinanceRequest'])->name('import.finance.partner.reject');
 
 Route::get('/my-profile', [UserController::class, 'myProfile'])->name('customer.profile');
 Route::get('/create-kyc', [KycVerificationController::class, 'createKyc'])->name('customer.create.kyc');
@@ -419,3 +432,16 @@ Route::get('/language/{lang}', function ($lang) {
     Session::put('language', $lang);
     return redirect()->back();
 })->name('language.switch');
+
+Route::post('/imports/{id}/shipment', [ImportController::class, 'createShipment'])->name('import.shipment.create');
+Route::post('/import-request/{id}/shipment', [ImportRequestController::class, 'shipment'])->name('import.shipment');
+Route::get('/import-request/{id}/tracking', [ImportRequestController::class, 'tracking'])->name('import.tracking');
+
+Route::get('/customer/warranties', [CustomerWarrantyController::class, 'customerWarranties'])->name('customer.warranties');
+Route::get('/customer/warranty/{id}/extend', [ExtendedWarrantyController::class, 'createExtendWarranty'])->name('customer.extended.warranty.create');
+Route::post('/customer/warranty/extend', [ExtendedWarrantyController::class, 'storeExtendWarranty'])->name('customer.extended.warranty.store');
+
+Route::get('/warranty-plans', [WarrantyPlanController::class, 'showWarrantyPlans'])->name('admin.warranty.plans.index')->middleware(['can:isAdmin']);
+Route::get('/warranty-plans/create', [WarrantyPlanController::class, 'createWarrantyPlan'])->name('admin.warranty.plans.create')->middleware(['can:isAdmin']);
+Route::post('/warranty-plans', [WarrantyPlanController::class, 'storeWarrantyPlan'])->name('admin.warranty.plans.store')->middleware(['can:isAdmin']);
+Route::delete('/warranty-plans/{id}', [WarrantyPlanController::class, 'destroyWarrantyPlan'])->name('admin.warranty.plans.destroy');

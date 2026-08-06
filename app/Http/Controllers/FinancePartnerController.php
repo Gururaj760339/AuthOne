@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\FinancePartner;
 use Illuminate\Http\Request;
 use App\Models\FinanceRequests;
+use App\Models\ImportFinanceRequest;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class FinancePartnerController extends Controller
 {
@@ -13,7 +15,7 @@ class FinancePartnerController extends Controller
     {
         $partner = auth()->user()->financePartner;
 
-        $requests = FinanceRequests::where(
+        $requests = FinanceRequests::with('car.carBrand')->where(
             'partner_id',
             $partner->id
         )->latest()->get();
@@ -141,5 +143,45 @@ class FinancePartnerController extends Controller
         ]);
 
         return back()->with('success', 'Finance request rejected successfully.');
+    }
+
+    public function ImportFinanceRequests()
+    {
+        $partner = FinancePartner::where('user_id', Auth::id())->firstOrFail();
+
+        $requests = ImportFinanceRequest::with([
+            'user',
+            'importRequest.car.carBrand'
+        ])
+            ->where('finance_partner_id', $partner->id)
+            ->latest()
+            ->paginate(10);
+
+        return view('finance_partner.show_import_finance_request', compact(
+            'partner',
+            'requests'
+        ));
+    }
+
+    public function approveImportFinanceRequest($id)
+    {
+        $request = ImportFinanceRequest::findOrFail($id);
+
+        $request->update([
+            'status' => 'approved'
+        ]);
+
+        return back()->with('success', 'Finance Request Approved Successfully.');
+    }
+
+    public function rejectImportFinanceRequest($id)
+    {
+        $request = ImportFinanceRequest::findOrFail($id);
+
+        $request->update([
+            'status' => 'rejected'
+        ]);
+
+        return back()->with('success', 'Finance Request Rejected Successfully.');
     }
 }

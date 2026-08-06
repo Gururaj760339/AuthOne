@@ -24,8 +24,9 @@ class FinanceRequestsController extends Controller
     public function singleFinanceRequest($slug)
     {
         $cars = Car::where('slug', $slug)->get();
+        $partners = FinancePartner::get();
 
-        return view('finance.apply_finance', compact('cars'));
+        return view('finance.apply_finance', compact('cars', 'partners'));
     }
 
     public function financeStore(Request $request)
@@ -58,8 +59,8 @@ class FinanceRequestsController extends Controller
 
         $user->notify(new FinanceRequestNotification($finance));
 
-        //return redirect()->route('payment.choose.finance', $finance->id);
-        return redirect()->route('customer.cars');
+        return redirect()->route('payment.choose.finance', $finance->id);
+        //return redirect()->route('customer.cars');
     }
 
     public function AdminFinanceRequests()
