@@ -76,6 +76,10 @@
                         📝 {{ translate('Rental Requests') }}
                     </a>
 
+                    <a href="{{ route('customer.orders.history') }}" class="block bg-blue-50 hover:bg-blue-100 p-3 rounded-lg">
+                        📝 {{ translate('My Orders') }}
+                    </a>
+
                 </div>
 
                 

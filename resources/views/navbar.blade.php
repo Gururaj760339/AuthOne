@@ -38,6 +38,11 @@
                     {{ translate('Car Imports') }}
                 </a>
 
+                <a href="{{ route('customer.spare.parts') }}"
+                    class="hover:text-blue-600 transition whitespace-nowrap">
+                    {{ translate('Spare Parts') }}
+                </a>
+
                 <a href="{{ route('customer.contact') }}" class="hover:text-blue-600 transition whitespace-nowrap">
                     {{ translate('Contact') }}
                 </a>

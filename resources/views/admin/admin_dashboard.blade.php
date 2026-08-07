@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AutoOne Admin Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 
 <body class="bg-slate-100">
@@ -133,6 +134,37 @@
                         🪪 <span>KYC Verification</span>
 
                     </a>
+
+                    <li x-data="{ open: false }">
+                        <!-- Parent Menu -->
+                        <button @click="open = !open"
+                            class="w-full flex items-center justify-between px-4 py-3 rounded-lg hover:bg-slate-800 transition">
+                            <span class="flex items-center gap-3">
+                                🪪 <span>Spare Parts</span>
+                            </span>
+
+                            <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': open }" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+
+                        <!-- Dropdown -->
+                        <div x-show="open" x-transition class="mt-2 ml-6 space-y-1">
+                            <a href="{{ route('admin.spare.categories') }}"
+                                class="block px-4 py-2 rounded-lg hover:bg-slate-800">
+                                🗂 Spare Part Categories
+                            </a>
+
+                            <a href="{{ route('spare-parts.orders') }}"
+                                class="block px-4 py-2 rounded-lg hover:bg-slate-800">
+                                ➕ Orders
+                            </a>
+
+                        </div>
+                    </li>
+
 
                     <a href="{{ route('admin.warranty.plans.index') }}"
                         class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition">

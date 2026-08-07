@@ -3,9 +3,11 @@
 namespace Database\Seeders;
 
 use App\Models\FinancePartner;
+use App\Models\SparePartCategory;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use SparePartCategorySeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -23,7 +25,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             AdminSeeder::class,
-            FinancePartnerSeeder::class
+            FinancePartnerSeeder::class,
+            SparePartCategorySeeder::class
         ]);
     }
 }

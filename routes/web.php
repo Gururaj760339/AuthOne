@@ -1,12 +1,16 @@
 <?php
 
+use App\Http\Controllers\SparePartCategoryController;
 use App\Http\Controllers\AdminKycController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminOrderController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CarController;
 use App\Http\Controllers\CarImageController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\ChatbotController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ContactsController;
 use App\Http\Controllers\FaqController;
@@ -32,22 +36,27 @@ use App\Http\Controllers\UserVerificationController;
 use App\Http\Controllers\WarrantyPlanController;
 use App\Http\Controllers\ImportController;
 use App\Http\Controllers\ImportFinanceRequestController;
+use App\Http\Controllers\OrderController;
 use App\Services\ShippoService;
 use App\Models\ImporteRequest;
 use App\Models\ServiceCategory;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\SocialAuthController;
+use App\Http\Controllers\SparePartController;
+use App\Http\Controllers\SparePartImageController;
+use App\Http\Controllers\VendorOrderController;
 use App\Models\KycVerification;
 
 
-Route::get('/', [UserController::class, 'userPanel'])->name('home'); 
-Route::get('/about', [UserController::class, 'aboutPage'])->name('customer.about'); 
-Route::get('/faq', [FaqController::class, 'showCustomerFaq'])->name('customer.faq'); 
+Route::get('/', [UserController::class, 'userPanel'])->name('home');
+Route::get('/about', [UserController::class, 'aboutPage'])->name('customer.about');
+Route::get('/faq', [FaqController::class, 'showCustomerFaq'])->name('customer.faq');
 
 Route::get('/login', function () {
     return view('login');
-});
+})->name('login');
+
 Route::post('/login-user', [UserController::class, 'login'])->name('user.login');
 Route::post('/logout-user', [UserController::class, 'logout'])->name('user.logout');
 
@@ -58,10 +67,10 @@ Route::get('/registration', function () {
 Route::post('/registration-user', [UserController::class, 'register'])->name('user.register');
 
 
-Route::get('/auth/google',[SocialAuthController::class,'googleRedirect'])->name('google.login');
-Route::get('/auth/google/callback',[SocialAuthController::class,'googleCallback']);
-Route::get('/auth/apple',[SocialAuthController::class,'appleRedirect'])->name('apple.login');
-Route::get('/auth/apple/callback',[SocialAuthController::class,'appleCallback']);
+Route::get('/auth/google', [SocialAuthController::class, 'googleRedirect'])->name('google.login');
+Route::get('/auth/google/callback', [SocialAuthController::class, 'googleCallback']);
+Route::get('/auth/apple', [SocialAuthController::class, 'appleRedirect'])->name('apple.login');
+Route::get('/auth/apple/callback', [SocialAuthController::class, 'appleCallback']);
 
 // Route::get('/language/{locale}', function ($locale) {
 
@@ -77,16 +86,16 @@ Route::get('/import-car-form', function () {
 });
 
 Route::get('/admin-dashboard', [AdminController::class, 'adminDashboard'])
-->name('admin.dashboard')->middleware(['can:isAdmin']);
+    ->name('admin.dashboard')->middleware(['can:isAdmin']);
 
 Route::get('/all-users', [UserController::class, 'showAdminPanelUser'])
-->name('admin.users')->middleware(['can:isAdmin']);
+    ->name('admin.users')->middleware(['can:isAdmin']);
 
 Route::get('/create-users-form', [UserController::class, 'addUserForm'])
-->name('admin.users.create')->middleware(['can:isAdmin']);
+    ->name('admin.users.create')->middleware(['can:isAdmin']);
 
 Route::post('/add-users', [UserController::class, 'adminPanelAddUser'])
-->name('admin.store.users')->middleware(['can:isAdmin']);
+    ->name('admin.store.users')->middleware(['can:isAdmin']);
 
 Route::get('/admin-add-car-brand', function () {
     return view('admin.car_brand.car_brand_add');
@@ -94,46 +103,46 @@ Route::get('/admin-add-car-brand', function () {
 
 
 Route::post('/admin-car-brand-add', [BrandController::class, 'addCarBrand'])
-->name('admin.car.brand.add')->middleware(['can:isAdmin']);
+    ->name('admin.car.brand.add')->middleware(['can:isAdmin']);
 
 Route::get('/admin-edit-car-brand/{id}', [BrandController::class, 'editCarBrand'])
-->name('admin.edit.car.brand')->middleware(['can:isAdmin']);
+    ->name('admin.edit.car.brand')->middleware(['can:isAdmin']);
 
 Route::put('/admin-car-brand-update/{id}', [BrandController::class, 'updateCarBrand'])
-->name('admin.car.brand.update')->middleware(['can:isAdmin']);
+    ->name('admin.car.brand.update')->middleware(['can:isAdmin']);
 
 Route::get('/admin-car-brand', [BrandController::class, 'showCarBrand'])
-->name('admin.car.brand.show')->middleware(['can:isAdmin']);
+    ->name('admin.car.brand.show')->middleware(['can:isAdmin']);
 
 Route::delete('/admin-car-brand-delete/{id}', [BrandController::class, 'deleteCarBrand'])
-->name('admin.car.brand.delete')->middleware(['can:isAdmin']);
+    ->name('admin.car.brand.delete')->middleware(['can:isAdmin']);
 
 
 Route::get('/cars-filters', [CarController::class, 'customerCarFilter'])->name('cars.filter');
 
 Route::get('/admin-cars', [CarController::class, 'showAdminCar'])
-->name('admin.cars')->middleware(['can:isAdmin']);
+    ->name('admin.cars')->middleware(['can:isAdmin']);
 
 Route::get('/vendor-cars', [CarController::class, 'showVendorCar'])
-->name('vendor.cars')->middleware(['can:isVendor']);
+    ->name('vendor.cars')->middleware(['can:isVendor']);
 
 Route::get('/admin-car-add-form', [CarController::class, 'carAddForm'])
-->name('vendor.cars.add.form')->middleware(['can:isVendor']);
+    ->name('vendor.cars.add.form')->middleware(['can:isVendor']);
 
 Route::post('/admin-car-add', [CarController::class, 'Carstore'])
-->name('vendor.cars.add')->middleware(['can:isVendor']);
+    ->name('vendor.cars.add')->middleware(['can:isVendor']);
 
 Route::get('/admin-car-edit/{id}', [CarController::class, 'carEdit'])
-->name('admin.vendor.cars.edit')->middleware(['can:isAdminOrisVendor']);
+    ->name('admin.vendor.cars.edit')->middleware(['can:isAdminOrisVendor']);
 
 Route::put('/admin-car-update/{id}', [CarController::class, 'updateCar'])
-->name('admin.vendor.cars.update')->middleware(['can:isAdminOrisVendor']);
+    ->name('admin.vendor.cars.update')->middleware(['can:isAdminOrisVendor']);
 
 Route::put('/admin-car-satus-update/{id}', [CarController::class, 'carUpdateStatus'])
-->name('admin.car.status.update')->middleware(['can:isAdmin']);
+    ->name('admin.car.status.update')->middleware(['can:isAdmin']);
 
 Route::delete('/admin-car-delete/{id}', [CarController::class, 'deleteCar'])
-->name('admin.vendor.cars.delete')->middleware(['can:isAdminOrisVendor']);
+    ->name('admin.vendor.cars.delete')->middleware(['can:isAdminOrisVendor']);
 
 Route::get('/buy-finance-cars', [CarController::class, 'carCustomerShow'])->name('customer.cars');
 Route::get('/vehicle_details/{slug}', [CarController::class, 'vehicleDetails'])->name('vehicle.details');
@@ -141,56 +150,58 @@ Route::get('/vehicle_details/{slug}', [CarController::class, 'vehicleDetails'])-
 
 
 Route::get('/admin-car-images', [CarImageController::class, 'showCarImage'])
-->name('admin.cars.images')->middleware(['can:isAdmin']);
+    ->name('admin.cars.images')->middleware(['can:isAdmin']);
 
 Route::get('/admin-car-images-add', [CarImageController::class, 'addCarImage'])
-->name('admin.cars.image.create')->middleware(['can:isAdmin']);
+    ->name('admin.cars.image.create')->middleware(['can:isAdmin']);
 
 Route::post('/admin-car-images-store', [CarImageController::class, 'storeCarImage'])
-->name('admin.cars.image.store')->middleware(['can:isAdmin']);
+    ->name('admin.cars.image.store')->middleware(['can:isAdmin']);
 
-Route::delete('/admin-car-images-delete/{id}', [CarImageController::class, 'deleteCarImage']
+Route::delete(
+    '/admin-car-images-delete/{id}',
+    [CarImageController::class, 'deleteCarImage']
 )->name('admin.cars.image.destroy')->middleware(['can:isAdmin']);
 
 
 
 Route::get('/admin-service-categories', [ServiceCategoryController::class, 'serviceCategoryShow'])
-->name('admin.service.category')->middleware(['can:isAdmin']);
+    ->name('admin.service.category')->middleware(['can:isAdmin']);
 
 Route::get('/admin-service-categories-create', [ServiceCategoryController::class, 'serviceCategoryCreate'])
-->name('admin.service.category.create')->middleware(['can:isAdmin']);
+    ->name('admin.service.category.create')->middleware(['can:isAdmin']);
 
 Route::post('/admin-service-categories-store', [ServiceCategoryController::class, 'serviceCategoryStore'])
-->name('admin.service.category.store')->middleware(['can:isAdmin']);
+    ->name('admin.service.category.store')->middleware(['can:isAdmin']);
 
 Route::get('/admin-service-categories-edit/{id}', [ServiceCategoryController::class, 'serviceCategoryEdit'])
-->name('admin.service.category.edit')->middleware(['can:isAdmin']);
+    ->name('admin.service.category.edit')->middleware(['can:isAdmin']);
 
 Route::post('/admin-service-categories-update/{id}', [ServiceCategoryController::class, 'serviceCategoryUpdate'])
-->name('admin.service.category.update')->middleware(['can:isAdmin']);
+    ->name('admin.service.category.update')->middleware(['can:isAdmin']);
 
 Route::delete('/admin-service-categories-destroy/{id}', [ServiceCategoryController::class, 'serviceCategoryDestroy'])
-->name('admin.service.category.destroy')->middleware(['can:isAdmin']);
+    ->name('admin.service.category.destroy')->middleware(['can:isAdmin']);
 
 
 
 Route::get('/vendor-services', [ServiceController::class, 'showVendorService'])
-->name('vendor.service')->middleware(['can:isVendor']);
+    ->name('vendor.service')->middleware(['can:isVendor']);
 
 Route::get('/admin-services', [ServiceController::class, 'showAdminService'])
-->name('admin.service')->middleware(['can:isAdmin']);
+    ->name('admin.service')->middleware(['can:isAdmin']);
 
 Route::get('/admin-services-create', [ServiceController::class, 'serviceCreate'])
-->name('vendor.service.create')->middleware(['can:isVendor']);
+    ->name('vendor.service.create')->middleware(['can:isVendor']);
 
 Route::post('/admin-services-store', [ServiceController::class, 'serviceStore'])
-->name('vendor.service.store')->middleware(['can:isVendor']);
+    ->name('vendor.service.store')->middleware(['can:isVendor']);
 
 Route::put('/admin-services-update/{id}', [ServiceController::class, 'updateStatus'])
-->name('admin.vendor.service.update')->middleware(['can:isAdmin']);
+    ->name('admin.vendor.service.update')->middleware(['can:isAdmin']);
 
 Route::delete('/admin-services-delete/{id}', [ServiceController::class, 'deleteCategory'])
-->name('admin.vendor.service.delete')->middleware(['can:isAdminOrisVendor']);
+    ->name('admin.vendor.service.delete')->middleware(['can:isAdminOrisVendor']);
 
 
 Route::get('/workshops-and-maintenance', [ServiceController::class, 'showMaintenanceCustomer'])->name('customer.workshops.maintenance.show');
@@ -207,10 +218,10 @@ Route::post('/booking/finish', [BookingController::class, 'finishBooking'])->nam
 Route::get('/admin-booking', [BookingController::class, 'showBooking'])->name('admin.booking')->middleware(['can:isAdmin']);
 
 Route::post('/admin-booking-update/{id}', [BookingController::class, 'updateStatus'])
-->name('admin.booking.update')->middleware(['can:isAdmin']);
+    ->name('admin.booking.update')->middleware(['can:isAdmin']);
 
 Route::delete('/admin-booking-delete/{id}', [BookingController::class, 'bookingDelete'])
-->name('admin.booking.delete')->middleware(['can:isAdmin']);
+    ->name('admin.booking.delete')->middleware(['can:isAdmin']);
 
 
 
@@ -219,53 +230,53 @@ Route::post('/finance-request-store', [FinanceRequestsController::class, 'financ
 Route::get('/single-finance-request/{slug}', [FinanceRequestsController::class, 'singleFinanceRequest'])->name('customer.single.finance.request');
 
 Route::get('/admin-finance-requests', [FinanceRequestsController::class, 'AdminFinanceRequests'])
-->name('admin.finance.request')->middleware(['can:isAdmin']);
+    ->name('admin.finance.request')->middleware(['can:isAdmin']);
 
 Route::get('/vendor-finance-requests', [FinanceRequestsController::class, 'vendorFinanceRequests'])
-->name('vendor.finance.request')->middleware(['can:isVendor']);
+    ->name('vendor.finance.request')->middleware(['can:isVendor']);
 
 Route::put('/admin-finance-requests-update/{id}', [FinanceRequestsController::class, 'financeRequestStatusUpdate'])
-->name('admin.finance.request.update')->middleware(['can:isAdminOrisVendor']);
+    ->name('admin.finance.request.update')->middleware(['can:isAdminOrisVendor']);
 
 Route::delete('/admin-finance-requests-delete/{id}', [FinanceRequestsController::class, 'financeRequestDelete'])
-->name('admin.finance.request.delete')->middleware(['can:isAdmin']);
+    ->name('admin.finance.request.delete')->middleware(['can:isAdmin']);
 
 
 Route::get('/admin-finance-partners', [FinancePartnerController::class, 'showFinancePartner'])
-->name('admin.finance.partner')->middleware(['can:isAdmin']);
+    ->name('admin.finance.partner')->middleware(['can:isAdmin']);
 
 Route::get('/admin-finance-partner-create', [FinancePartnerController::class, 'addFinancePartnerFrom'])
-->name('admin.finance.partner.create')->middleware(['can:isAdmin']);
+    ->name('admin.finance.partner.create')->middleware(['can:isAdmin']);
 
 Route::post('/admin-finance-partner-store', [FinancePartnerController::class, 'financePartnerStore'])
-->name('admin.finance.partner.store')->middleware(['can:isAdmin']);
+    ->name('admin.finance.partner.store')->middleware(['can:isAdmin']);
 
 Route::delete('/admin-finance-partner-destroy/{id}', [FinancePartnerController::class, 'financePartnerDestroy'])
-->name('admin.finance.partner.destroy')->middleware(['can:isAdmin']);
+    ->name('admin.finance.partner.destroy')->middleware(['can:isAdmin']);
 
 
 
 
 Route::get('/admin-rentals', [RentalController::class, 'showAdminRental'])
-->name('admin.rental')->middleware(['can:isAdmin']);
+    ->name('admin.rental')->middleware(['can:isAdmin']);
 
 Route::get('/vendor-rentals', [RentalController::class, 'showVendorRental'])
-->name('vendor.rental')->middleware(['can:isVendor']);
+    ->name('vendor.rental')->middleware(['can:isVendor']);
 
 Route::get('/admin-rentals-create', [RentalController::class, 'retalCreate'])
-->name('vendor.rental.create')->middleware(['can:isVendor']);
+    ->name('vendor.rental.create')->middleware(['can:isVendor']);
 
 Route::post('/admin-rentals-store', [RentalController::class, 'rentalStore'])
-->name('vendor.rental.store')->middleware(['can:isVendor']);
+    ->name('vendor.rental.store')->middleware(['can:isVendor']);
 
 Route::get('/admin-rentals-edit/{id}', [RentalController::class, 'rentalEdit'])
-->name('admin.vendor.rental.edit')->middleware(['can:isAdminOrisVendor']);
+    ->name('admin.vendor.rental.edit')->middleware(['can:isAdminOrisVendor']);
 
 Route::put('/admin-rentals-update/{id}', [RentalController::class, 'rentalUpdate'])
-->name('admin.vendor.rental.update')->middleware(['can:isAdminOrisVendor']);
+    ->name('admin.vendor.rental.update')->middleware(['can:isAdminOrisVendor']);
 
 Route::delete('/admin-rentals-destroy/{id}', [RentalController::class, 'RentalDestroy'])
-->name('admin.vendor.rental.destroy')->middleware(['can:isAdminOrisVendor']);
+    ->name('admin.vendor.rental.destroy')->middleware(['can:isAdminOrisVendor']);
 
 Route::get('/rentals', [RentalController::class, 'customerRentalShow'])->name('customer.rental');
 Route::get('/rental/car/search/', [RentalController::class, 'carSearch'])->name('customer.rentals.car.search');
@@ -279,13 +290,13 @@ Route::get('/p2p-booking/create/{id}', [P2PBookingController::class, 'createBook
 Route::post('/p2p-booking/store/{id}', [P2PBookingController::class, 'storeBooking'])->name('p2p.booking.store');
 
 Route::get('/admin-rentals-booking', [RentalBookingController::class, 'adminRentalBookingShow'])
-->name('admin.rental.booking')->middleware(['can:isAdmin']);
+    ->name('admin.rental.booking')->middleware(['can:isAdmin']);
 
 Route::put('/admin-rentals-booking-update/{id}', [RentalBookingController::class, 'adminRentalBookinStatusUpdate'])
-->name('admin.rental.booking.update')->middleware(['can:isAdmin']);
+    ->name('admin.rental.booking.update')->middleware(['can:isAdmin']);
 
 Route::delete('/admin-rentals-delete/{id}', [RentalBookingController::class, 'adminRentalBookinDelete'])
-->name('admin.rental.booking.delete')->middleware(['can:isAdmin']);
+    ->name('admin.rental.booking.delete')->middleware(['can:isAdmin']);
 
 
 Route::get('/importe-request-create', [ImportRequestController::class, 'customerImporteRequestCreate'])->name('customer.import.request.create');
@@ -295,42 +306,42 @@ Route::get('/customer/import-finance/{importRequest}', [ImportFinanceRequestCont
 Route::post('/customer/import-finance/store', [ImportFinanceRequestController::class, 'customerImportFinanceStore'])->name('customer.import.finance.store');
 
 Route::get('/admin-importe-request', [ImportRequestController::class, 'adminImportRequestShow'])
-->name('admin.import.request')->middleware(['can:isAdmin']);
+    ->name('admin.import.request')->middleware(['can:isAdmin']);
 
 Route::put('/admin-importe-update/{id}', [ImportRequestController::class, 'adminImportRequestUpdate'])
-->name('admin.import.request.update')->middleware(['can:isAdmin']);
+    ->name('admin.import.request.update')->middleware(['can:isAdmin']);
 
 Route::delete('/admin-importe-delete/{id}', [ImportRequestController::class, 'adminImportRequestDestroy'])
-->name('admin.import.request.delete')->middleware(['can:isAdmin']);
+    ->name('admin.import.request.delete')->middleware(['can:isAdmin']);
 
 
 Route::post('/add-review', [TestimoniasController::class, 'storeReview'])->name('customer.store.review');
 Route::get('/admin-reviews', [TestimoniasController::class, 'adminReviewShow'])
 
-->name('admin.review')->middleware(['can:isAdmin']);
+    ->name('admin.review')->middleware(['can:isAdmin']);
 
 Route::delete('/admin-destroy/{id}', [TestimoniasController::class, 'adminReviewDelete'])
-->name('admin.destroy')->middleware(['can:isAdmin']);
+    ->name('admin.destroy')->middleware(['can:isAdmin']);
 
 
 
 Route::get('/admin-faq', [FaqController::class, 'showFaq'])
-->name('admin.faq')->middleware(['can:isAdmin']);
+    ->name('admin.faq')->middleware(['can:isAdmin']);
 
 Route::get('/admin-faq-create', [FaqController::class, 'FaqCreate'])
-->name('admin.faq.create')->middleware(['can:isAdmin']);
+    ->name('admin.faq.create')->middleware(['can:isAdmin']);
 
 Route::post('/admin-faq-store', [FaqController::class, 'FaqStore'])
-->name('admin.faq.store')->middleware(['can:isAdmin']);
+    ->name('admin.faq.store')->middleware(['can:isAdmin']);
 
 Route::get('/admin-faq-edit/{id}', [FaqController::class, 'FaqEdit'])
-->name('admin.faq.edit')->middleware(['can:isAdmin']);
+    ->name('admin.faq.edit')->middleware(['can:isAdmin']);
 
 Route::put('/admin-faq-update/{id}', [FaqController::class, 'FaqUpdate'])
-->name('admin.faq.update')->middleware(['can:isAdmin']);
+    ->name('admin.faq.update')->middleware(['can:isAdmin']);
 
 Route::delete('/admin-faq-destroy/{id}', [FaqController::class, 'FaqDestroy'])
-->name('admin.faq.destroy')->middleware(['can:isAdmin']);
+    ->name('admin.faq.destroy')->middleware(['can:isAdmin']);
 
 
 
@@ -339,39 +350,42 @@ Route::get('/contact-faq', [FaqController::class, 'showFaqContactSection'])->nam
 Route::post('/contact-store', [ContactController::class, 'contractStore'])->name('customer.contact.store');
 
 Route::get('/admin-contact', [ContactController::class, 'adminContactShow'])
-->name('admin.contact')->middleware(['can:isAdmin']);
+    ->name('admin.contact')->middleware(['can:isAdmin']);
 
 Route::delete('/admin-contact-destroy/{id}', [ContactController::class, 'contactDestroy'])
-->name('admin.contact.destroy')->middleware(['can:isAdmin']);
+    ->name('admin.contact.destroy')->middleware(['can:isAdmin']);
 
 
 Route::get('/settings', [SettingController::class, 'showSetting'])
-->name('admin.setting')->middleware(['can:isAdmin']);
+    ->name('admin.setting')->middleware(['can:isAdmin']);
 
 Route::get('/settings-edit/{id}', [SettingController::class, 'editSetting'])
-->name('admin.edit.setting')->middleware(['can:isAdmin']);
+    ->name('admin.edit.setting')->middleware(['can:isAdmin']);
 
 Route::put('/settings-update/{id}', [SettingController::class, 'updateSetting'])
-->name('admin.update.setting')->middleware(['can:isAdmin']);
+    ->name('admin.update.setting')->middleware(['can:isAdmin']);
 
 Route::get('/vendor-dashboard', [VendorController::class, 'vendorDashboard'])
-->name('vendor.dashboard')->middleware(['can:isVendor']);
+    ->name('vendor.dashboard')->middleware(['can:isVendor']);
 
 
 
 Route::get('/payment/finance/{id}', [PaymentController::class, 'choosePaymentFinance'])->name('payment.choose.finance');
 Route::get('/payment/service', [PaymentController::class, 'choosePaymentService'])->name('payment.choose.service');
 Route::get('/payment/car-import/{id}', [PaymentController::class, 'choosePaymentCarImport'])->name('payment.choose.car.import');
-Route::get('/payment/rental/{rentalId}/booking/{rentalBookingId}',[PaymentController::class, 'choosePaymentCarRental'])->name('payment.choose.car.rental');
+Route::get('/payment/rental/{rentalId}/booking/{rentalBookingId}', [PaymentController::class, 'choosePaymentCarRental'])->name('payment.choose.car.rental');
 Route::get('/payment/warranty/{warrantyId}/extended/{planId}', [PaymentController::class, 'choosePaymentWarrantyExtended'])->name('payment.choose.warranty.extended');
 
 Route::get('/payment/{type}/stripe/{id}', [PaymentController::class, 'stripeCheckout'])->name('stripe.checkout');
 Route::get('/payment/stripe', [PaymentController::class, 'stripeCheckoutService'])->name('stripe.checkout.services');
+Route::get('/payment/stripe/order/{orderId}', [PaymentController::class, 'stripeCheckoutSparePart'])->name('stripe.checkout.spare_parts');
 Route::get('/payment/{type}/stripe/{rentalId}/{rentalBookingId}', [PaymentController::class, 'stripeRentalCheckout'])->name('stripe.checkout.rental');
-Route::get('/payment/warranty/{warrantyId}/stripe/{planId}/checkout',[PaymentController::class, 'stripeCheckoutWarrantyExtended'])->name('stripe.checkout.warranty.extended');
+Route::get('/payment/warranty/{warrantyId}/stripe/{planId}/checkout', [PaymentController::class, 'stripeCheckoutWarrantyExtended'])->name('stripe.checkout.warranty.extended');
 Route::get('/stripe/success/{id}', [PaymentController::class, 'stripeSuccess'])->name('stripe.success');
-Route::get('/payment/{paymentId}/warranty/{warrantyId}/plan/{planId}/success',[PaymentController::class, 'warrantyStripeSuccess'])->name('warranty.stripe.success');Route::get('/stripe/cancel/{id}', [PaymentController::class, 'stripeCancel'])->name('stripe.cancel');
- 
+Route::get('/payment/{paymentId}/warranty/{warrantyId}/plan/{planId}/success', [PaymentController::class, 'warrantyStripeSuccess'])->name('warranty.stripe.success');
+Route::get('/payment/{paymentId}/order/{orderId}/success', [PaymentController::class, 'StripeSuccessSparePart'])->name('spare_parts.stripe.success');
+Route::get('/stripe/cancel/{id}', [PaymentController::class, 'stripeCancel'])->name('stripe.cancel');
+
 Route::post('/chatbot', [ChatbotController::class, 'chat']);
 
 
@@ -445,3 +459,46 @@ Route::get('/warranty-plans', [WarrantyPlanController::class, 'showWarrantyPlans
 Route::get('/warranty-plans/create', [WarrantyPlanController::class, 'createWarrantyPlan'])->name('admin.warranty.plans.create')->middleware(['can:isAdmin']);
 Route::post('/warranty-plans', [WarrantyPlanController::class, 'storeWarrantyPlan'])->name('admin.warranty.plans.store')->middleware(['can:isAdmin']);
 Route::delete('/warranty-plans/{id}', [WarrantyPlanController::class, 'destroyWarrantyPlan'])->name('admin.warranty.plans.destroy');
+
+
+Route::get('/spare-part-categories', [SparePartCategoryController::class, 'showSparePartCategory'])->name('admin.spare.categories')->middleware(['can:isAdmin']);
+Route::post('/add-spare-part-categories', [SparePartCategoryController::class, 'storeSparePartCategory'])->name('admin.spare.categories.store')->middleware(['can:isAdmin']);
+Route::delete('/spare-part-categories/{id}', [SparePartCategoryController::class, 'destroySparePartCategory'])->name('admin.spare.categories.destroy')->middleware(['can:isAdmin']);
+
+Route::get('/admin/spare-parts/images', [SparePartImageController::class, 'showSparePartImage'])->name('vendor.spare.images')->middleware(['can:isVendor']);
+Route::get('/spare-images/{id}', [SparePartImageController::class, 'createSparePartImage'])->name('vendor.spare.images.create')->middleware(['can:isVendor']);
+Route::post('/admin/spare-parts/{id}/images', [SparePartImageController::class, 'storeSparePartImage'])->name('vendor.spare.images.store')->middleware(['can:isVendor']);
+Route::delete('/admin/spare-images/{id}', [SparePartImageController::class, 'destroySparePartImage'])->name('vendor.spare.images.destroy')->middleware(['can:isVendor']);
+
+Route::get('vendor/spare-parts/show', [SparePartController::class, 'showSparePart'])->name('vendor.spare-parts.index')->middleware(['can:isVendor']);
+Route::get('vendor/spare-parts/create', [SparePartController::class, 'createSparePart'])->name('vendor.spare-parts.create')->middleware(['can:isVendor']);
+Route::post('vendor/spare-parts/store', [SparePartController::class, 'storeSparePart'])->name('vendor.spare-parts.store')->middleware(['can:isVendor']);
+Route::get('vendor/spare-parts/{sparePart}/edit', [SparePartController::class, 'editSparePart'])->name('vendor.spare-parts.edit')->middleware(['can:isVendor']);
+Route::put('vendor/spare-parts/{sparePart}/update', [SparePartController::class, 'updateSparePart'])->name('vendor.spare-parts.update')->middleware(['can:isVendor']);
+Route::delete('vendor/spare-parts/{sparePart}/destroy', [SparePartController::class, 'destroySparePart'])->name('vendor.spare-parts.destroy')->middleware(['can:isVendor']);
+Route::get('/spare-parts', [SparePartController::class, 'showCustomerSparePart'])->name('customer.spare.parts');
+Route::get('/spare-part/{id}', [SparePartController::class, 'showCustomerSparePartDetails'])->name('customer.spare.parts.show');
+
+
+Route::get('carts', [CartController::class, 'showCart'])->name('customer.cart');
+Route::post('cart/add/{id}', [CartController::class, 'addCart'])->name('customer.cart.add');
+Route::put('cart/update/{id}', [CartController::class, 'updateCart'])->name('customer.cart.update');
+Route::delete('cart/remove/{id}', [CartController::class, 'removeCart'])->name('customer.cart.remove');
+Route::delete('cart/clear', [CartController::class, 'clearCart'])->name('customer.cart.clear');
+
+Route::get('/checkout', [CheckoutController::class, 'checkoutPage'])->name('customer.checkout');
+Route::post('/checkout/place-order', [CheckoutController::class, 'placeOrder'])->name('customer.checkout.place');
+
+Route::get('/order/success/{id}', [CheckoutController::class, 'orderSuccess'])->name('customer.order.success');
+Route::get('/orders', [CheckoutController::class, 'orderHistory'])->name('customer.orders.history');
+Route::get('/orders/{id}', [CheckoutController::class, 'showOrder'])->name('customer.order.details');
+
+Route::get('vendor/spare-parts/orders', [VendorOrderController::class, 'showVendorOrder'])->name('vendor.spare-parts.orders')->middleware(['can:isVendor']);
+Route::get('vendor/spare-parts/orders/{id}', [VendorOrderController::class, 'showVendorOrderDetails'])->name('vendor.spare-parts.orders.show')->middleware(['can:isVendor']);
+Route::put('vendor/spare-parts/orders/{id}/status', [VendorOrderController::class, 'updateVendorOrderStatus'])->name('vendor.spare-parts.orders.status')->middleware(['can:isVendor']);
+
+Route::get('admin/spare-parts/orders',[AdminOrderController::class, 'adminShowOrder'])->name('admin.spare-parts.orders');
+Route::get('admin/spare-parts/order/{id}',[AdminOrderController::class, 'adminShowOrderDetails'])->name('admin.spare-parts.orders.show');
+Route::put('admin/spare-parts/orders/{id}/status',[AdminOrderController::class, 'adminUpdateOrderStatus'])->name('admin.spare-parts.orders.status');
+Route::put('admin/spare-parts/orders/{id}/payment-status',[AdminOrderController::class, 'adminUpdatePaymentStatus'])->name('admin.spare-parts.orders.payment-status');
+Route::delete('admin/spare-parts/orders/destroy/{id}',[AdminOrderController::class, 'destroyOrder'])->name('admin.spare-parts.orders.destroy');

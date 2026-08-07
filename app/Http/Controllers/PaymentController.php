@@ -15,6 +15,7 @@ use App\Notifications\RentalBookingConfirmedNotification;
 use App\Notifications\RentalPaymentNotification;
 use App\Notifications\servicePaymentNotification;
 use App\Models\CarWarranty;
+use App\Models\Order;
 use App\Models\WarrantyPlan;
 use Illuminate\Http\Request;
 use Stripe\Stripe;
@@ -160,6 +161,75 @@ class PaymentController extends Controller
         ]);
 
         return redirect($session->url);
+    }
+
+    // Stripe Checkout
+    public function stripeCheckoutSparePart($orderId)
+    {
+        $order = Order::where('id', $orderId)->first();
+        $amount = $order->subtotal;
+
+        $referenceId = rand(100000, 999999);
+
+
+        $payment = Payment::create([
+            'user_id' => auth()->id(),
+            'payment_for' => 'spare_part',
+            'reference_id' => $referenceId,
+            'amount' => $amount,
+            'payment_method' => 'stripe',
+            'status' => 'pending',
+        ]);
+
+        //dd(env('STRIPE_SECRET'));
+
+        Stripe::setApiKey(env('STRIPE_SECRET'));
+
+        $session = Session::create([
+            'payment_method_types' => ['card'],
+
+            'line_items' => [[
+                'price_data' => [
+                    'currency' => 'usd',
+                    'product_data' => [
+                        'name' => ucfirst('service') . ' Payment',
+                    ],
+                    'unit_amount' => (int) ($amount * 100),
+                ],
+                'quantity' => 1,
+            ]],
+
+            'mode' => 'payment',
+
+            'success_url' => route('spare_parts.stripe.success', [$payment->id, $orderId]),
+
+            'cancel_url' => route('stripe.cancel', $payment->id),
+        ]);
+
+        return redirect($session->url);
+    }
+
+    // Payment Success
+    public function StripeSuccessSparePart($paymentId, $orderId)
+    {
+        $payment = Payment::findOrFail($paymentId);
+
+        $payment->update([
+            'payment_method' => 'stripe',
+            'status' => 'paid',
+            'paid_at' => now(),
+        ]);
+
+        $order = Order::findOrFail($orderId);
+
+        $order->update([
+            'payment_status' => 'paid'
+        ]);
+
+
+        return redirect()
+            ->route('customer.order.success', $orderId)
+            ->with('success', 'Payment completed successfully.');
     }
 
     // Stripe Checkout

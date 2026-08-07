@@ -27,4 +27,8 @@ class Vendor extends Model
     {
         return $this->hasMany(Rental::class);
     }
+
+    public function spareParts(){
+        return $this->hasMany(SparePart::class);
+    }
 }
