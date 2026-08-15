@@ -42,4 +42,14 @@ class Car extends Model
     {
         return $this->hasMany(CarWarranty::class);
     }
+
+    public function roadsideRequests()
+    {
+        return $this->hasMany(RoadsideRequest::class, 'vehicle_id');
+    }
+
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
+    }
 }

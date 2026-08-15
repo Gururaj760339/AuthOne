@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\FinancePartner;
 use App\Models\SparePartCategory;
 use App\Models\User;
+use Database\Seeders\SparePartCategorySeeder as SeedersSparePartCategorySeeder;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use SparePartCategorySeeder;
@@ -26,7 +27,9 @@ class DatabaseSeeder extends Seeder
         $this->call([
             AdminSeeder::class,
             FinancePartnerSeeder::class,
-            SparePartCategorySeeder::class
+            SeedersSparePartCategorySeeder::class,
+            SubscriptionPlanSeeder::class,
+            CountrySeeder::class
         ]);
     }
 }

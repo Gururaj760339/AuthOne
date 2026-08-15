@@ -97,7 +97,8 @@
                     <button @click="open = !open"
                         class="w-full flex items-center justify-between px-4 py-3 rounded-lg hover:bg-slate-800 transition">
                         <span class="flex items-center gap-3">
-                            🪪 <span>Spare Parts</span>
+                            <i class="fa-solid fa-gears"></i>
+                            <span>Spare Parts</span>
                         </span>
 
                         <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': open }" fill="none"
@@ -109,11 +110,11 @@
                     <!-- Dropdown -->
                     <div x-show="open" x-transition class="mt-2 ml-6 space-y-1">
                         <a href="{{ route('vendor.spare-parts.index') }}" class="block px-4 py-2 rounded-lg hover:bg-slate-800">
-                            📦 All SpareParts
+                            All SpareParts
                         </a>
 
                         <a href="{{ route('vendor.spare.images') }}" class="block px-4 py-2 rounded-lg hover:bg-slate-800">
-                            ➕ All SpareParts Images
+                            All SpareParts Images
                         </a>
 
                         <a href="{{ route('vendor.spare-parts.orders') }}" class="block px-4 py-2 rounded-lg hover:bg-slate-800">

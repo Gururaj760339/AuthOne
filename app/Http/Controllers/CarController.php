@@ -52,9 +52,11 @@ class CarController extends Controller
 
     public function carCustomerShow()
     {
+        $countryId = auth()->user()->country_id;
         $brands = CarBrand::orderBy('name')->get();
 
         $cars = Car::with('CarBrand')
+            ->where('country_id', $countryId)
             ->latest()
             ->paginate(9);
 
@@ -62,14 +64,17 @@ class CarController extends Controller
 
         // Recommended Cars
         $recommendedCars = Car::with('CarBrand')
-            ->where('status', 1) // যদি status field থাকে
+            ->where('country_id', $countryId)
+            ->where('status', 1) 
             ->latest()
             ->take(6)
             ->get();
 
         $setting = Setting::first();
 
-        $featuredCars = Car::latest()->take(6)->get();
+        $featuredCars = Car::latest()
+            ->where('country_id', $countryId)
+            ->take(6)->get();
 
         return view('buy_&_finance_cars', compact(
             'setting',
@@ -83,7 +88,9 @@ class CarController extends Controller
 
     public function customerCarFilter(Request $request)
     {
+        $countryId = auth()->user()->country_id;
         $query = Car::with('CarBrand')
+            ->where('country_id', $countryId)
             ->where('status', 1);
 
         // Brand Filter
@@ -176,7 +183,8 @@ class CarController extends Controller
             'condition'     => $request->condition,
             'description'   => $request->description,
             'thumbnail'     => $image,
-            'vendor_id'     => Auth::user()->vendor->id
+            'vendor_id'     => Auth::user()->vendor->id,
+            'country_id'    => Auth::user()->country_id,
         ]);
 
         return redirect()

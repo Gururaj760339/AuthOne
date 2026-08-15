@@ -22,4 +22,9 @@ class Service extends Model
     {
         return $this->belongsTo(Vendor::class);
     }
+
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
+    }
 }

@@ -15,11 +15,13 @@ class SparePartController extends Controller
 {
     public function showCustomerSparePart(Request $request)
     {
+        $countryId = auth()->user()->country_id;
         $categories = SparePartCategory::orderBy('name')->get();
 
         $setting = Setting::first();
 
         $query = SparePart::with('sparePartsCategory')
+            ->where('country_id', $countryId)
             ->where('status', 'Available')
             ->where('stock', '>', 0);
 
@@ -55,11 +57,13 @@ class SparePartController extends Controller
 
     public function showCustomerSparePartDetails($id)
     {
+        $countryId = auth()->user()->country_id;
         $part = SparePart::with([
             'sparePartsCategory',
             'sparePartImages'
         ])
             ->where('status', 'Available')
+            ->where('country_id', $countryId)
             ->findOrFail($id);
 
         return view('spare_parts.show_details', compact('part'));
@@ -94,7 +98,6 @@ class SparePartController extends Controller
             'price' => 'required|numeric',
             'stock' => 'required|integer',
             'unit' => 'nullable|max:100',
-            'country' => 'nullable|max:255',
             'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
@@ -116,10 +119,10 @@ class SparePartController extends Controller
             'price' => $request->price,
             'stock' => $request->stock,
             'unit' => $request->unit,
-            'country' => $request->country,
             'image' => $image,
             'featured' => $request->has('featured'),
             'status' => $request->status,
+            'country_id'    => Auth::user()->country_id
         ]);
 
         return redirect()->route('vendor.spare-parts.index')

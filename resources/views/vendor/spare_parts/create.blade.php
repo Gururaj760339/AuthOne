@@ -97,15 +97,6 @@
 
                     <div>
                         <label class="block font-semibold mb-2">
-                            Country
-                        </label>
-
-                        <input type="text" name="country" value="{{ old('country') }}"
-                            class="w-full border rounded-lg p-3">
-                    </div>
-
-                    <div>
-                        <label class="block font-semibold mb-2">
                             Price
                         </label>
 

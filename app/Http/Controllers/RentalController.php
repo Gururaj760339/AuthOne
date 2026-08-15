@@ -32,9 +32,11 @@ class RentalController extends Controller
 
     public function customerRentalShow()
     {
+        $countryId = auth()->user()->country_id;
         // Rental Company Cars
         $rentals = Rental::with('car')
             ->where('available', 1)
+            ->where('country_id', $countryId)
             ->latest()
             ->get();
 
@@ -48,6 +50,7 @@ class RentalController extends Controller
         // Recommended Rental Cars
         $recommendedRentals = Rental::with('car')
             ->where('available', 1)
+            ->where('country_id', $countryId)
             ->withCount('rentalBookings')
             ->orderByDesc('rental_bookings_count')
             ->take(4)
@@ -95,7 +98,8 @@ class RentalController extends Controller
             'price_per_month' => $request->price_per_month,
             'available' => $request->available,
             'vendor_id' => Auth::user()->vendor->id,
-            'city' => $request->city
+            'city' => $request->city,
+            'country_id'    => Auth::user()->country_id
         ]);
 
         return redirect()

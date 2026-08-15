@@ -15,7 +15,11 @@ use App\Notifications\RentalBookingConfirmedNotification;
 use App\Notifications\RentalPaymentNotification;
 use App\Notifications\servicePaymentNotification;
 use App\Models\CarWarranty;
+use App\Models\LoyaltyPoint;
+use App\Models\LoyaltyTransaction;
 use App\Models\Order;
+use App\Models\Subscription;
+use App\Models\SubscriptionPlan;
 use App\Models\WarrantyPlan;
 use Illuminate\Http\Request;
 use Stripe\Stripe;
@@ -58,6 +62,13 @@ class PaymentController extends Controller
         return view('customer_payment.choose_payment_warranty_extended', compact('warrantyId', 'planId'));
     }
 
+    public function choosePaymentSubscription($id)
+    {
+        $subscription = Subscription::findOrFail($id);
+
+        return view('customer_payment.choose_payment_subscription', compact('subscription'));
+    }
+
     public function stripeRentalCheckout($type, $rentalId, $rentalBookingId)
     {
         switch ($type) {
@@ -86,6 +97,10 @@ class PaymentController extends Controller
             'status' => 'pending',
         ]);
 
+        $currency = strtolower(
+            auth()->user()->country->currency_code ?? 'AED'
+        );
+
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
         $session = Session::create([
@@ -93,7 +108,7 @@ class PaymentController extends Controller
 
             'line_items' => [[
                 'price_data' => [
-                    'currency' => 'usd',
+                    'currency' => $currency,
                     'product_data' => [
                         'name' => ucfirst($type) . ' Payment',
                     ],
@@ -104,7 +119,7 @@ class PaymentController extends Controller
 
             'mode' => 'payment',
 
-            'success_url' => route('stripe.success', $payment->id),
+            'success_url' => route('stripe.success', [$payment->id, $amount]),
 
             'cancel_url' => route('stripe.cancel', $payment->id),
         ]);
@@ -121,13 +136,28 @@ class PaymentController extends Controller
 
 
         $referenceId = rand(100000, 999999);
+        $user = auth()->user();
 
+        $subscription = $user->activeSubscription;
+
+        $discount = 0;
+
+        if ($subscription) {
+            $discount = (
+                $amount *
+                $subscription->plan->discount_percentage
+            ) / 100;
+        }
+
+        $finalAmount = $amount - $discount;
 
         $payment = Payment::create([
             'user_id' => auth()->id(),
             'payment_for' => 'service',
             'reference_id' => $referenceId,
+            'final_amount' => $finalAmount,
             'amount' => $amount,
+            'vip_discount' => $discount,
             'payment_method' => 'stripe',
             'status' => 'pending',
         ]);
@@ -138,24 +168,26 @@ class PaymentController extends Controller
         //dd(env('STRIPE_SECRET'));
 
         Stripe::setApiKey(env('STRIPE_SECRET'));
+        
+        $currency = auth()->user()->country->currency_code ?? 'AED';
 
         $session = Session::create([
             'payment_method_types' => ['card'],
 
             'line_items' => [[
                 'price_data' => [
-                    'currency' => 'usd',
+                    'currency' => $currency,
                     'product_data' => [
                         'name' => ucfirst('service') . ' Payment',
                     ],
-                    'unit_amount' => (int) ($amount * 100),
+                    'unit_amount' => (int) ($finalAmount * 100),
                 ],
                 'quantity' => 1,
             ]],
 
             'mode' => 'payment',
 
-            'success_url' => route('stripe.success', $payment->id),
+            'success_url' => route('stripe.success', [$payment->id, $amount]),
 
             'cancel_url' => route('stripe.cancel', $payment->id),
         ]);
@@ -182,6 +214,8 @@ class PaymentController extends Controller
         ]);
 
         //dd(env('STRIPE_SECRET'));
+        
+        $currency = auth()->user()->country->currency_code ?? 'AED';
 
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
@@ -190,7 +224,7 @@ class PaymentController extends Controller
 
             'line_items' => [[
                 'price_data' => [
-                    'currency' => 'usd',
+                    'currency' => $currency,
                     'product_data' => [
                         'name' => ucfirst('service') . ' Payment',
                     ],
@@ -224,6 +258,23 @@ class PaymentController extends Controller
 
         $order->update([
             'payment_status' => 'paid'
+        ]);
+
+        $points = floor($order->subtotal);
+
+        $loyalty = LoyaltyPoint::firstOrCreate(
+            ['user_id' => $order->user_id],
+            ['points' => 0]
+        );
+
+        $loyalty->increment('points', $points);
+
+        LoyaltyTransaction::create([
+            'user_id' => $order->user_id,
+            'points' => $points,
+            'type' => 'earned',
+            'description' => 'Points earned from order #' . $order->id,
+            'order_id' => $order->id,
         ]);
 
 
@@ -265,25 +316,57 @@ class PaymentController extends Controller
                 abort(404);
         }
 
-        $payment = Payment::create([
-            'user_id' => auth()->id(),
-            'payment_for' => $type,
-            'reference_id' => $request->id,
-            'amount' => $amount,
-            'payment_method' => 'stripe',
-            'status' => 'pending',
-        ]);
+        if ($type === 'service') {
+            $user = auth()->user();
+
+            $subscription = $user->activeSubscription;
+
+            $discount = 0;
+
+            if ($subscription) {
+                $discount = (
+                    $amount *
+                    $subscription->plan->discount_percentage
+                ) / 100;
+            }
+
+            $finalAmount = $amount - $discount;
+
+            $payment = Payment::create([
+                'user_id' => auth()->id(),
+                'payment_for' => $type,
+                'reference_id' => $request->id,
+                'final_amount' => $finalAmount,
+                'amount' => $amount,
+                'vip_discount' => $discount,
+                'payment_method' => 'stripe',
+                'status' => 'pending',
+            ]);
+        } else {
+            $payment = Payment::create([
+                'user_id' => auth()->id(),
+                'payment_for' => $type,
+                'reference_id' => $request->id,
+                'final_amount' => $amount,
+                'amount' => $amount,
+                'vip_discount' => 0,
+                'payment_method' => 'stripe',
+                'status' => 'pending',
+            ]);
+        }
+
 
         //dd(env('STRIPE_SECRET'));
 
         Stripe::setApiKey(env('STRIPE_SECRET'));
+        $currency = auth()->user()->country->currency_code ?? 'AED';
 
         $session = Session::create([
             'payment_method_types' => ['card'],
 
             'line_items' => [[
                 'price_data' => [
-                    'currency' => 'usd',
+                    'currency' => $currency,
                     'product_data' => [
                         'name' => ucfirst($type) . ' Payment',
                     ],
@@ -294,7 +377,7 @@ class PaymentController extends Controller
 
             'mode' => 'payment',
 
-            'success_url' => route('stripe.success', $payment->id),
+            'success_url' => route('stripe.success', [$payment->id, $amount]),
 
             'cancel_url' => route('stripe.cancel', $payment->id),
         ]);
@@ -319,12 +402,13 @@ class PaymentController extends Controller
         ]);
 
         Stripe::setApiKey(env('STRIPE_SECRET'));
+        $currency = auth()->user()->country->currency_code ?? 'AED';
 
         $session = Session::create([
             'payment_method_types' => ['card'],
             'line_items' => [[
                 'price_data' => [
-                    'currency' => 'usd',
+                    'currency' => $currency,
                     'product_data' => [
                         'name' => 'Extended Warranty Payment',
                     ],
@@ -344,6 +428,76 @@ class PaymentController extends Controller
         return redirect($session->url);
     }
 
+    public function stripeCheckoutSubscription($subscriptionId)
+    {
+        $subscription = Subscription::where('id', $subscriptionId)->first();
+        $subscriptionPlan = SubscriptionPlan::where('id', $subscription->subscription_plan_id)->first();
+        $amount = $subscriptionPlan->price;
+
+        $referenceId = rand(100000, 999999);
+
+
+        $payment = Payment::create([
+            'user_id' => auth()->id(),
+            'payment_for' => 'subscription',
+            'reference_id' => $referenceId,
+            'amount' => $amount,
+            'payment_method' => 'stripe',
+            'status' => 'pending',
+        ]);
+
+        //dd(env('STRIPE_SECRET'));
+
+        Stripe::setApiKey(env('STRIPE_SECRET'));
+        $currency = auth()->user()->country->currency_code ?? 'AED';
+
+        $session = Session::create([
+            'payment_method_types' => ['card'],
+
+            'line_items' => [[
+                'price_data' => [
+                    'currency' => $currency,
+                    'product_data' => [
+                        'name' => ucfirst('service') . ' Payment',
+                    ],
+                    'unit_amount' => (int) ($amount * 100),
+                ],
+                'quantity' => 1,
+            ]],
+
+            'mode' => 'payment',
+
+            'success_url' => route('stripe.success.subscription', [$payment->id, $subscriptionId]),
+
+            'cancel_url' => route('stripe.cancel', $payment->id),
+        ]);
+
+        return redirect($session->url);
+    }
+
+    // Payment Success
+    public function subscriptionStripeSuccess($paymentId, $subscriptionId)
+    {
+        $payment = Payment::findOrFail($paymentId);
+
+        $payment->update([
+            'payment_method' => 'stripe',
+            'status' => 'paid',
+            'paid_at' => now(),
+        ]);
+
+        $subscription = Subscription::findOrFail($subscriptionId);
+        //dd('complete');
+
+        $subscription->update([
+            'payment_id' => $paymentId,
+            'status' => 'active'
+        ]);
+
+        return redirect()
+            ->route('home')
+            ->with('success', 'Payment completed successfully.');
+    }
 
     // Payment Success
     public function warrantyStripeSuccess($paymentId, $warrantyId, $planId)
@@ -372,6 +526,21 @@ class PaymentController extends Controller
             'type' => 'Extended',
         ]);
 
+        $points = floor($plan->price);
+
+        $loyalty = LoyaltyPoint::firstOrCreate(
+            ['user_id' => $warranty->user_id],
+            ['points' => 0]
+        );
+
+        $loyalty->increment('points', $points);
+
+        LoyaltyTransaction::create([
+            'user_id' => $warranty->user_id,
+            'points' => $points,
+            'type' => 'earned',
+            'description' => 'Points earned from order #'
+        ]);
 
         return redirect()
             ->route('home')
@@ -380,7 +549,7 @@ class PaymentController extends Controller
 
 
     // Payment Success
-    public function stripeSuccess($id)
+    public function stripeSuccess($id, $amount)
     {
         $payment = Payment::findOrFail($id);
 
@@ -444,6 +613,24 @@ class PaymentController extends Controller
 
                 break;
         }
+
+
+        $points = floor($amount);
+
+        $userId = Auth::user()->id;
+        $loyalty = LoyaltyPoint::firstOrCreate(
+            ['user_id' => $userId],
+            ['points' => 0]
+        );
+
+        $loyalty->increment('points', $points);
+
+        LoyaltyTransaction::create([
+            'user_id' => $userId,
+            'points' => $points,
+            'type' => 'earned',
+            'description' => 'Points earned from order #'
+        ]);
 
         return redirect()
             ->route('home')

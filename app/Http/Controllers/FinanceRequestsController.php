@@ -15,7 +15,10 @@ class FinanceRequestsController extends Controller
 {
     public function financeRequest()
     {
-        $cars = Car::where('status', 1)->get();
+        $countryId = auth()->user()->country_id;
+        $cars = Car::where('status', 1)
+            ->where('country_id', $countryId)
+            ->get();
         $partners = FinancePartner::get();
 
         return view('finance.apply_finance', compact('cars', 'partners'));

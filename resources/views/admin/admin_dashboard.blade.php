@@ -23,7 +23,7 @@
                     <img src="{{ asset($setting->logo) }}" class="w-12 h-12 rounded-lg bg-white p-1" alt="Logo">
                 @else
                     <div class="w-12 h-12 rounded-lg bg-blue-600 flex items-center justify-center text-2xl">
-                        🚗
+                        
                     </div>
                 @endif
 
@@ -51,87 +51,24 @@
                     <a href="{{ route('admin.dashboard') }}"
                         class="flex items-center gap-3 px-4 py-3 rounded-lg bg-blue-600 text-white">
 
-                        📊 <span>Dashboard</span>
+                        <span>Dashboard</span>
 
                     </a>
 
                     <a href="{{ route('admin.users') }}"
                         class="block px-4 py-2 rounded hover:bg-red-600 hover:text-white">
-                        👥 Users
+                        Users
                     </a>
 
                     <a href="{{ route('admin.finance.partner') }}"
                         class="block px-4 py-2 rounded hover:bg-red-600 hover:text-white">
-                        👥 Finance Partner
+                        Finance Partner
                     </a>
 
                     <a href="{{ route('admin.cars') }}"
                         class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition">
 
-                        🚗 <span>Cars</span>
-
-                    </a>
-
-                    <a href="{{ route('admin.p2p.cars.show') }}"
-                        class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition">
-
-                        🚗 <span>Users Cars Rent</span>
-
-                    </a>
-
-                    <a href="{{ route('admin.car.brand.show') }}"
-                        class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition">
-
-                        🏷️ <span>Car Brands</span>
-
-                    </a>
-
-                    <a href="{{ route('admin.cars.images') }}"
-                        class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition">
-
-                        🖼️ <span>Car Images</span>
-
-                    </a>
-
-                    <a href="{{ route('admin.service.category') }}"
-                        class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition">
-
-                        📂 <span>Service Categories</span>
-
-                    </a>
-
-                    <a href="{{ route('admin.service') }}"
-                        class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition">
-
-                        🔧 <span>Services</span>
-
-                    </a>
-
-                    <a href="{{ route('admin.booking') }}"
-                        class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition">
-
-                        📅 <span>Bookings</span>
-
-                    </a>
-
-                    <a href="{{ route('admin.rental') }}"
-                        class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition">
-
-                        🚙 <span>Rentals</span>
-
-                    </a>
-
-                    <a href="{{ route('admin.rental.booking') }}"
-                        class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition">
-
-                        📑 <span>Rental Bookings</span>
-
-                    </a>
-
-                    <a href="{{ route('admin.kycs.show') }}"
-                        class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition">
-
-                        🪪 <span>KYC Verification</span>
+                        <span>Cars</span>
 
                     </a>
 
@@ -140,7 +77,108 @@
                         <button @click="open = !open"
                             class="w-full flex items-center justify-between px-4 py-3 rounded-lg hover:bg-slate-800 transition">
                             <span class="flex items-center gap-3">
-                                🪪 <span>Spare Parts</span>
+                                <span>Roadside</span>
+                            </span>
+
+                            <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': open }" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+
+                        <!-- Dropdown -->
+                        <div x-show="open" x-transition class="mt-2 ml-6 space-y-1">
+                            <a href="{{ route('admin.roadside.requests.index') }}"
+                                class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition">
+
+                                <span> Request</span>
+
+                            </a>
+
+                            <a href="{{ route('admin.roadside.partners.index') }}"
+                                class="block px-4 py-2 rounded-lg hover:bg-slate-800">
+                                Service Partners
+                            </a>
+
+                            <a href="{{ route('admin.fuel-partners.index') }}"
+                                class="block px-4 py-2 rounded-lg hover:bg-slate-800">
+                                Fuel Partners
+                            </a>
+
+                        </div>
+                    </li>
+
+
+                    <a href="{{ route('admin.p2p.cars.show') }}"
+                        class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition">
+
+                        <span>Users Cars Rent</span>
+
+                    </a>
+
+                    <a href="{{ route('admin.car.brand.show') }}"
+                        class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition">
+
+                        <span>Car Brands</span>
+
+                    </a>
+
+                    <a href="{{ route('admin.cars.images') }}"
+                        class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition">
+
+                        <span>Car Images</span>
+
+                    </a>
+
+                    <a href="{{ route('admin.service.category') }}"
+                        class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition">
+
+                        <span>Service Categories</span>
+
+                    </a>
+
+                    <a href="{{ route('admin.service') }}"
+                        class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition">
+
+                        <span>Services</span>
+
+                    </a>
+
+                    <a href="{{ route('admin.booking') }}"
+                        class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition">
+
+                        <span>Bookings</span>
+
+                    </a>
+
+                    <a href="{{ route('admin.rental') }}"
+                        class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition">
+
+                        <span>Rentals</span>
+
+                    </a>
+
+                    <a href="{{ route('admin.rental.booking') }}"
+                        class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition">
+
+                        <span>Rental Bookings</span>
+
+                    </a>
+
+                    <a href="{{ route('admin.kycs.show') }}"
+                        class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition">
+
+                        <span>KYC Verification</span>
+
+                    </a>
+
+                    <li x-data="{ open: false }">
+                        <!-- Parent Menu -->
+                        <button @click="open = !open"
+                            class="w-full flex items-center justify-between px-4 py-3 rounded-lg hover:bg-slate-800 transition">
+                            <span class="flex items-center gap-3">
+                                <span>Spare Parts</span>
                             </span>
 
                             <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': open }" fill="none"
@@ -154,64 +192,71 @@
                         <div x-show="open" x-transition class="mt-2 ml-6 space-y-1">
                             <a href="{{ route('admin.spare.categories') }}"
                                 class="block px-4 py-2 rounded-lg hover:bg-slate-800">
-                                🗂 Spare Part Categories
+                                Spare Part Categories
                             </a>
 
-                            <a href="{{ route('spare-parts.orders') }}"
+                            <a href="{{ route('admin.spare-parts.orders') }}"
                                 class="block px-4 py-2 rounded-lg hover:bg-slate-800">
-                                ➕ Orders
+                                Orders
                             </a>
 
                         </div>
                     </li>
 
 
+                    <a href="{{ route('admin.loyalty.rewards.index') }}"
+                        class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition">
+
+                        <span>Rewards</span>
+
+                    </a>
+
                     <a href="{{ route('admin.warranty.plans.index') }}"
                         class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition">
 
-                        🪪 <span>Warranty Plans</span>
+                        <span>Warranty Plans</span>
 
                     </a>
 
                     <a href="{{ route('admin.all.users.verification') }}"
                         class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition">
 
-                        📑 <span>User Verification Requests</span>
+                        <span>User Verification Requests</span>
 
                     </a>
 
                     <a href="{{ route('admin.import.request') }}"
                         class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition">
 
-                        🚢 <span>Import Requests</span>
+                        <span>Import Requests</span>
 
                     </a>
 
                     <a href="{{ route('admin.review') }}"
                         class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition">
 
-                        ⭐ <span>Testimonials</span>
+                        <span>Testimonials</span>
 
                     </a>
 
                     <a href="{{ route('admin.faq') }}"
                         class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition">
 
-                        ❓ <span>FAQs</span>
+                        <span>FAQs</span>
 
                     </a>
 
                     <a href="{{ route('admin.contact') }}"
                         class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition">
 
-                        📩 <span>Contacts</span>
+                        <span>Contacts</span>
 
                     </a>
 
                     <a href="{{ route('admin.setting') }}"
                         class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition">
 
-                        ⚙️ <span>Settings</span>
+                        <span>Settings</span>
 
                     </a>
 
@@ -227,7 +272,7 @@
 
                     <button class="w-full bg-red-600 hover:bg-red-700 transition rounded-lg py-3 font-semibold">
 
-                        🚪 Logout
+                        Logout
 
                     </button>
 

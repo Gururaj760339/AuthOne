@@ -106,4 +106,47 @@ class User extends Authenticatable
     {
         return $this->hasMany(CarWarranty::class);
     }
+
+    public function loyaltyPoints()
+    {
+        return $this->hasOne(LoyaltyPoint::class);
+    }
+
+    public function loyaltyTransactions()
+    {
+        return $this->hasMany(LoyaltyTransaction::class);
+    }
+
+    public function roadsideProvider()
+    {
+        return $this->hasOne(RoadsideProvider::class);
+    }
+
+    public function roadsideRequests()
+    {
+        return $this->hasMany(RoadsideRequest::class);
+    }
+
+    public function fuelPartnerDriver()
+    {
+        return $this->hasOne(FuelPartnerDriver::class);
+    }
+
+    public function subscriptions()
+    {
+        return $this->hasMany(Subscription::class);
+    }
+
+    public function activeSubscription()
+    {
+        return $this->hasOne(Subscription::class)
+            ->where('status', 'active')
+            ->where('ends_at', '>', now())
+            ->latestOfMany();
+    }
+
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
+    }
 }

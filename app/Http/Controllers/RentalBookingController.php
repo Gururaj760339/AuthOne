@@ -14,14 +14,20 @@ class RentalBookingController extends Controller
 
     public function singleRentalBookingCreate($id)
     {
-        $rental = Rental::with('car')->findOrFail($id);
+        $countryId = auth()->user()->country_id;    
+        $rental = Rental::with('car')
+            ->where('country_id', $countryId)
+            ->findOrFail($id);
 
         return view('rental_booking.rental_booking_create', compact('rental'));
     }
 
     public function rentalBookingCreate()
     {
-        $rentals = Rental::with('car')->get();
+        $countryId = auth()->user()->country_id; 
+        $rentals = Rental::with('car')
+        ->where('country_id', $countryId)
+        ->get();
 
         return view('rental_booking.rental_car_booking_form', compact('rentals'));
     }

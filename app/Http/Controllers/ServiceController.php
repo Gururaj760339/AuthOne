@@ -42,12 +42,14 @@ class ServiceController extends Controller
 
     public function showMaintenanceCustomer()
     {
+        $countryId = auth()->user()->country_id;
         // All Services
         $services = Service::with('serviceCategory')
             ->whereHas('serviceCategory', function ($query) {
                 $query->where('slug', 'workshops-maintenance');
             })
             ->where('status', 1)
+            ->where('country_id', $countryId)
             ->latest()
             ->get();
 
@@ -64,6 +66,7 @@ class ServiceController extends Controller
             $query->where('slug', 'workshops-maintenance');
         })
             ->where('status', 1)
+            ->where('country_id', $countryId)
             ->withCount('bookings')
             ->orderByDesc('bookings_count')
             ->take(5)
@@ -85,10 +88,13 @@ class ServiceController extends Controller
 
     public function showCarWashCustomer()
     {
+        $countryId = auth()->user()->country_id;
+
         $services = Service::with('serviceCategory')
             ->whereHas('serviceCategory', function ($query) {
                 $query->where('slug', 'car-wash-services');
             })
+            ->where('country_id', $countryId)
             ->where('status', 1)
             ->latest()
             ->get();
@@ -97,6 +103,7 @@ class ServiceController extends Controller
             $query->where('slug', 'car-wash-services');
         })
             ->where('user_id', Auth::id())
+            ->where('country_id', $countryId)
             ->latest()
             ->first();
 
@@ -105,6 +112,7 @@ class ServiceController extends Controller
             ->whereHas('serviceCategory', function ($query) {
                 $query->where('slug', 'car-wash-services');
             })
+            ->where('country_id', $countryId)
             ->where('status', 1)
             ->withCount('bookings')
             ->orderByDesc('bookings_count')
@@ -161,7 +169,8 @@ class ServiceController extends Controller
             'description'         => $request->description,
             'image'               => $image,
             'status'              => $request->status,
-            'vendor_id'           => $vendorId
+            'vendor_id'           => $vendorId,
+            'country_id'          => Auth::user()->country_id,
         ]);
 
 

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LoyaltyRewardController;
 use App\Http\Controllers\SparePartCategoryController;
 use App\Http\Controllers\AdminKycController;
 use App\Http\Controllers\AdminController;
@@ -13,6 +14,7 @@ use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ContactsController;
+use App\Http\Controllers\CountryController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\FinancePartnerController;
 use App\Http\Controllers\FinanceRequestsController;
@@ -30,13 +32,22 @@ use App\Http\Controllers\CustomerWarrantyController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\ExtendedWarrantyController;
+use App\Http\Controllers\FuelDeliveryController;
+use App\Http\Controllers\FuelDriverDashboardController;
+use App\Http\Controllers\FuelPartnerController;
+use App\Http\Controllers\FuelPartnerDashboardController;
+use App\Http\Controllers\FuelPartnerDriverController;
 use App\Http\Controllers\P2PCarController;
 use App\Http\Controllers\PriceEstimationController;
 use App\Http\Controllers\UserVerificationController;
 use App\Http\Controllers\WarrantyPlanController;
 use App\Http\Controllers\ImportController;
 use App\Http\Controllers\ImportFinanceRequestController;
+use App\Http\Controllers\LoyaltyController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\RoadsidePartnerController;
+use App\Http\Controllers\RoadsideAssistanceController;
+use App\Http\Controllers\RoadsideRequestController;
 use App\Services\ShippoService;
 use App\Models\ImporteRequest;
 use App\Models\ServiceCategory;
@@ -45,6 +56,7 @@ use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\SocialAuthController;
 use App\Http\Controllers\SparePartController;
 use App\Http\Controllers\SparePartImageController;
+use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\VendorOrderController;
 use App\Models\KycVerification;
 
@@ -375,16 +387,21 @@ Route::get('/payment/service', [PaymentController::class, 'choosePaymentService'
 Route::get('/payment/car-import/{id}', [PaymentController::class, 'choosePaymentCarImport'])->name('payment.choose.car.import');
 Route::get('/payment/rental/{rentalId}/booking/{rentalBookingId}', [PaymentController::class, 'choosePaymentCarRental'])->name('payment.choose.car.rental');
 Route::get('/payment/warranty/{warrantyId}/extended/{planId}', [PaymentController::class, 'choosePaymentWarrantyExtended'])->name('payment.choose.warranty.extended');
+Route::get('/payment/subscription/{id}', [PaymentController::class, 'choosePaymentSubscription'])->name('payment.choose.subscription');
 
 Route::get('/payment/{type}/stripe/{id}', [PaymentController::class, 'stripeCheckout'])->name('stripe.checkout');
 Route::get('/payment/stripe', [PaymentController::class, 'stripeCheckoutService'])->name('stripe.checkout.services');
 Route::get('/payment/stripe/order/{orderId}', [PaymentController::class, 'stripeCheckoutSparePart'])->name('stripe.checkout.spare_parts');
 Route::get('/payment/{type}/stripe/{rentalId}/{rentalBookingId}', [PaymentController::class, 'stripeRentalCheckout'])->name('stripe.checkout.rental');
 Route::get('/payment/warranty/{warrantyId}/stripe/{planId}/checkout', [PaymentController::class, 'stripeCheckoutWarrantyExtended'])->name('stripe.checkout.warranty.extended');
-Route::get('/stripe/success/{id}', [PaymentController::class, 'stripeSuccess'])->name('stripe.success');
+Route::get('/payment/checkout/subscription/{id}', [PaymentController::class, 'stripeCheckoutSubscription'])->name('stripe.checkout.subscription');
+
+Route::get('/stripe/{paymentId}/success/{amount}', [PaymentController::class, 'stripeSuccess'])->name('stripe.success');
 Route::get('/payment/{paymentId}/warranty/{warrantyId}/plan/{planId}/success', [PaymentController::class, 'warrantyStripeSuccess'])->name('warranty.stripe.success');
 Route::get('/payment/{paymentId}/order/{orderId}/success', [PaymentController::class, 'StripeSuccessSparePart'])->name('spare_parts.stripe.success');
 Route::get('/stripe/cancel/{id}', [PaymentController::class, 'stripeCancel'])->name('stripe.cancel');
+Route::get('/stripe/{paymentId}/success/subscription/{subscriptionId}', [PaymentController::class, 'subscriptionStripeSuccess'])->name('stripe.success.subscription');
+
 
 Route::post('/chatbot', [ChatbotController::class, 'chat']);
 
@@ -497,8 +514,420 @@ Route::get('vendor/spare-parts/orders', [VendorOrderController::class, 'showVend
 Route::get('vendor/spare-parts/orders/{id}', [VendorOrderController::class, 'showVendorOrderDetails'])->name('vendor.spare-parts.orders.show')->middleware(['can:isVendor']);
 Route::put('vendor/spare-parts/orders/{id}/status', [VendorOrderController::class, 'updateVendorOrderStatus'])->name('vendor.spare-parts.orders.status')->middleware(['can:isVendor']);
 
-Route::get('admin/spare-parts/orders',[AdminOrderController::class, 'adminShowOrder'])->name('admin.spare-parts.orders');
-Route::get('admin/spare-parts/order/{id}',[AdminOrderController::class, 'adminShowOrderDetails'])->name('admin.spare-parts.orders.show');
-Route::put('admin/spare-parts/orders/{id}/status',[AdminOrderController::class, 'adminUpdateOrderStatus'])->name('admin.spare-parts.orders.status');
-Route::put('admin/spare-parts/orders/{id}/payment-status',[AdminOrderController::class, 'adminUpdatePaymentStatus'])->name('admin.spare-parts.orders.payment-status');
-Route::delete('admin/spare-parts/orders/destroy/{id}',[AdminOrderController::class, 'destroyOrder'])->name('admin.spare-parts.orders.destroy');
+Route::get('admin/spare-parts/orders', [AdminOrderController::class, 'adminShowOrder'])->name('admin.spare-parts.orders');
+Route::get('admin/spare-parts/order/{id}', [AdminOrderController::class, 'adminShowOrderDetails'])->name('admin.spare-parts.orders.show');
+Route::put('admin/spare-parts/orders/{id}/status', [AdminOrderController::class, 'adminUpdateOrderStatus'])->name('admin.spare-parts.orders.status');
+Route::put('admin/spare-parts/orders/{id}/payment-status', [AdminOrderController::class, 'adminUpdatePaymentStatus'])->name('admin.spare-parts.orders.payment-status');
+Route::delete('admin/spare-parts/orders/destroy/{id}', [AdminOrderController::class, 'destroyOrder'])->name('admin.spare-parts.orders.destroy');
+
+Route::get('/loyalty', [LoyaltyController::class, 'customerLoyaltyDashboard'])->name('customer.loyalty');
+Route::post('/loyalty/redeem/{id}', [LoyaltyController::class, 'redeemReward'])->name('customer.loyalty.redeem');
+
+Route::get('admin/loyalty/rewards', [LoyaltyRewardController::class, 'showReward'])->name('admin.loyalty.rewards.index');
+Route::get('admin/loyalty/rewards/create', [LoyaltyRewardController::class, 'createLoyaltyReward'])->name('admin.loyalty.rewards.create');
+Route::post('admin/loyalty/rewards', [LoyaltyRewardController::class, 'storeLoyaltyReward'])->name('admin.loyalty.rewards.store');
+Route::get('admin/loyalty/rewards/{id}/edit', [LoyaltyRewardController::class, 'editLoyaltyReward'])->name('admin.loyalty.rewards.edit');
+Route::put('admin/loyalty/rewards/{id}', [LoyaltyRewardController::class, 'updateLoyaltyReward'])->name('admin.loyalty.rewards.update');
+Route::delete('admin/loyalty/rewards/{id}', [LoyaltyRewardController::class, 'destroyLoyaltyReward'])->name('admin.loyalty.rewards.destroy');
+
+
+Route::prefix('partner/roadside')
+    ->name('partner.roadside.')
+    ->middleware('auth')
+    ->group(function () {
+
+        /*
+        |--------------------------------------------------------------------------
+        | Dashboard
+        |--------------------------------------------------------------------------
+        */
+
+        Route::get('/dashboard', [
+            RoadsidePartnerController::class,
+            'dashboard'
+        ])->name('dashboard');
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Availability
+        |--------------------------------------------------------------------------
+        */
+
+        Route::post('/availability', [
+            RoadsidePartnerController::class,
+            'toggleAvailability'
+        ])->name('availability');
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Assistance Requests
+        |--------------------------------------------------------------------------
+        */
+
+        Route::get('/requests', [
+            RoadsidePartnerController::class,
+            'requests'
+        ])->name('requests');
+
+
+        Route::get('/requests/{id}', [
+            RoadsidePartnerController::class,
+            'showRequest'
+        ])->name('request.show');
+
+
+        Route::post('/requests/{id}/accept', [
+            RoadsidePartnerController::class,
+            'accept'
+        ])->name('accept');
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Active Services
+        |--------------------------------------------------------------------------
+        */
+
+        Route::get('/active-services', [
+            RoadsidePartnerController::class,
+            'activeServices'
+        ])->name('active');
+
+
+        Route::post('/requests/{id}/status', [
+            RoadsidePartnerController::class,
+            'updateStatus'
+        ])->name('status');
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Completed Services
+        |--------------------------------------------------------------------------
+        */
+
+        Route::get('/completed-services', [
+            RoadsidePartnerController::class,
+            'completedServices'
+        ])->name('completed');
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Earnings
+        |--------------------------------------------------------------------------
+        */
+
+        Route::get('/earnings', [
+            RoadsidePartnerController::class,
+            'earnings'
+        ])->name('earnings');
+    });
+
+Route::get('rodeside-services', [RoadsideRequestController::class, 'showProvider'])->name('customer.roadside.providers');
+Route::get('rodeside-services/location', [RoadsideRequestController::class, 'location'])->name('customer.roadside.location');
+Route::get('rodeside-services/request/create/{id}', [RoadsideRequestController::class, 'createRequest'])->name('customer.roadside.request.create');
+Route::post('rodeside-services/request/store', [RoadsideRequestController::class, 'roadsideRequestStore'])->name('customer.roadside.request.store');
+
+
+Route::prefix('admin')->name('admin.')->group(function () {
+
+    /*
+    |--------------------------------------------------------------------------
+    | Roadside Requests
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get(
+        '/roadside/requests',
+        [RoadsideRequestController::class, 'index']
+    )->name('roadside.requests.index');
+
+
+    Route::get(
+        '/roadside/requests/{id}',
+        [RoadsideRequestController::class, 'show']
+    )->name('roadside.requests.show');
+
+
+    Route::post(
+        '/roadside/requests/{id}/cancel',
+        [RoadsideRequestController::class, 'cancel']
+    )->name('roadside.requests.cancel');
+
+
+    Route::delete(
+        '/roadside/requests/{id}',
+        [RoadsideRequestController::class, 'destroy']
+    )->name('roadside.requests.destroy');
+});
+
+
+
+Route::prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+
+        /*
+        |--------------------------------------------------------------------------
+        | Roadside Partners
+        |--------------------------------------------------------------------------
+        */
+
+        Route::get(
+            '/roadside/partners',
+            [RoadsidePartnerController::class, 'index']
+        )->name('roadside.partners.index');
+
+
+        Route::get(
+            '/roadside/partners/{id}',
+            [RoadsidePartnerController::class, 'show']
+        )->name('roadside.partners.show');
+
+
+        Route::post(
+            '/roadside/partners/{id}/approve',
+            [RoadsidePartnerController::class, 'approve']
+        )->name('roadside.partners.approve');
+
+
+        Route::post(
+            '/roadside/partners/{id}/reject',
+            [RoadsidePartnerController::class, 'reject']
+        )->name('roadside.partners.reject');
+
+
+        Route::post(
+            '/roadside/partners/{id}/activate',
+            [RoadsidePartnerController::class, 'activate']
+        )->name('roadside.partners.activate');
+
+
+        Route::post(
+            '/roadside/partners/{id}/deactivate',
+            [RoadsidePartnerController::class, 'deactivate']
+        )->name('roadside.partners.deactivate');
+
+
+        Route::delete(
+            '/roadside/partners/{id}',
+            [RoadsidePartnerController::class, 'destroy']
+        )->name('roadside.partners.destroy');
+    });
+
+
+Route::middleware('auth')->group(function () {
+
+    Route::get(
+        '/fuel-delivery',
+        [FuelDeliveryController::class, 'create']
+    )->name('fuel.delivery.create');
+
+    Route::post(
+        '/fuel-delivery',
+        [FuelDeliveryController::class, 'store']
+    )->name('fuel.delivery.store');
+
+    Route::get(
+        '/fuel-delivery/{id}',
+        [FuelDeliveryController::class, 'show']
+    )->name('fuel.delivery.show');
+
+    Route::get(
+        '/my-fuel-requests',
+        [FuelDeliveryController::class, 'myRequests']
+    )->name('fuel.delivery.my');
+});
+
+
+Route::middleware('auth')->prefix('fuel-partner')->name('fuel.partner.')->group(function () {
+
+    Route::get(
+        '/dashboard',
+        [FuelPartnerDashboardController::class, 'dashboard']
+    )->name('dashboard');
+
+    Route::get(
+        '/requests',
+        [FuelPartnerDashboardController::class, 'requests']
+    )->name('requests');
+
+    Route::post(
+        '/requests/{id}/accept',
+        [FuelPartnerDashboardController::class, 'accept']
+    )->name('requests.accept');
+
+    Route::post(
+        '/requests/{id}/reject',
+        [FuelPartnerDashboardController::class, 'reject']
+    )->name('requests.reject');
+
+    Route::post(
+        '/requests/{id}/assign-driver',
+        [FuelPartnerDashboardController::class, 'assignDriver']
+    )->name('requests.assign-driver');
+
+    Route::post(
+        '/requests/{id}/complete',
+        [FuelPartnerDashboardController::class, 'complete']
+    )->name('requests.complete');
+
+    Route::get(
+        '/drivers',
+        [FuelPartnerDriverController::class, 'index']
+    )->name('drivers.index');
+
+
+    Route::get(
+        '/drivers/create',
+        [FuelPartnerDriverController::class, 'create']
+    )->name('drivers.create');
+
+
+    Route::post(
+        '/drivers',
+        [FuelPartnerDriverController::class, 'store']
+    )->name('drivers.store');
+
+
+    Route::put(
+        '/drivers/{id}/status',
+        [FuelPartnerDriverController::class, 'updateStatus']
+    )->name('drivers.status');
+
+
+    Route::delete(
+        '/drivers/{id}',
+        [FuelPartnerDriverController::class, 'destroy']
+    )->name('drivers.destroy');
+});
+
+
+Route::middleware('auth')
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+
+        Route::get(
+            '/fuel-partners',
+            [FuelPartnerController::class, 'index']
+        )->name('fuel-partners.index');
+
+        Route::get(
+            '/fuel-partners/{id}',
+            [FuelPartnerController::class, 'show']
+        )->name('fuel-partners.show');
+
+        Route::post(
+            '/fuel-partners/{id}/approve',
+            [FuelPartnerController::class, 'approve']
+        )->name('fuel-partners.approve');
+
+        Route::post(
+            '/fuel-partners/{id}/reject',
+            [FuelPartnerController::class, 'reject']
+        )->name('fuel-partners.reject');
+
+        Route::post(
+            '/fuel-partners/{id}/suspend',
+            [FuelPartnerController::class, 'suspend']
+        )->name('fuel-partners.suspend');
+    });
+
+Route::middleware(['auth'])->prefix('fuel-driver')->name('fuel.driver.')->group(function () {
+
+    /*
+    |--------------------------------------------------------------------------
+    | Dashboard
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get(
+        '/dashboard',
+        [FuelDriverDashboardController::class, 'index']
+    )->name('dashboard');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | All Deliveries
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get(
+        '/deliveries',
+        [FuelDriverDashboardController::class, 'deliveries']
+    )->name('deliveries.index');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Delivery Details
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get(
+        '/deliveries/{id}',
+        [FuelDriverDashboardController::class, 'showDelivery']
+    )->name('deliveries.show');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Update Delivery Status
+    |--------------------------------------------------------------------------
+    */
+
+    Route::patch(
+        '/deliveries/{id}/status',
+        [FuelDriverDashboardController::class, 'updateDeliveryStatus']
+    )->name('deliveries.status');
+});
+
+
+Route::middleware('auth')->group(function () {
+
+    /*
+    |--------------------------------------------------------------------------
+    | VIP Membership
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get(
+        '/vip-membership',
+        [SubscriptionController::class, 'index']
+    )->name('subscriptions.index');
+
+
+    Route::get(
+        '/vip-membership/{id}',
+        [SubscriptionController::class, 'show']
+    )->name('subscriptions.show');
+
+
+    Route::post(
+        '/vip-membership/{id}/subscribe',
+        [SubscriptionController::class, 'subscribe']
+    )->name('subscriptions.subscribe');
+
+
+    Route::post(
+        '/vip-membership/{id}/cancel',
+        [SubscriptionController::class, 'cancel']
+    )->name('subscriptions.cancel');
+
+
+    Route::get(
+        '/my-subscriptions',
+        [SubscriptionController::class, 'mySubscriptions']
+    )->name('subscriptions.my');
+});
+
+
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+
+    Route::resource('countries', CountryController::class);
+});

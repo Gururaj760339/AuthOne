@@ -27,4 +27,9 @@ class Rental extends Model
     {
         return $this->hasMany(P2PBooking::class);
     }
+
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
+    }
 }

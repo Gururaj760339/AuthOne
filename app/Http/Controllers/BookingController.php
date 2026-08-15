@@ -23,18 +23,24 @@ class BookingController extends Controller
 
     public function MaintenanceBookingCreate()
     {
+        $countryId = auth()->user()->country_id;
         $services = Service::whereHas('serviceCategory', function ($query) {
             $query->where('slug', 'workshops-maintenance');
-        })->get();
+        })
+        ->where('country_id', $countryId)
+        ->get();
 
         return view('booking.booking_create', compact('services'));
     }
 
     public function CarWashBookingCreate()
     {
+        $countryId = auth()->user()->country_id;
         $services = Service::whereHas('serviceCategory', function ($query) {
             $query->where('slug', 'car-wash-services');
-        })->get();
+        })
+        ->where('country_id', $countryId)
+        ->get();
 
         return view('booking.booking_create', compact('services'));
     }

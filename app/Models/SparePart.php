@@ -7,16 +7,24 @@ use Illuminate\Database\Eloquent\Model;
 class SparePart extends Model
 {
     protected $guarded = [];
-    
-    public function sparePartImages(){
+
+    public function sparePartImages()
+    {
         return $this->hasMany(SparePartImage::class);
     }
 
-    public function vendor(){
+    public function vendor()
+    {
         return $this->belongsTo(Vendor::class);
     }
 
-    public function sparePartsCategory(){
+    public function sparePartsCategory()
+    {
         return $this->belongsTo(SparePartCategory::class, 'category_id');
+    }
+
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
     }
 }

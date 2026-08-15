@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\FinanceRequests;
+use App\Models\FuelPartner;
 use App\Models\ImportRequest;
 use App\Models\KycVerification;
 use App\Models\RentalBooking;
+use App\Models\RoadsideProvider;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -18,96 +20,347 @@ class UserController extends Controller
 {
     public function register(Request $request)
     {
-        $validated = $request->validate([
+        /*
+    |--------------------------------------------------------------------------
+    | Basic Validation
+    |--------------------------------------------------------------------------
+    */
 
-            'first_name' => 'required|string|max:255',
-            'last_name'  => 'required|string|max:255',
-            'email'      => 'required|email|unique:users,email',
-            'phone'      => 'nullable|string|max:20',
-            'password'   => 'required|string|min:8',
-            'role'       => 'required|in:customer,vendor,admin',
-            'profile_picture' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        $request->validate([
+            'name' => 'required|string|max:255',
 
+            'email' => 'required|email|unique:users,email',
 
-            // Vendor validation only
-            'vendor_type' => 'required_if:role,vendor|nullable|in:workshop,car_wash,dealer,rental,spare_parts',
-            'business_name' => 'required_if:role,vendor|nullable|string|max:255',
-            'trade_license' => 'required_if:role,vendor|nullable|string|max:255',
-            'address' => 'required_if:role,vendor|nullable|string|max:255',
-            'city' => 'required_if:role,vendor|nullable|string|max:255',
-            'country' => 'nullable|string|max:255',
-            'logo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'phone' => 'required|string|max:30',
 
+            'password' => 'required|string|min:6|confirmed',
+
+            'role' => 'required|in:customer,vendor,roadside_provider,fuel_partner',
+
+            'profile_picture' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+
+            'country_id' => 'required|exists:countries,id',
         ]);
+
+
+        /*
+    |--------------------------------------------------------------------------
+    | Vendor Validation
+    |--------------------------------------------------------------------------
+    */
+
+        if ($request->role === 'vendor') {
+
+            $request->validate([
+
+                'vendor_type' => 'required|in:service,dealer,rental,car_importer',
+
+                'business_name' => 'required|string|max:255',
+
+                'trade_license' => 'nullable|string|max:255',
+
+                'address' => 'nullable|string',
+
+                'city' => 'nullable|string|max:100',
+
+                'country' => 'nullable|string|max:100',
+
+                'logo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            ]);
+        }
+
+
+        /*
+    |--------------------------------------------------------------------------
+    | Roadside Provider Validation
+    |--------------------------------------------------------------------------
+    */
+
+        if ($request->role === 'roadside_provider') {
+
+            $request->validate([
+
+                'company_name' => 'required|string|max:255',
+
+                'provider_type' => [
+                    'required',
+                    'in:tow_truck,mechanic,mobile_mechanic,battery_service,fuel_delivery,roadside_company'
+                ],
+
+                'provider_phone' => 'required|string|max:30',
+
+                'latitude' => 'nullable|numeric|between:-90,90',
+
+                'longitude' => 'nullable|numeric|between:-180,180',
+
+            ]);
+        }
+
+
+        /*
+    |--------------------------------------------------------------------------
+    | Fuel Partner Validation
+    |--------------------------------------------------------------------------
+    */
+
+        if ($request->role === 'fuel_partner') {
+
+            $request->validate([
+
+                'fuel_company_name' => 'required|string|max:255',
+
+                'license_number' => 'nullable|string|max:255',
+
+                'license_expiry' => 'nullable|date',
+
+                'fuel_phone' => 'required|string|max:30',
+
+                'fuel_email' => 'nullable|email|max:255',
+
+                'fuel_address' => 'nullable|string',
+
+                'fuel_city' => 'nullable|string|max:100',
+
+                'fuel_latitude' => 'nullable|numeric|between:-90,90',
+
+                'fuel_longitude' => 'nullable|numeric|between:-180,180',
+
+            ]);
+        }
+
+
+        /*
+    |--------------------------------------------------------------------------
+    | Database Transaction
+    |--------------------------------------------------------------------------
+    */
 
         DB::beginTransaction();
 
         try {
-            // Profile Upload
-            $avatar = null;
+
+            /*
+        |--------------------------------------------------------------------------
+        | Profile Picture
+        |--------------------------------------------------------------------------
+        */
+
+            $profilePicture = null;
 
             if ($request->hasFile('profile_picture')) {
 
-                $avatar = $request->file('profile_picture')
-                    ->store('profiles', 'public');
+                $profilePicture = $request
+                    ->file('profile_picture')
+                    ->store('users/profile', 'public');
             }
 
-            // Create User
+
+            /*
+        |--------------------------------------------------------------------------
+        | Create User
+        |--------------------------------------------------------------------------
+        */
+
             $user = User::create([
-                'name' => $validated['first_name'] . ' ' . $validated['last_name'],
-                'email' => $validated['email'],
-                'phone' => $validated['phone'] ?? null,
-                'password' => Hash::make($validated['password']),
-                'avatar' => $avatar,
-                'role' => $validated['role'],
+
+                'name' => $request->name,
+
+                'email' => $request->email,
+
+                'phone' => $request->phone,
+
+                'password' => Hash::make($request->password),
+
+                'role' => $request->role,
+
+                'avatar' => $profilePicture,
+
+                'country_id' => $request->country_id,
             ]);
 
 
-            if ($validated['role'] == 'vendor') {
+            /*
+        |--------------------------------------------------------------------------
+        | Vendor Partner
+        |--------------------------------------------------------------------------
+        */
+
+            if ($request->role === 'vendor') {
 
                 $logo = null;
 
                 if ($request->hasFile('logo')) {
 
-                    $logo = $request->file('logo')
-                        ->store('vendors', 'public');
+                    $logo = $request
+                        ->file('logo')
+                        ->store('vendors/logos', 'public');
                 }
 
+
                 Vendor::create([
+
                     'user_id' => $user->id,
-                    'vendor_type' => $validated['vendor_type'],
-                    'business_name' => $validated['business_name'],
-                    'owner_name' => $user->name,
-                    'email' => $user->email,
-                    'phone' => $user->phone,
+
+                    'vendor_type' => $request->vendor_type,
+
+                    'business_name' => $request->business_name,
+
+                    'trade_license' => $request->trade_license,
+
+                    'address' => $request->address,
+
+                    'city' => $request->city,
+
+                    'country' => $request->country,
+
                     'logo' => $logo,
-                    'trade_license' => $validated['trade_license'],
-                    'address' => $validated['address'],
-                    'city' => $validated['city'],
-                    'country' => $validated['country'] ?? 'UAE',
-                    'opening_time' => '09:00:00',
-                    'closing_time' => '18:00:00',
-                    'status' => 'pending',
+
                 ]);
             }
 
+
+            /*
+        |--------------------------------------------------------------------------
+        | Roadside Assistance Partner
+        |--------------------------------------------------------------------------
+        */
+
+            if ($request->role === 'roadside_provider') {
+
+                RoadsideProvider::create([
+
+                    'user_id' => $user->id,
+
+                    'company_name' => $request->company_name,
+
+                    'phone' => $request->provider_phone,
+
+                    'provider_type' => $request->provider_type,
+
+                    'latitude' => $request->latitude,
+
+                    'longitude' => $request->longitude,
+
+                    // Admin verification required
+                    'is_verified' => 0,
+
+                    // Initially available
+                    'is_available' => 1,
+
+                    'rating' => 0.00,
+
+                ]);
+            }
+
+
+            /*
+        |--------------------------------------------------------------------------
+        | Fuel Partner
+        |--------------------------------------------------------------------------
+        */
+
+            //dd('complete');
+
+            if ($request->role === 'fuel_partner') {
+
+                FuelPartner::create([
+
+                    'user_id' => $user->id,
+
+                    'company_name' => $request->fuel_company_name,
+
+                    'license_number' => $request->license_number,
+
+                    'license_expiry' => $request->license_expiry,
+
+                    'phone' => $request->fuel_phone,
+
+                    'email' => $request->fuel_email,
+
+                    'address' => $request->fuel_address,
+
+                    'city' => $request->fuel_city,
+
+                    'latitude' => $request->fuel_latitude,
+
+                    'longitude' => $request->fuel_longitude,
+
+                    // Default commission
+                    'commission_rate' => 10,
+
+                    // Admin approval required
+                    'status' => 'pending',
+
+                ]);
+            }
+
+
+            /*
+        |--------------------------------------------------------------------------
+        | Commit Transaction
+        |--------------------------------------------------------------------------
+        */
+
             DB::commit();
 
-            Auth::login($user);
 
-            return redirect('/')
-                ->with('success', 'Registration completed successfully.');
-        } catch (\Exception $e) {
+            /*
+        |--------------------------------------------------------------------------
+        | Login User
+        |--------------------------------------------------------------------------
+        */
 
+            auth()->login($user);
+
+
+            /*
+        |--------------------------------------------------------------------------
+        | Success Message
+        |--------------------------------------------------------------------------
+        */
+
+            $message = match ($request->role) {
+
+                'roadside_provider' =>
+                'Roadside Assistance Partner registration submitted. Waiting for admin verification.',
+
+                'vendor' =>
+                'Vendor Partner account created successfully.',
+
+                'fuel_partner' =>
+                'Fuel Partner registration submitted. Waiting for admin approval.',
+
+                default =>
+                'Customer account created successfully.',
+            };
+
+
+            /*
+        |--------------------------------------------------------------------------
+        | Redirect
+        |--------------------------------------------------------------------------
+        */
+
+            return redirect()
+                ->route('home')
+                ->with('success', $message);
+        } catch (\Throwable $e) {
+
+            /*
+        |--------------------------------------------------------------------------
+        | Rollback
+        |--------------------------------------------------------------------------
+        */
 
             DB::rollBack();
 
 
             return back()
                 ->withInput()
-                ->withErrors([
-                    'error' => $e->getMessage()
-                ]);
+                ->with(
+                    'error',
+                    'Registration failed: ' . $e->getMessage()
+                );
         }
     }
 
@@ -169,6 +422,36 @@ class UserController extends Controller
             $request->session()->regenerate();
 
             return redirect()->route('finance.partner.dashboard')
+                ->with('success', 'Login successful.');
+        } else if (Auth::attempt([
+            'email' => $credentials['email'],
+            'password' => $credentials['password'],
+            'role' => 'roadside_provider',
+        ], $request->boolean('remember'))) {
+
+            $request->session()->regenerate();
+
+            return redirect()->route('partner.roadside.dashboard')
+                ->with('success', 'Login successful.');
+        } else if (Auth::attempt([
+            'email' => $credentials['email'],
+            'password' => $credentials['password'],
+            'role' => 'fuel_partner',
+        ], $request->boolean('remember'))) {
+
+            $request->session()->regenerate();
+
+            return redirect()->route('fuel.partner.dashboard')
+                ->with('success', 'Login successful.');
+        } else if (Auth::attempt([
+            'email' => $credentials['email'],
+            'password' => $credentials['password'],
+            'role' => 'fuel_driver',
+        ], $request->boolean('remember'))) {
+
+            $request->session()->regenerate();
+
+            return redirect()->route('fuel.driver.dashboard')
                 ->with('success', 'Login successful.');
         }
 

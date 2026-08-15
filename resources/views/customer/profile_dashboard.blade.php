@@ -44,40 +44,61 @@
                 <div class="space-y-3">
 
                     <a href="{{ route('customer.profile') }}" class="block bg-blue-50 hover:bg-blue-100 p-3 rounded-lg">
-                        👤 {{ translate('My Profile') }}
+                        {{ translate('My Profile') }}
                     </a>
 
                     <a href="{{ route('customer.show.kyc') }}"
                         class="block bg-green-50 hover:bg-green-100 p-3 rounded-lg">
-                        🆔 {{ translate('KYC Verification') }}   
+                        {{ translate('KYC Verification') }}   
                     </a>
 
                     <a href="#" class="block bg-yellow-50 hover:bg-yellow-100 p-3 rounded-lg">
-                        🚗 {{ translate('My Bookings') }}
+                        {{ translate('My Bookings') }}
                     </a>
 
                     <a href="#" class="block bg-purple-50 hover:bg-purple-100 p-3 rounded-lg">
-                        💳 {{ translate('Finance Requests') }}
+                        {{ translate('Finance Requests') }}
                     </a>
 
                     <a href="{{ route('customer.import.requests') }}" class="block bg-pink-50 hover:bg-pink-100 p-3 rounded-lg">
-                        🌍 {{ translate('Import Requests') }}
+                        {{ translate('Import Requests') }}
                     </a>
 
                     <a href="{{ route('customer.warranties') }}" class="block bg-gray-50 hover:bg-gray-100 p-3 rounded-lg">
-                        🔑 {{ translate('Warranties') }}
+                        {{ translate('Warranties') }}
                     </a>
 
                     <a href="{{ route('p2p.cars.show') }}" class="block bg-yellow-50 hover:bg-yellow-100 p-3 rounded-lg">
-                        🚗 {{ translate('Rent My Car') }}
+                        {{ translate('Rent My Car') }}
                     </a>
 
                     <a href="{{ route('p2p.cars.rental.requests') }}" class="block bg-blue-50 hover:bg-blue-100 p-3 rounded-lg">
-                        📝 {{ translate('Rental Requests') }}
+                        {{ translate('Rental Requests') }}
                     </a>
 
                     <a href="{{ route('customer.orders.history') }}" class="block bg-blue-50 hover:bg-blue-100 p-3 rounded-lg">
-                        📝 {{ translate('My Orders') }}
+                        {{ translate('My Orders') }}
+                    </a>
+
+                    <a href="{{ route('customer.loyalty') }}" class="block bg-blue-50 hover:bg-blue-100 p-3 rounded-lg">
+                        {{ translate('My Rewards') }}
+                    </a>
+
+                    <a href="{{ route('fuel.delivery.my') }}" class="block bg-blue-50 hover:bg-blue-100 p-3 rounded-lg">
+                        {{ translate('My Fuel Delivery Request') }}
+                    </a>
+                    
+
+                    <a href="{{ route('subscriptions.index') }}" class="block bg-blue-50 hover:bg-blue-100 p-3 rounded-lg">
+                        {{ translate('Subscriptions') }}
+                    </a>
+
+                    <a href="{{ route('subscriptions.my') }}" class="block bg-blue-50 hover:bg-blue-100 p-3 rounded-lg">
+                        {{ translate('My Subscriptions') }}
+                    </a>
+
+                    <a href="{{ route('customer.roadside.location') }}" class="block bg-blue-50 hover:bg-blue-100 p-3 rounded-lg">
+                        {{ translate('Roadside Assistance') }}
                     </a>
 
                 </div>
