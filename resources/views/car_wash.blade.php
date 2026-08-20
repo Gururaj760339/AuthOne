@@ -27,9 +27,9 @@
             </span>
 
             <h1 class="text-5xl font-bold mt-6">
-                {{ translate('Car Wash Title 1') }}
-                <span class="text-blue-400">{{ translate('Car Wash Title 2') }}</span>
-                {{ translate('Car Wash Title 3') }}
+                {{ translate('Choose Your') }}
+                <span class="text-blue-400">{{ translate('Premium') }}</span>
+                {{ translate('Car Wash') }}
             </h1>
 
             <p class="text-gray-300 text-lg mt-6 max-w-2xl leading-8">
@@ -186,37 +186,37 @@
 
                     <div>
                         <h4 class="font-bold text-xl">
-                            💧 {{ translate('messages.Feature Title 1') }}
+                            💧 {{ translate('Feature') }}
                         </h4>
                         <p class="text-gray-600 mt-2">
-                            {{ translate('Messages Feature Desc 1') }}
+                            {{ translate('Messages') }}
                         </p>
                     </div>
 
                     <div>
                         <h4 class="font-bold text-xl">
-                            ✨ {{ translate('messages.Feature Title 2') }}
+                            ✨ {{ translate('Feature') }}
                         </h4>
                         <p class="text-gray-600 mt-2">
-                            {{ translate('Messages Feature Desc 2') }}
+                            {{ translate('Messages Feature Desc') }}
                         </p>
                     </div>
 
                     <div>
                         <h4 class="font-bold text-xl">
-                            ⚡ {{ translate('messages.Feature Title 3') }}
+                            ⚡ {{ translate('Feature Title') }}
                         </h4>
                         <p class="text-gray-600 mt-2">
-                            {{ translate('Messages Feature Desc 3') }}
+                            {{ translate('Feature Desc') }}
                         </p>
                     </div>
 
                     <div>
                         <h4 class="font-bold text-xl">
-                            🛡 {{ translate('messages.Feature Title 4') }}
+                            🛡 {{ translate('Feature Title') }}
                         </h4>
                         <p class="text-gray-600 mt-2">
-                            {{ translate('Messages Feature Desc 4') }}
+                            {{ translate('Feature Desc') }}
                         </p>
                     </div>
 
@@ -251,7 +251,7 @@
 
 
                     <h4 class="mt-5 font-semibold">
-                        {{ translate('Messages Step 1') }}
+                        {{ translate('Step 1') }}
                     </h4>
 
 
@@ -268,7 +268,7 @@
 
 
                     <h4 class="mt-5 font-semibold">
-                        {{ translate('Messages Step 2') }}
+                        {{ translate('Step 2') }}
                     </h4>
 
                 </div>
@@ -283,7 +283,7 @@
                     </div>
 
                     <h4 class="mt-5 font-semibold">
-                        {{ translate('Messages Step 3') }}
+                        {{ translate('Step 3') }}
                     </h4>
 
                 </div>
@@ -299,7 +299,7 @@
 
 
                     <h4 class="mt-5 font-semibold">
-                        {{ translate('Messages Step 4') }}
+                        {{ translate('Step 4') }}
                     </h4>
 
                 </div>
