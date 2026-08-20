@@ -131,6 +131,13 @@ class ServiceController extends Controller
                 ->orderByDesc('bookings_count')
                 ->take(4)
                 ->get();
+
+            $booking = Booking::whereHas('service.serviceCategory', function ($query) {
+                $query->where('slug', 'car-wash-services');
+            })
+                ->where('user_id', Auth::id())
+                ->latest()
+                ->first();
         } else {
             $countryId = auth()->user()->country_id;
             $services = Service::with('serviceCategory')
@@ -153,16 +160,18 @@ class ServiceController extends Controller
                 ->orderByDesc('bookings_count')
                 ->take(4)
                 ->get();
+
+            $booking = Booking::whereHas('service.serviceCategory', function ($query) {
+                $query->where('slug', 'car-wash-services');
+            })
+                ->where('user_id', Auth::id())
+                ->where('country_id', $countryId)
+                ->latest()
+                ->first();
         }
 
 
-        $booking = Booking::whereHas('service.serviceCategory', function ($query) {
-            $query->where('slug', 'car-wash-services');
-        })
-            ->where('user_id', Auth::id())
-            ->where('country_id', $countryId)
-            ->latest()
-            ->first();
+
 
         $testimonials = Testimonial::all();
         $faqs = Faq::limit(3)->get();

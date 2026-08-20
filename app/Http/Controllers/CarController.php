@@ -52,29 +52,44 @@ class CarController extends Controller
 
     public function carCustomerShow()
     {
-        $countryId = auth()->user()->country_id;
+
         $brands = CarBrand::orderBy('name')->get();
 
-        $cars = Car::with('CarBrand')
-            ->where('country_id', $countryId)
-            ->latest()
-            ->paginate(9);
+        if (Auth::guest()) {
+            $cars = Car::with('CarBrand')
+                ->latest()
+                ->paginate(9);
 
-        $finance = FinanceRequests::where('status', 'Approved')->first();
+            // Recommended Cars
+            $recommendedCars = Car::with('CarBrand')
+                ->where('status', 1)
+                ->latest()
+                ->take(6)
+                ->get();
 
-        // Recommended Cars
-        $recommendedCars = Car::with('CarBrand')
-            ->where('country_id', $countryId)
-            ->where('status', 1) 
-            ->latest()
-            ->take(6)
-            ->get();
+            $featuredCars = Car::latest()->take(6)->get();
+        } else {
+            $countryId = auth()->user()->country_id;
+            $cars = Car::with('CarBrand')
+                ->where('country_id', $countryId)
+                ->latest()
+                ->paginate(9);
 
-        $setting = Setting::first();
+            // Recommended Cars
+            $recommendedCars = Car::with('CarBrand')
+                ->where('country_id', $countryId)
+                ->where('status', 1)
+                ->latest()
+                ->take(6)
+                ->get();
 
-        $featuredCars = Car::latest()
+            $featuredCars = Car::latest()
             ->where('country_id', $countryId)
             ->take(6)->get();
+        }
+
+        $finance = FinanceRequests::where('status', 'Approved')->first();
+        $setting = Setting::first();
 
         return view('buy_&_finance_cars', compact(
             'setting',
