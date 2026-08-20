@@ -112,16 +112,49 @@ class ServiceController extends Controller
 
     public function showCarWashCustomer()
     {
-        $countryId = auth()->user()->country_id;
+        if (Auth::guest()) {
+            $services = Service::with('serviceCategory')
+                ->whereHas('serviceCategory', function ($query) {
+                    $query->where('slug', 'car-wash-services');
+                })
+                ->where('status', 1)
+                ->latest()
+                ->get();
 
-        $services = Service::with('serviceCategory')
-            ->whereHas('serviceCategory', function ($query) {
-                $query->where('slug', 'car-wash-services');
-            })
-            ->where('country_id', $countryId)
-            ->where('status', 1)
-            ->latest()
-            ->get();
+            // Recommended Services
+            $recommendedServices = Service::with('serviceCategory')
+                ->whereHas('serviceCategory', function ($query) {
+                    $query->where('slug', 'car-wash-services');
+                })
+                ->where('status', 1)
+                ->withCount('bookings')
+                ->orderByDesc('bookings_count')
+                ->take(4)
+                ->get();
+        } else {
+            $countryId = auth()->user()->country_id;
+            $services = Service::with('serviceCategory')
+                ->whereHas('serviceCategory', function ($query) {
+                    $query->where('slug', 'car-wash-services');
+                })
+                ->where('country_id', $countryId)
+                ->where('status', 1)
+                ->latest()
+                ->get();
+
+            // Recommended Services
+            $recommendedServices = Service::with('serviceCategory')
+                ->whereHas('serviceCategory', function ($query) {
+                    $query->where('slug', 'car-wash-services');
+                })
+                ->where('country_id', $countryId)
+                ->where('status', 1)
+                ->withCount('bookings')
+                ->orderByDesc('bookings_count')
+                ->take(4)
+                ->get();
+        }
+
 
         $booking = Booking::whereHas('service.serviceCategory', function ($query) {
             $query->where('slug', 'car-wash-services');
@@ -130,18 +163,6 @@ class ServiceController extends Controller
             ->where('country_id', $countryId)
             ->latest()
             ->first();
-
-        // Recommended Services
-        $recommendedServices = Service::with('serviceCategory')
-            ->whereHas('serviceCategory', function ($query) {
-                $query->where('slug', 'car-wash-services');
-            })
-            ->where('country_id', $countryId)
-            ->where('status', 1)
-            ->withCount('bookings')
-            ->orderByDesc('bookings_count')
-            ->take(4)
-            ->get();
 
         $testimonials = Testimonial::all();
         $faqs = Faq::limit(3)->get();
