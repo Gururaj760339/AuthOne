@@ -15,8 +15,7 @@ WORKDIR /var/www/html
 COPY . .
 
 RUN composer config -g process-timeout 2000 \
-    && composer config -g repos.packagist composer https://packagist.org \
-    && composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction
+    && composer install --no-dev --prefer-source --optimize-autoloader --no-interaction
 
 EXPOSE 10000
 
