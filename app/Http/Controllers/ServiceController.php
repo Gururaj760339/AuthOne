@@ -42,28 +42,28 @@ class ServiceController extends Controller
 
     public function showMaintenanceCustomer()
     {
-        $countryId = auth()->user()->country_id;
-        // All Services
 
-        if($countryId){
+        // All Services
+        if (Auth::guest()) {
             $services = Service::with('serviceCategory')
-            ->whereHas('serviceCategory', function ($query) {
-                $query->where('slug', 'workshops-maintenance');
-            })
-            ->where('status', 1)
-            ->where('country_id', $countryId)
-            ->latest()
-            ->get();
+                ->whereHas('serviceCategory', function ($query) {
+                    $query->where('slug', 'workshops-maintenance');
+                })
+                ->where('status', 1)
+                ->latest()
+                ->get();
         } else {
+            $countryId = auth()->user()->country_id;
             $services = Service::with('serviceCategory')
-            ->whereHas('serviceCategory', function ($query) {
-                $query->where('slug', 'workshops-maintenance');
-            })
-            ->where('status', 1)
-            ->latest()
-            ->get();
+                ->whereHas('serviceCategory', function ($query) {
+                    $query->where('slug', 'workshops-maintenance');
+                })
+                ->where('status', 1)
+                ->where('country_id', $countryId)
+                ->latest()
+                ->get();
         }
-        
+
 
         // User Booking
         $booking = Booking::whereHas('service.serviceCategory', function ($query) {
