@@ -74,15 +74,27 @@ class ServiceController extends Controller
             ->first();
 
         // Recommended Services
-        $recommendedServices = Service::whereHas('serviceCategory', function ($query) {
-            $query->where('slug', 'workshops-maintenance');
-        })
-            ->where('status', 1)
-            ->where('country_id', $countryId)
-            ->withCount('bookings')
-            ->orderByDesc('bookings_count')
-            ->take(5)
-            ->get();
+
+        if (Auth::guest()) {
+            $recommendedServices = Service::whereHas('serviceCategory', function ($query) {
+                $query->where('slug', 'workshops-maintenance');
+            })
+                ->where('status', 1)
+                ->withCount('bookings')
+                ->orderByDesc('bookings_count')
+                ->take(5)
+                ->get();
+        } else {
+            $recommendedServices = Service::whereHas('serviceCategory', function ($query) {
+                $query->where('slug', 'workshops-maintenance');
+            })
+                ->where('status', 1)
+                ->where('country_id', $countryId)
+                ->withCount('bookings')
+                ->orderByDesc('bookings_count')
+                ->take(5)
+                ->get();
+        }
 
         $testimonials = Testimonial::all();
         $faqs = Faq::limit(3)->get();
