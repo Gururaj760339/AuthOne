@@ -15,15 +15,22 @@ class SparePartController extends Controller
 {
     public function showCustomerSparePart(Request $request)
     {
-        $countryId = auth()->user()->country_id;
         $categories = SparePartCategory::orderBy('name')->get();
 
         $setting = Setting::first();
 
-        $query = SparePart::with('sparePartsCategory')
-            ->where('country_id', $countryId)
-            ->where('status', 'Available')
-            ->where('stock', '>', 0);
+        if (Auth::guest()) {
+            $query = SparePart::with('sparePartsCategory')
+                ->where('status', 'Available')
+                ->where('stock', '>', 0);
+        } else {
+            $countryId = auth()->user()->country_id;
+            $query = SparePart::with('sparePartsCategory')
+                ->where('country_id', $countryId)
+                ->where('status', 'Available')
+                ->where('stock', '>', 0);
+        }
+
 
         // Search by car model
         if ($request->filled('car_model')) {
@@ -57,14 +64,24 @@ class SparePartController extends Controller
 
     public function showCustomerSparePartDetails($id)
     {
-        $countryId = auth()->user()->country_id;
-        $part = SparePart::with([
-            'sparePartsCategory',
-            'sparePartImages'
-        ])
-            ->where('status', 'Available')
-            ->where('country_id', $countryId)
-            ->findOrFail($id);
+        if (Auth::guest()) {
+            $part = SparePart::with([
+                'sparePartsCategory',
+                'sparePartImages'
+            ])
+                ->where('status', 'Available')
+                ->findOrFail($id);
+        } else {
+            $countryId = auth()->user()->country_id;
+            $part = SparePart::with([
+                'sparePartsCategory',
+                'sparePartImages'
+            ])
+                ->where('status', 'Available')
+                ->where('country_id', $countryId)
+                ->findOrFail($id);
+        }
+
 
         return view('spare_parts.show_details', compact('part'));
     }
