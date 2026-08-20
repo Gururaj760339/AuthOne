@@ -44,7 +44,9 @@ class ServiceController extends Controller
     {
         $countryId = auth()->user()->country_id;
         // All Services
-        $services = Service::with('serviceCategory')
+
+        if($countryId){
+            $services = Service::with('serviceCategory')
             ->whereHas('serviceCategory', function ($query) {
                 $query->where('slug', 'workshops-maintenance');
             })
@@ -52,6 +54,16 @@ class ServiceController extends Controller
             ->where('country_id', $countryId)
             ->latest()
             ->get();
+        } else {
+            $services = Service::with('serviceCategory')
+            ->whereHas('serviceCategory', function ($query) {
+                $query->where('slug', 'workshops-maintenance');
+            })
+            ->where('status', 1)
+            ->latest()
+            ->get();
+        }
+        
 
         // User Booking
         $booking = Booking::whereHas('service.serviceCategory', function ($query) {
